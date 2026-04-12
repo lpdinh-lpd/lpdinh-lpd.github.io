@@ -1,0 +1,572 @@
+---
+title: Lab Three -- Matrices and Data Frames in R # Title of the document
+
+# Bibliography Details
+bibliography: Lab3References.bib  # Name of bib file in the same folder 
+bibliographystyle: apa                   # Bibliography style
+
+execute:
+  warning: false
+  message: false
+
+# Below will do html by default. To render the entire project
+# Use the following code:
+# quarto::quarto_render("Lab3WriteUp.qmd")
+
+format:
+  html: 
+    number-sections: TRUE
+    code-fold: TRUE
+    code-line-numbers: TRUE
+    cap-location: top 
+  pdf:
+    documentclass: article
+    number-sections: TRUE
+    reference-section-title: "References" 
+    code-line-numbers: TRUE
+    cap-location: top 
+    include-in-header:
+      - text: |
+          \usepackage{amsmath}
+          \usepackage[dvipsnames]{xcolor}
+          \usepackage[shortlabels]{enumitem}
+          \usepackage{parskip}
+          \usepackage{hyperref}
+          \usepackage{geometry}
+          \usepackage{float}
+    geometry:
+      - top=0.75in
+      - left=0.75in
+      - bottom=0.75in
+      - right=0.75in
+format-links: [pdf]
+---
+```{r}
+#| echo: false
+
+default_chunk_hook  <- knitr::knit_hooks$get("chunk")
+
+latex_font_size <- c("Huge", "huge", "LARGE", "Large", 
+                     "large", "normalsize", "small", 
+                     "footnotesize", "scriptsize", "tiny")
+
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- default_chunk_hook(x, options)
+  if(options$size %in% latex_font_size) {
+    paste0("\n \\", options$size, "\n\n", 
+      x, 
+      "\n\n \\normalsize"
+    )
+  } else {
+    x
+  }
+})
+
+```
+
+```{r}
+#| label: load-packages
+#| include: false
+library(tidyverse)
+```
+
+* Complete the tasks below. Make sure to start your solutions in on a new line that starts with "**Solution**:".
+* Make sure to use the Quarto Cheatsheet. This will make completing and writing up the lab *much* easier.
+
+Consider the unit square depicted in @fig-unitsquare. 
+
+```{r}
+#| label: fig-unitsquare
+#| fig-cap: "The unit square."
+#| fig-width: 3
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: "scriptsize"
+p0 <- c(0, 0)
+p1 <- c(1, 0)
+p2 <- c(1, 1)
+p3 <- c(0, 1)
+ggplot() +
+  geom_segment(aes(x = p0[1], y = p0[2], xend = p1[1], yend = p1[2])) +
+  geom_segment(aes(x = p1[1], y = p1[2], xend = p2[1], yend = p2[2])) +
+  geom_segment(aes(x = p2[1], y = p2[2], xend = p3[1], yend = p3[2])) +
+  geom_segment(aes(x = p3[1], y = p3[2], xend = p0[1], yend = p0[2])) +
+  theme_bw() +
+  xlim(-0.5, 1.5) +
+  ylim(-0.5, 1.5) +
+  labs(x = "x", y = "y")
+```
+
+The unit square can be defined by two basis vectors
+$$\mathbf{v}_1=\begin{bmatrix} 1 \\ 0 \end{bmatrix} ~~~ \textrm{and} ~~~ \mathbf{v}_2=\begin{bmatrix} 0 \\ 1 \end{bmatrix}.$$
+From these vectors, we can compute the corner vertices.
+\begin{align*}
+  p_0 & = (0,0) = (x_0, y_0) \tag{The origin}\\
+  p_1 & = v_1 = (x_1, y_1) = (1,0)  \tag{The first basis vector}\\
+  p_2 & = v_1 + v_2 = (x_2, y_2)= (1,1) \tag{The sum of basis vectors}\\
+  p_3 & = v_2 = (x_3, y_3) =(0,1) \tag{The second basis vector}\\
+\end{align*}
+Note that the segments that form the boundary go from $p_0$ to $p_1$ to $p_2$ to $p_3$ and back to $p_0$.
+
+Consider the matrix $M$ to be the matrix we get from binding the two basis vectors at the column,
+$$\mathbf{M} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}.$$
+
+# Question 1
+Let's transform $\mathbf{M}$ to demonstrate an interesting linear algebra property.
+
+## Part a
+Create the matrix `A` in `R`.
+$$\mathbf{A} = \begin{bmatrix} 1 & -7 \\ 5 & 9 \end{bmatrix}$$
+
+**Solution**
+
+```{r}
+(A=matrix(data=c(1,5,-7,9), 
+          nrow=2, ncol=2))
+```
+
+## Part b
+Compute the product below in `R` and store it in an object `T`.
+$$\mathbf{T} = \mathbf{A}\mathbf{M}.$$
+
+**Solution**
+
+Create object M
+```{r}
+(M=matrix(data=c(1,0,0,1), 
+          nrow=2, ncol=2))
+```
+$T=AM$
+```{r}
+(T=(A %*% M))
+```
+
+## Part c
+Create `basis.vector.1` (first column of `T`) and `basis.vector.2` (second column of `T`) in `R`.
+
+**Solution**
+
+```{r}
+(basis.vector.1=T[,1])
+(basis.vector.2=T[,2])
+```
+
+## Part d
+Compute the points $p_0$, $p_1$, $p_2$, and $p_3$.
+
+**Solution**
+
+$p_0=(0,0)$
+
+$p_1=(1,5)$
+
+$p_2=(-6,14)$
+```{r}
+basis.vector.1+basis.vector.2
+```
+
+$p_3=(-7,9)$
+
+## Part e
+Copy and paste the code for the unit square. Edit the code to draw the segments that form the boundary based on the points in Part d.
+
+**Solution**
+
+Install `tidyverse` [@tidyverse]
+```{r}
+#| eval: false
+install.packages("tidyverse")
+library("tidyverse")
+```
+
+Create vectors
+```{r}
+p0=c(0,0)
+p1=c(1,5)
+p2=c(-6,14)
+p3=c(-7,9)
+```
+
+Draw segments
+
+```{r}
+#| label: fig-unitsquare1e
+#| fig-cap: "Figure 1e."
+#| fig-width: 3
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: "scriptsize"
+ggplot() +
+  geom_segment(aes(x = p0[1], y = p0[2], xend = p1[1], yend = p1[2])) +
+  geom_segment(aes(x = p1[1], y = p1[2], xend = p2[1], yend = p2[2])) +
+  geom_segment(aes(x = p2[1], y = p2[2], xend = p3[1], yend = p3[2])) +
+  geom_segment(aes(x = p3[1], y = p3[2], xend = p0[1], yend = p0[2])) +
+  theme_bw() +
+  xlim(-15, 15) +
+  ylim(-5,25) +
+  labs(x = "x", y = "y")
+```
+
+## Part f
+Interestingly, the determinant of $\mathbf{A}$ gives us the area of the shape plotted in Part e. Find the determinant of $\mathbf{A}$.
+
+**Solution**
+
+```{r}
+(det(A))
+```
+
+# Question 2
+Recomplete Question 1 using a new matrix for $\mathbf{A}$. This matrix is not as well behaved.
+
+## Part a
+Create the matrix `A` in `R`.
+$$\mathbf{A} = \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}$$
+
+**Solution**
+```{r}
+(A=matrix(data=c(1,2,2,4), 
+          nrow=2, ncol=2))
+```
+
+## Part b
+Compute the product below in `R` and store it in an object `T`.
+$$\mathbf{T} = \mathbf{A}\mathbf{M}.$$
+
+**Solution**
+
+```{r}
+(T=(A %*% M))
+```
+
+## Part c
+Create `basis.vector.1` (first column of `T`) and `basis.vector.2` (second column of `T`) in `R`.
+
+**Solution**
+```{r}
+(basis.vector.1=T[,1])
+(basis.vector.2=T[,2])
+```
+
+## Part d
+Compute the points $p_0$, $p_1$, $p_2$, and $p_3$.
+
+**Solution**
+
+$p_0=(0,0)$
+
+$p_1=(1,2)$
+
+$p_2=(3,6)$
+
+$p_3=(2,4)$
+
+## Part e
+Copy and paste the code for plotting the unit square. Edit the code to draw the segments that form the boundary based on the points in Part d.
+
+**Solution**
+
+```{r}
+p0=c(0,0)
+p1=basis.vector.1
+p3=basis.vector.2
+p2=(p1+p3)
+
+#| label: fig-unitsquare2e
+#| fig-cap: "Figure 2e."
+#| fig-width: 3
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: "scriptsize"
+ggplot() +
+  geom_segment(aes(x = p0[1], y = p0[2], xend = p1[1], yend = p1[2])) +
+  geom_segment(aes(x = p1[1], y = p1[2], xend = p2[1], yend = p2[2])) +
+  geom_segment(aes(x = p2[1], y = p2[2], xend = p3[1], yend = p3[2])) +
+  geom_segment(aes(x = p3[1], y = p3[2], xend = p0[1], yend = p0[2])) +
+  theme_bw() +
+  xlim(-15, 15) +
+  ylim(-5,25) +
+  labs(x = "x", y = "y")
+```
+
+## Part f
+Interestingly, the determinant of $\mathbf{A}$ gives us the area of the shape plotted in Part e. Find the determinant of $\mathbf{A}$.
+
+**Solution**
+```{r}
+(det(A))
+```
+
+# Question 3
+We can conduct a shear transformation that keeps the area of the shape the same but horizontally or vertically slants the object. 
+
+In fact, this is one of the ways artists can make something look like it's leaning or being pushed. Other applications where this is useful include fluid dynamics and crystallography, where the area of a deformed object must remain constant, or in photography where perspective in photos can be adjusted.
+
+A shear transformation is implemented by altering the basis vectors we start with. For vertical slanting,
+$$\mathbf{M}_v = \begin{bmatrix} 1 & k \\ 0 & 1 \end{bmatrix}$$
+and for horizontal slanting
+$$\mathbf{M}_h = \begin{bmatrix} 1 & 0 \\ k & 1 \end{bmatrix}.$$
+In both cases, $k \in \mathbb{R}$ is called a shear factor and its sign determines the direction of the slant and its magnitude determines the severity of the slant.
+
+## Part a
+Use the following to generate a new shape. Compare the shape and its area to your answer in Question 1.
+$$\mathbf{M}_v = \begin{bmatrix} 1 & k=0.5 \\ 0 & 1 \end{bmatrix} ~~~~~ \textrm{and} ~~~~~
+  \mathbf{A}   = \begin{bmatrix} 1 & -7 \\ 5 & 9 \end{bmatrix}$$
+
+**Solution**
+
+The shape is slanted vertically more (the top edge moves up a bit, while the right edge stays the same), but their areas are the same. The new shape is generated by the same matrix A as question 1, and the determinant of matrix $\mathbf{M}_v$ is 1. Thus, the area, calculated by getting the determinant of $\mathbf{T}$, will result in the determinant of $\mathbf{A}$, which is 44.
+
+Creating matrices
+```{r}
+M_v=matrix(data=c(1,0,0.5,1),
+        nrow=2,ncol=2)
+A=matrix(data=c(1,5,-7,9),
+        nrow=2,ncol=2)
+```
+
+Creating basis vectors
+```{r}
+T=(A %*% M_v)
+basis.vector.1=T[,1]
+basis.vector.2=T[,2]
+p0=c(0,0)
+p1=basis.vector.1
+p3=basis.vector.2
+p2=(p1+p3)
+```
+
+Calculating the determinant of $\mathbf{M}_v$ and area
+```{r}
+(det(M_v))
+(det(T))
+```
+
+Creating figure
+```{r}
+#| label: fig-unitsquare3a
+#| fig-cap: "Figure 3a."
+#| fig-width: 3
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: "scriptsize"
+ggplot() +
+  geom_segment(aes(x = p0[1], y = p0[2], xend = p1[1], yend = p1[2])) +
+  geom_segment(aes(x = p1[1], y = p1[2], xend = p2[1], yend = p2[2])) +
+  geom_segment(aes(x = p2[1], y = p2[2], xend = p3[1], yend = p3[2])) +
+  geom_segment(aes(x = p3[1], y = p3[2], xend = p0[1], yend = p0[2])) +
+  theme_bw() +
+  xlim(-15, 15) +
+  ylim(-5,25) +
+  labs(x = "x", y = "y")
+```
+
+## Part b
+Use the following to generate a new shape. Compare the shape and its area to your answer in Questions 1 and the vertical shear transform in part (a).
+$$ \mathbf{M}_h = \begin{bmatrix} 1 & 0 \\ k=0.5 & 1 \end{bmatrix}~~~~~ \textrm{and} ~~~~~
+  \mathbf{A}   = \begin{bmatrix} 1 & -7 \\ 5 & 9 \end{bmatrix}$$
+
+**Solution**
+
+Compared to the shape in question 1, this shape is slanted horizontally more (the long bottom edge stays the same, but the left edge leans to the left). Compared to part a, the acute angles of the parallelogram is narrower. Similar to explanation in part a, the areas of the shape in 3b equals to those of the previous shapes and is the determinant of $\mathbf{A}$ because the the determinant of matrix $\mathbf{M}_h$ is 1.
+
+Creating figure
+```{r}
+M_h=matrix(data=c(1,0.5,0,1),
+        nrow=2,ncol=2)
+A=matrix(data=c(1,5,-7,9),
+        nrow=2,ncol=2)
+T=(A %*% M_h)
+basis.vector.1=T[,1]
+basis.vector.2=T[,2]
+p0=c(0,0)
+p1=basis.vector.1
+p3=basis.vector.2
+p2=(p1+p3)
+
+#| label: fig-unitsquare3b
+#| fig-cap: "Figure 3b."
+#| fig-width: 3
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: "scriptsize"
+ggplot() +
+  geom_segment(aes(x = p0[1], y = p0[2], xend = p1[1], yend = p1[2])) +
+  geom_segment(aes(x = p1[1], y = p1[2], xend = p2[1], yend = p2[2])) +
+  geom_segment(aes(x = p2[1], y = p2[2], xend = p3[1], yend = p3[2])) +
+  geom_segment(aes(x = p3[1], y = p3[2], xend = p0[1], yend = p0[2])) +
+  theme_bw() +
+  xlim(-15, 15) +
+  ylim(-5,25) +
+  labs(x = "x", y = "y")
+```
+
+Calculating area
+```{r}
+(det(T))
+```
+
+## Part c
+Can we shear vertically and horizontally at the same time? Use the following to generate a new shape. Compare the shape and its area to your answers in parts (a) and (b).
+$$\mathbf{M}_{vh} = \begin{bmatrix} 1 & k=0.5 \\ k=0.5 & 1 \end{bmatrix} ~~~~~ \textrm{and} ~~~~~
+  \mathbf{A}   = \begin{bmatrix} 1 & -7 \\ 5 & 9 \end{bmatrix}$$
+
+**Solution**
+
+This shape is slanted both vertically and horizontally, and looks every different from question 1 and part (a) and (b). Its acute angles are the narrowest. The area is 33 and is smaller than those of the three previous shapes.
+
+Creating matrices
+```{r}
+M_vh=matrix(data=c(1,0.5,0.5,1),
+        nrow=2,ncol=2)
+A=matrix(data=c(1,5,-7,9),
+        nrow=2,ncol=2)
+```
+
+Creating basis vectors:
+```{r}
+T=(A %*% M_vh)
+basis.vector.1=T[,1]
+basis.vector.2=T[,2]
+p0=c(0,0)
+p1=basis.vector.1
+p3=basis.vector.2
+p2=(p1+p3)
+```
+
+Creating figure:
+```{r}
+#| label: fig-unitsquare3b
+#| fig-cap: "Figure 3b."
+#| fig-width: 3
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: "scriptsize"
+ggplot() +
+  geom_segment(aes(x = p0[1], y = p0[2], xend = p1[1], yend = p1[2])) +
+  geom_segment(aes(x = p1[1], y = p1[2], xend = p2[1], yend = p2[2])) +
+  geom_segment(aes(x = p2[1], y = p2[2], xend = p3[1], yend = p3[2])) +
+  geom_segment(aes(x = p3[1], y = p3[2], xend = p0[1], yend = p0[2])) +
+  theme_bw() +
+  xlim(-15, 15) +
+  ylim(-5,25) +
+  labs(x = "x", y = "y")
+```
+Calculating area of shape
+```{r}
+(det(T))
+```
+
+# Question 4
+
+## Part a
+Create a data frame `ladder` with the following data. Note your data frame should have three columns; I split it to save vertical space here.
+
+| x    | y    | group| x    | y    | group|
+|:-----|:-----|:-----|:-----|:-----|:-----|
+| 0    | 0    |    1 | 1    | 8    |    6 |
+| 0    | 20   |    1 | 0    | 10   |    7 |
+| 1    | 0    |    2 | 1    | 10   |    7 |
+| 1    | 20   |    2 | 0    | 12   |    8 |
+| 0    | 2    |    3 | 1    | 12   |    8 |
+| 1    | 2    |    3 | 0    | 14   |    9 |
+| 0    | 4    |    4 | 1    | 14   |    9 |
+| 1    | 4    |    4 | 0    | 16   |   10 |
+| 0    | 6    |    5 | 1    | 16   |   10 |
+| 1    | 6    |    5 | 0    | 18   |   11 |
+| 0    | 8    |    6 | 1    | 18   |   11 |
+
+**Solution**
+
+```{r}
+(ladder=data.frame(x=c(0,0,1,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1),y=c(0,20,0,20,2,3,4,4,6,6,8,8,10,10,12,12,14,14,16,16,18,18),group=c(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11)))
+```
+
+## Part b
+Remove `#|eval: false` in the code below. The result should look like a ladder and a very rectangular house if part a is correct.
+
+**Solution**
+
+```{r}
+#| label: fig-ladder
+#| fig-cap: "A ladder."
+#| fig-width: 3
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: "scriptsize"
+ggplot() +
+  geom_path(data = ladder, 
+              aes(x = x, y = y, group = group)) +
+                  geom_segment(aes(x = 10, xend = 10,
+                   y=0, yend = 20))+
+  geom_segment(aes(x = 10, xend = 20,
+                   y=20, yend = 20))+
+  geom_segment(aes(x = 20, xend = 20,
+                   y=0, yend = 20))+
+  geom_segment(aes(x = 10, xend = 20,
+                   y=0, yend = 0)) +
+  theme_bw() +
+  xlim(-2,22) +
+  ylim(-2,22)
+```
+
+## Part c
+Use `as.matrix()` to create a $22 \times 2$ matrix $\mathbf{A}$ containing the `x` and `y` observations from the `ladder` data frame. Use matrix multiplication to compute
+$$\mathbf{T} = \mathbf{A} \mathbf{M}_h.$$
+Recall, 
+$$\mathbf{M}_h = \begin{bmatrix} 1 & 0 \\ k & 1 \end{bmatrix}$$
+and use $k=0.5.$
+
+**Solution**
+```{r}
+A=as.matrix(ladder[c("x","y")])
+M=matrix(data=c(1,0.5,0,1),
+        nrow=2,ncol=2)
+(T=(A%*%M))
+```
+
+## Part d
+Create a data frame `leaning.ladder` with the `x` and `y` equal to the first and second column of $\mathbf{T}$, respectively, and the same values of `group` from `ladder`. 
+
+**Solution**
+```{r}
+(leaning.ladder=data.frame(x=T[,1],y=T[,2],group=ladder[,3]))
+```
+
+## Part e
+Remove `eval: false` in the code below. The result should look like a ladder and a very rectangular house if part a is correct. The new leaning ladder should look like it is leaning on the house.
+
+```{r}
+#| label: fig-ladder2
+#| fig-cap: "A ladder and a leaning ladder."
+#| fig-width: 3
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: "scriptsize"
+ggplot() +
+  geom_path(data = ladder, 
+              aes(x = x, y = y, group = group, color = "Starting Ladder")) +
+  geom_path(data = leaning.ladder, 
+              aes(x = x, y = y, group = group, color = "Leaning Ladder")) +
+  geom_segment(aes(x = 10, xend = 10,
+                   y=0, yend = 20))+
+  geom_segment(aes(x = 10, xend = 20,
+                   y=20, yend = 20))+
+  geom_segment(aes(x = 20, xend = 20,
+                   y=0, yend = 20))+
+  geom_segment(aes(x = 10, xend = 20,
+                   y=0, yend = 0)) +
+  theme_bw() +
+  xlim(-2,22) +
+  ylim(-2,22) +
+  scale_color_manual("", values=c("darkred", "grey"))
+
+```
