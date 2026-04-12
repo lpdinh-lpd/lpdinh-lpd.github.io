@@ -1,0 +1,550 @@
+---
+title: Lab Five-Six -- Data Wrangling in R # Title of the document
+
+# Bibliography Details
+bibliography: Lab5References.bib  # Name of bib file in the same folder 
+bibliographystyle: apa            # Bibliography style
+
+execute:               # Default settings for code blocks
+  warning: false       # Do not print warnings
+  message: false       # Do not print messages
+  size: "scriptsize"   # Set code size to script size
+
+# Below will do html by default. To render the entire project
+# Use the following code:
+# quarto::quarto_render("Lab3WriteUp.qmd")
+format:
+  pdf:        # Specify .pdf formatting options 
+    documentclass: article     # Document Class
+    number-sections: true      # Number Sections
+    reference-section-title: "References" # Title for reference section
+    code-line-numbers: true    # Line numbers printed in code
+    cap-location: top          # Captions at the top of tables 
+    geometry:
+      - top=0.75in
+      - left=0.75in
+      - bottom=0.75in
+      - right=0.75in
+  html:       # Specify HTML formatting options 
+    number-sections: true      # Number Sections
+    code-fold: true            # Button to show code
+    code-line-numbers: true    # Line numbers printed in code
+    cap-location: top          # Captions at the top of tables and figures
+format-links: [pdf]
+---
+```{r}
+#| echo: false
+
+default_chunk_hook  <- knitr::knit_hooks$get("chunk")
+
+latex_font_size <- c("Huge", "huge", "LARGE", "Large", 
+                     "large", "normalsize", "small", 
+                     "footnotesize", "scriptsize", "tiny")
+
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- default_chunk_hook(x, options)
+  if(options$size %in% latex_font_size) {
+    paste0("\n \\", options$size, "\n\n", 
+      x, 
+      "\n\n \\normalsize"
+    )
+  } else {
+    x
+  }
+})
+```
+
+```{r}
+#| label: load-packages
+#| include: false
+library(tidyverse)
+library(patchwork)
+```
+
+**Tips**
+
+* Complete the tasks below. Make sure to start your solutions in on a new line that starts with "**Solution**:".
+* Make sure to use the Quarto Cheatsheet. This will make completing and writing up the lab *much* easier.
+* Make sure to use "enter" to make your code readable, so it doesn't run off the page. I switched the Quarto document to automatically render to .pdf, so you can see what you're submitting by default. You can switch back for the highlighting by moving the html block above the pdf block in the YAML header.
+* Use the pipe operator (`|>`). It makes the data wrangling tasks much easier to write.
+* Use `head(...)` or `glimpse(...)` often to ensure your code did what you wanted it to and that you haven't accidentally deleted their entire dataset with a bad filter.
+* Don't forget that you can copy-and-paste code when you're doing something similar as we did in class!
+
+**Timeline**
+
+* Week of 2/16: Aim to complete the data wrangling sections
+* Week of 2/23: Aim to complete the data summaries sections
+
+# Biomedical Science Data
+
+@Kitsberg25 collect data on the Human Cytomegalovirus (HCMV). HCMV is a member of the herpesvirus family -- the same family that includes: chickenpox, mononucleosis (mono), and cold sores. Prevalence is high with a worldwide seroprevalence of 24% to 100% [@Gupta25]. The virus persists in a dormant state for the entire life of those infected. Primary cytomegalovirus infection is often asymptomatic but can present with flu-like symptoms. The infection can reactivate due to stress, aging, or a weakened immune system.
+
+The researchers obtained blood samples from healthy donors, males and females, aged 25-45. They infected the cells of primary (human donor's blood) or THP1 (purchased cell lines) monocytes ($n = 87$ and $n = 112$, respectively) and macrophages ($n = 93$ and $n = 170$, respectively) and counted the number of viral genomes in the nuclei.
+
+Note that the original donor of the THP-1 cell line was a 1-year-old Japanese boy. He was treated for Acute Monocytic Leukemia at Tohoku Hospital Pediatrics (THP-1; the first cell line there). Because they are malignant cancer cells, they can divide indefinitely, breaking the usual cell managment that usually reigns in rogue cells. Therefore, these cells can divide indefinitely in a lab environment. THP-1 cells, and those like them, serve as such a reliable, uniform model for medical research and improve reproducability.
+
+**Preliminary Question**: Are THP-1 cells a good stand-in for human cells?
+
+**Research Question**: Is the virus more prevalent in the nucleus of monocytes or macrophages, explaining why HCMV stays dormant in monocytes but goes active in macrophages?
+
+## Data Wrangling
+
+### Part A 
+Go to the website and download the source data [https://www.nature.com/articles/s41467-025-68063-y#Sec30](https://www.nature.com/articles/s41467-025-68063-y#Sec30).
+
+Describe the process -- do not leave out any steps -- for how you can load the data for Figures 3b and 3d from the manuscript into `R`. 
+
+**Hint**: You can use packages like `readxl` [@readxl] but you will find it substantially easier to open the `.xls` file using your computer's spreadsheet software and create a new `.csv` file with the data you need.
+
+**Solution**
+
+Download the source data from the website. Open it, go to "File", click "Export" then chose .csv format. Choose "Combine tables into a single file". Move that file into the Github folder, then use the code
+```{r}
+dat.kitsberg.cleaned=read.csv("Fig. 3B-Table 1.csv")
+```
+
+### Part B
+The data need to be cleaned. Note that the sample type (Healthy Donor or THP-1), cell type (Monocytes or Macrophages), and treatment (12 Hours Post-Infection or Uninfected) are all recorded in one column `sample`, separated with underscores. Use `separate(...)` from the `tidyverse` package to separate the `sample` column into the `SampleType`, `CellType`, `Treatment` columns. Save the object as `dat.kitsberg.cleaned`.
+
+**Hint**: Use `?separate(...)` to see how it works.
+
+**Solution**
+
+```{r}
+dat.kitsberg.cleaned=dat.kitsberg.cleaned|> 
+  separate("sample", c("SampleType", "CellType", "Treatment"))
+```
+
+### Part C
+The researchers are only interested in observations in the treatment group (12hpi). Remove uninfected samples from the data. Update `dat.kitsberg.cleaned` with the result.
+
+**Hint**: I would use the `filter(...)` function.
+
+**Solution**
+```{r}
+dat.kitsberg.cleaned=filter(dat.kitsberg.cleaned, Treatment == "12hpi")
+```
+
+### Part D
+When `CellType` is "MDM", it is a Monocyte-Derived Macrophages. That is, the cell type should be macrophages which is coded as "mac". Update `dat.kitsberg.cleaned` with the result.
+
+**Hint**: I would use the `mutate(...)` function. You will likely find `if_else(...)` or `case_when(...)` helpful.
+
+**Solution**
+```{r}
+dat.kitsberg.cleaned=dat.kitsberg.cleaned|> 
+  mutate(CellType = case_when(CellType=="MDM" ~ "mac", TRUE ~ CellType))
+# dat.kitsberg.cleaned=dat.kitsberg.cleaned |> mutate(CellType = case_when(CellType=="MDM" ~ "mac", .default ~ CellType))
+```
+
+## Part E
+The researchers are only interested in monocytes and macrophages. Remove any other cell types. Update `dat.kitsberg.cleaned` with the result.
+
+**Hint**: I would use the `filter(...)` function.
+
+**Solution**
+```{r}
+dat.kitsberg.cleaned=filter(dat.kitsberg.cleaned, CellType == "mono" | CellType == "mac")
+```
+
+## Part F
+Clean up the data entry. Replace the shorthand the researchers used with the neat sample type (Healthy Donor or THP-1), cell type (Monocytes or Macrophages), and treatment (12 Hours Post-Infection or Uninfected). Update `dat.kitsberg.cleaned` with the result.
+
+**Hint**: I would use the `mutate(...)` function. You will likely find `if_else(...)` or `case_when(...)` helpful.
+
+**Solution**
+```{r}
+dat.kitsberg.cleaned=dat.kitsberg.cleaned|> 
+  mutate(CellType = case_when(CellType=="mac" ~ "Macrophages", 
+                              CellType=="mono" ~ "Monocytes", TRUE ~ CellType), 
+        SampleType = case_when(SampleType=="primary" ~ "Healthy Donor",
+                              SampleType=="THP1" ~ "THP-1", TRUE ~ SampleType),    
+        Treatment = case_when(Treatment=="12hpi" ~ "12 Hours Post-Infection", 
+                              TRUE ~ Treatment))
+```
+
+## Part G
+In an `R` code block, combine your answers into one code block that completes the full cleaning process. Save the object as `dat.kitsberg.cleaned`.
+
+**Note**: You will use this in the next section
+
+**Solution**
+
+```{r}
+dat.bal.cleaned= read.csv("Fig. 3B-Table 1.csv")|>
+  separate("sample", c("SampleType", "CellType", "Treatment"))|>
+  filter(Treatment == "12hpi")|>
+  mutate(CellType = case_when(CellType=="MDM" ~ "mac", TRUE ~ CellType))|>
+  filter(CellType == "mono" | CellType == "mac")|>
+  mutate(
+    CellType = case_when(
+      CellType=="mac" ~ "Macrophages", 
+      CellType=="mono" ~ "Monocytes", 
+      TRUE ~ CellType
+      ), 
+    SampleType = case_when(
+      SampleType=="primary" ~ "Healthy Donor", 
+      SampleType=="THP1" ~ "THP-1", TRUE ~ SampleType
+      ), 
+    Treatment=case_when(Treatment=="12hpi" ~ "12 Hours Post-Infection", TRUE ~ Treatment)
+    )
+```
+
+## Data Summaries
+
+### Part A
+Recreate Figure 3b as depicted in the paper (see [https://www.nature.com/articles/s41467-025-68063-y#Fig3](https://www.nature.com/articles/s41467-025-68063-y#Fig3)). You can ignore the significance comparison because we haven't done that yet.
+
+**Hint**: I would use `geom_violin(...)` for Figure 3b I also expect your plots to look nicer -- better labels, better scaling, etc. Don't forget to use the proper formatting using the syntax in the Quarto cheatsheet.
+
+**Solution**
+```{r}
+#| size: scriptsize
+#| label: fig-violin
+#| fig-cap: "HCMV Genomes in the Nucleus of Monocytes and Macrophages in Healthy Donor compared to THP-1"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+
+ggplot(dat.kitsberg.cleaned) + 
+geom_violin(aes(x = CellType, 
+                y = viruses.within.nucleus), 
+            fill = "lightgrey", alpha=0.5) + 
+geom_boxplot(aes(x = CellType, 
+                y = viruses.within.nucleus), 
+            width = 0.1)+
+theme_bw() + 
+labs(x = "", 
+    y = "Number of HCMV Genomes") +
+theme(axis.ticks.x = element_blank()) +
+facet_wrap(~ SampleType)
+
+```
+
+### Part B
+Compute a table containing relevant numerical summaries for Figure 3b.
+
+**Hint**: I would use `group_by(...)` and `summarize(...)` to complete this. Don't forget to use the proper formatting using `knitr::kable(...)` as described in the Quarto Cheatsheet.
+
+**Solution**
+
+```{r}
+#| size: scriptsize
+genomes = dat.kitsberg.cleaned |>
+    group_by(SampleType, CellType) |>
+    summarize(
+        Mean = mean(viruses.within.nucleus, na.rm=T),
+        SD = sd(viruses.within.nucleus, na.rm=T),
+        Median = median(viruses.within.nucleus, na.rm = T),
+        IQR = IQR(viruses.within.nucleus, na.rm = T),
+        Skewness = e1071::skewness(viruses.within.nucleus, na.rm = T)
+    )|>
+    rename("Sample Type"="SampleType", "Cell Type"="CellType")
+```
+
+```{r}
+#| label: tbl-sum
+#| tbl-cap: "HCMV Genomes In the Nucleus."
+#| tbl-align: "center"
+#| echo: false
+   genomes |> knitr::kable(digits = 2)
+```
+
+**Comments on data**:
+The data are heavily right-skewed across 4 groups (medians=0 and high skewness). Most cells had 0 viral genomes. Macrophages has higher means of genomes than monocytes in both sample types. The IQR for monocytes is 0 in both sample types, meaning at least 75% of monocyte had 0 genomes. 
+
+# Ship Valuation
+
+![This is a ship-shipping ship shipping shipping ships.](meme.jpg){width=80%}
+
+@ElifBal25 aim to build a model for predicting the value of Supramax and Ultramax ships using both current and past market data. Their goal was to build a model that only uses information anyone can easily look up.
+
+The researchers collected 17 years of real ship sale prices (2005–2022), covering $n=1819$ Supramax and Ultramax ship sales.
+
+**Research Question**: Can we predict Supramax and Ultramax ship prices?
+
+## Data Wrangling
+
+### Part A
+I downloaded the data from linked in the article ([https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0319073](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0319073)). I have included the data in this lab folder as `ShipValuation-Bal25.csv`. Load the data into `R`.
+
+**Solution**
+
+```{r}
+dat.bal.cleaned=read.csv("ShipValuation-Bal25.csv")
+```
+
+### Part B
+The price of each Supramax and Ultramax ship is reported on the $\log_{10}$ scale. Create a new column called `price` that contains the price in millions of dollars.
+$$\text{Price} = \frac{10^{\text{SPLog}}}{1000000}$$
+Save the object as `dat.bal.cleaned`.
+
+**Hint**: I would use the `mutate(...)` function.
+
+**Solution**
+```{r}
+dat.bal.cleaned=read.csv("ShipValuation-Bal25.csv")%>% mutate(.,SPLog=(10^SPLog)/1000000)
+```
+
+### Part C
+The authors recorded the country that each Supramax or Ultramax ship was built in in the columns `Japan`, `China, People's Republic Of`, `Philippines`, `Korea, South`,	`Others Country Build`. These columns are marked `1` to indicate that is the country of origin and `0` otherwise. Create a new column called `OriginCountry` that contains a clean labels for the country in which the ship was built. Update `dat.bal.cleaned` with the result.
+
+**Hint**: I would use the `mutate(...)` function. You will likely find `if_else(...)` or `case_when(...)` helpful.
+
+**Solution**
+```{r}
+# check class of each colum - interger
+dat.bal.cleaned=dat.bal.cleaned|>
+  mutate(OriginCountry= case_when(Japan==1~"Japan",
+        China..People.s.Republic.Of==1~"China",
+        Philippines==1~"Philippines",
+        Korea..South==1~"South Korea",
+        Others.Country.Build==1~"Other Country"))
+```
+
+### Part D
+The authors recorded each Supramax and Ultramax ship's main engine manufacturer in the columns `Caterpillar`, `MAN-B&W`, `Wartsila`, `Mitsubishi`. These columns are marked `1` to indicate that is the manufacturer and `0` otherwise. Create a new column called `Manufacturer` that contains a clean labels for the manufacturer. Update `dat.bal.cleaned` with the result.
+
+**Hint**: Follow the logic of the previous question.
+
+**Solution**
+```{r}
+dat.bal.cleaned=dat.bal.cleaned|>
+  mutate(Manufacturer= case_when(Caterpillar==1~"Caterpillar",
+                                MAN.B.W==1~"MAN-B&W",
+                                Wartsila==1~"Wartsila",
+                                Mitsubishi==1~"Mitsubishi"))
+```
+
+### Part E
+The researchers recorded whether each Supramax and Ultramax ship is currently covered by a Protection and Indemnity (P\&I) Club. This can be an indicator that a ship meets the minimum seaworthiness and safety requirements of the insurer.
+
+The authors recorded P&I clubs in the columns `Japan P&I Club`, `Gard`,	`West of England`,	`North of England`, `UK P&I`, `Britannia P&I`, `London P&I Club`, `Skuld`, `Steamship Mutual`, `Others`, `Unknown`. These columns are marked `1` to indicate that the ship is insured by that P\&I club and `0` otherwise. Create a new column called `PI.club` that contains a clean labels for the P\&I club. Update `dat.bal.cleaned` with the result.
+
+**Hint**: Follow the logic of the previous questions.
+
+**Solution**
+```{r}
+dat.bal.cleaned=dat.bal.cleaned|>
+  mutate(PI.club= case_when(Japan.P.I.Club==1~"Japan P&I",
+                            Gard==1~"Gard",
+                            West.of.England==1~"West of England",
+                            North.of.England==1~"North of England", 
+                            UK.P.I==1~"UK P&I",
+                            Britannia.P.I==1~"Britannia",
+                            London.P.I.Club==1~"London",
+                            Skuld==1~"Skuld",
+                            Steamship.Mutual==1~"Steamship Mutual",
+                            Others==1~"Other",
+                            Unknown==1~"Unknown"))
+```
+
+### Part F
+The researchers recorded whether each Supramax and Ultramax ship is classed by a society that requires a ship to be safe, structurally sound, and built/maintained to specific engineering standards.
+ 
+The authors recorded class society in the columns `Nippon Kaiji Kyokai (IACS)`, `Lloyd's Register`, `Bureau Veritas (IACS)`, `Det Norske Veritas (IACS)`,	`American Bureau of Shipping (IACS)`, `Others Class`, `With Two Classes`, `Disclassed`. These columns are marked `1` to indicate that the ship is classed by that soceity and `0` otherwise. Create a new column called `Class` that contains a clean labels for the class. Update `dat.bal.cleaned` with the result.
+
+**Hint**: Follow the logic of the previous questions.
+
+**Solution**
+```{r}
+dat.bal.cleaned=dat.bal.cleaned|>
+  mutate(Class= case_when(Nippon.Kaiji.Kyokai..IACS.==1~"Nippon Kaiji Kyokai",
+                          Lloyd.s.Register==1~"Lloyd's Register",
+                          Bureau.Veritas..IACS.==1~"Bureau Veritas",
+                          Det.Norske.Veritas..IACS.==1~"Det Norske Veritas", 
+                          American.Bureau.of.Shipping..IACS.==1~"American Bureau of Shipping",
+                          Others.Class==1~"Other Class",
+                          With.Two.Classes==1~"2 Classes",
+                          Disclassed==1~"Disclassed"))
+```
+
+### Part G
+The researchers recorded the flag state of each Supramax and Ultramax ship. Each flag state enforces its own set of safety, environmental, and crew welfare rules and regulations. Ships under certain flag states may be more or less valuable depending on how much the flag affects the buyer's trust in the condition of the boat. 
+ 
+The authors recorded flag states in the columns `Panama`, `Marshall Islands`,	`Liberia`,	`Malta`,	`Hong Kong`, `China`, `Singapore`, `Others Flag`, `With two flags`. These columns are marked `1` to indicate that the ship has that flag state and `0` otherwise. Create a new column called `FlagState` that contains a clean labels for the flag state. Update `dat.bal.cleaned` with the result.
+
+**Hint**: Follow the logic of the previous questions.
+
+**Solution**
+```{r}
+  dat.bal.cleaned=dat.bal.cleaned|>
+  mutate(FlagState= case_when(Panama==1~"Panama",
+        Marshall.Islands==1~"Marshall Islands",
+        Liberia==1~"Liberia",
+        Malta==1~"Malta", 
+        Hong.Kong..China==1~"Hong Kong",
+        Singapore==1~"Singapore",
+        Others.Flag==1~"Other Flag",
+        With.two.flags==1~"2 Flags"))
+```
+
+## Part H
+In an `R` code block, combine your answers into one code block that completes the full cleaning process. Save the object as `dat.bal.cleaned`.
+
+**Note**: You will use this in the next section
+
+**Solution**
+```{r}
+dat.bal.cleaned=read.csv("ShipValuation-Bal25.csv") %>% 
+  mutate(.,SPLog=(10^SPLog)/1000000)|>
+  mutate(OriginCountry= case_when(Japan==1~"Japan",
+                                  China..People.s.Republic.Of==1~"China",
+                                  Philippines==1~"Philippines",
+                                  Korea..South==1~"South Korea",
+                                  Others.Country.Build==1~"Other Country"))|>
+  mutate(Manufacturer= case_when(Caterpillar==1~"Caterpillar",
+                                MAN.B.W==1~"MAN-B&W",
+                                Wartsila==1~"Wartsila",
+                                Mitsubishi==1~"Mitsubishi"))|>
+  drop_na(Manufacturer)|>
+  mutate(PI.club= case_when(Japan.P.I.Club==1~"Japan P&I",
+                            Gard==1~"Gard",
+                            West.of.England==1~"West of England",
+                            North.of.England==1~"North of England", 
+                            UK.P.I==1~"UK P&I",
+                            Britannia.P.I==1~"Britannia",
+                            London.P.I.Club==1~"London",
+                            Skuld==1~"Skuld",
+                            Steamship.Mutual==1~"Steamship Mutual",
+                            Others==1~"Other",
+                            Unknown==1~"Unknown"))|>
+  mutate(Class= case_when(Nippon.Kaiji.Kyokai..IACS.==1~"Nippon Kaiji Kyokai",
+                          Lloyd.s.Register==1~"Lloyd's Register",
+                          Bureau.Veritas..IACS.==1~"Bureau Veritas",
+                          Det.Norske.Veritas..IACS.==1~"Det Norske Veritas", 
+                          American.Bureau.of.Shipping..IACS.==1~"American Bureau of Shipping",
+                          Others.Class==1~"Other Class",
+                          With.Two.Classes==1~"2 Classes",
+                          Disclassed==1~"Disclassed"))|>
+  mutate(FlagState= case_when(Panama==1~"Panama",
+                              Marshall.Islands==1~"Marshall Islands",
+                              Liberia==1~"Liberia",
+                              Malta==1~"Malta", 
+                              Hong.Kong..China==1~"Hong Kong",
+                              Singapore==1~"Singapore",
+                              Others.Flag==1~"Other Flag",
+                              With.two.flags==1~"2 Flags"))
+```
+
+## Data Summaries
+First, I provide a short description of the other variables in their data. Note that the size ordering of types of ships discussed below is:
+
+$$\text{Handysize} < \text{Supramax} < \text{Ultramax} < \text{Panamax} < \text{Capesize}$$
+
+* `DWT`: The deadweight tonnage, which is the maximum weight each Supramax and Ultramax ship can safely carry in metric tons. This gives a measure of how much cargo, fuel, fresh water, ballast water, provisions, and crew a ship can handle. 
+* `Yas`: The age in years. New Supramax and Ultramax ships were recorded as having age 1.
+* `Enginges RPM`: Revolutions per minute of each Supramax and Ultramax ship's main propulsion engine. Generally speaking, lower-RPM engines are more expensive because they are more fuel efficient.
+* `BACI`: The Baltic Capesize Index. This describes freight rates for Capesize dry bulk ships, which reflects supply and demand. When BACI is high, Capesize ships are more profitable in shipping, which could positively affect Supramax and Ultramax ship values as demand for dry bulk commodities might be high and large shipments could be split into several Supramax and Ultramax shipments.\
+**Note**: This reports the current BACI. The data also contain the BACI form 1, 2, and 3 months before the sale (`BACI-1`, `BACI-2`, `BACI-3`).
+* `BPNI`: The Baltic Panamax Index. This describes the cost to ship dry bulk commodities (e.g., coal or grain) on Panamax class ships. When BPNI is high, we expect Panamax ship prices to go up. Supramax and Ultramax ship values tend to follow this trend as charterers switch to these smaller vessels when Panamax rates become too expensive.\
+**Note**: This reports the current BPNI. The data also contain the BPNI form 1, 2, and 3 months before the sale (`BPNI-1`, `BPNI-2`, `BPNI-3`).
+* `BSIS`: The Baltic Supramax Index. This describes freight rates for Supramax vessels, which reflects supply and demand. When BSIS is high, Supramax and Ultramax prices are usually higher because they are more profitable in shipping.\
+**Note**: This reports the current BSIS. The data also contain the BSIS form 1, 2, and 3 months before the sale (`BSIS-1`, `BSIS-2`, `BSIS-3`).
+* `BHSI`: The Baltic Handysize Index. This describes freight rates for handysize vessels. When BHSI is high, Supramax and Ultramax ship prices are usually higher because the prices move together.\
+**Note**: This reports the current BHSI. The data also contain the BHSI form 1, 2, and 3 months before the sale (`BHSI-1`, `BHSI-2`, `BHSI-3`).
+* `LIBOR`: The London InterBank Offered Rate. This describes the average reported interest rate at which banks would lend US dollars for 3 months.
+ 
+
+### Part A
+Choose a categorical variable. Create a plot and corresponding numerical summary to assess whether or how ship prices vary across the levels of the selected categorical variable.  
+
+**Solution**
+
+Categorical Variable: Manufaturer
+
+Numerical Variable: SPLog
+
+```{r}
+#| size: scriptsize
+manu.summary <- dat.bal.cleaned |>
+  group_by(Manufacturer) |>
+  summarize(
+    Mean = mean(SPLog),
+    SD = sd(SPLog),
+    Median = median(SPLog),
+    IQR = IQR(SPLog),
+    Skewness = e1071::skewness(SPLog),
+    "Excess Kurtosis" = e1071::kurtosis(SPLog)
+  )
+```
+```{r}
+#| label: tbl-manufacturer
+#| tbl-cap: "Ship Prices (in Million of Dollars) by Manufacturer"
+#| tbl-align: "center"
+#| echo: false
+manu.summary |>
+knitr::kable(digits = 2)
+```
+
+```{r}
+#| label: fig-boxplot
+#| fig-cap: "Ship Prices Across Manufacturers"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+ggplot(dat.bal.cleaned) + 
+geom_boxplot(aes(x = Manufacturer, 
+                y = SPLog), 
+            width = 0.1)+
+theme_bw() + 
+labs(x = "Manufacturer", y = "Price (Million of Dollars)")
+```
+
+**Comments on data**: MAN-B&W have the most expensive ships on average, although also with high variability and right sknewness (there are more ships with lower price, and some ships with extremely high price that pulls the mean). Mitsubishi closely follows, but the data distribution is more peaked (values are more concentrated, lighter tail) and have less variability.
+
+### Part B
+Choose a quantitative variable. Create a plot and corresponding numerical summary to assess whether or how ship prices vary with the selected quantitative variable.
+
+**Solution**
+
+Numerical Variable 1: Age in Years
+
+Numerical Variable 2: SPLog 
+
+```{r}
+#| size: scriptsize
+age.price= dat.bal.cleaned |>
+              drop_na(SPLog, Yas) |>
+              summarize(
+                Pearson = cor(SPLog, Yas, method="pearson"),
+                Spearman = cor(SPLog, Yas, method="spearman"),
+                Kendall = cor(SPLog, Yas, method="kendall")
+              )
+```
+
+```{r}
+#| label: tbl-ageprice
+#| tbl-cap: "Price and Age of Ships"
+#| tbl-align: "center"
+#| echo: false
+age.price |>
+knitr::kable(digits = 2)
+```
+
+```{r}
+#| label: fig-scatterplot
+#| fig-cap: "Price and Age of Ships"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+ggplot(dat.bal.cleaned) + 
+  geom_point(aes(x = Yas, 
+                y = SPLog)) + 
+  geom_smooth(aes(x = Yas,
+                  y = SPLog), 
+method = "lm", 
+color = "black") + 
+theme_bw() + 
+labs(x = "Age (years)",
+    y = "Price (Million of Dollars)") 
+```
+
+**Comments on data**: All three correlation coefficients are negative and moderate, with Spearman correlation being the strongest. This suggests that the relationship between the price and the age of ships are monotonic (they increase/decrease together but not necessarily linear), which is consistent with the scatterplot. The wider spread around the first 6-7 years suggest that prices for ships of that range of age vary.
