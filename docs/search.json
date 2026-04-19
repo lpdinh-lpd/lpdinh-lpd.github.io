@@ -450,16 +450,6 @@
     ]
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "website",
-    "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
     "objectID": "03-Lab-ObjectsInR2/Lab3WriteUp.html",
     "href": "03-Lab-ObjectsInR2/Lab3WriteUp.html",
     "title": "Lab Three – Matrices and Data Frames in R",
@@ -864,7 +854,7 @@
     "href": "about.html#education",
     "title": "Le Dinh",
     "section": "Education",
-    "text": "Education\nColgate University | Hamilton, NY Bachelor of Arts | Aug 2023 - Present\nAbout this site",
+    "text": "Education\nColgate University | Hamilton, NY Bachelor of Arts | Aug 2023 - Present",
     "crumbs": [
       "Le Dinh"
     ]
