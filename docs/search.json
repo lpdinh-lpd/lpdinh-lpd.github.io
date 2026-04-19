@@ -450,6 +450,16 @@
     ]
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Le Dinh",
+    "section": "",
+    "text": "A website for my statistics work at Colgate University 2025-2026.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
     "objectID": "03-Lab-ObjectsInR2/Lab3WriteUp.html",
     "href": "03-Lab-ObjectsInR2/Lab3WriteUp.html",
     "title": "Lab Three – Matrices and Data Frames in R",
@@ -842,21 +852,21 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "Le Dinh",
+    "title": "Ab",
     "section": "",
     "text": "I’m a junior double-majoring in Educational Studies and Psychological Science at Colgate University.",
     "crumbs": [
-      "Le Dinh"
+      "Ab"
     ]
   },
   {
     "objectID": "about.html#education",
     "href": "about.html#education",
-    "title": "Le Dinh",
+    "title": "Ab",
     "section": "Education",
     "text": "Education\nColgate University | Hamilton, NY Bachelor of Arts | Aug 2023 - Present",
     "crumbs": [
-      "Le Dinh"
+      "Ab"
     ]
   },
   {

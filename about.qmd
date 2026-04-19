@@ -1,5 +1,5 @@
 ---
-title: "Le Dinh"
+title: "About"
 about:
   template: jolla
 ---
