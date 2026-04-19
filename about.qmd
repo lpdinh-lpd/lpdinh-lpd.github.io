@@ -1,7 +1,7 @@
 ---
 title: "Le Dinh"
 about:
-  template: marquee
+  template: jolla
 ---
 I'm a junior double-majoring in Educational Studies and Psychological Science at Colgate University. 
 
@@ -9,5 +9,3 @@ I'm a junior double-majoring in Educational Studies and Psychological Science at
 
 Colgate University | Hamilton, NY
 Bachelor of Arts | Aug 2023 - Present
-
-About this site

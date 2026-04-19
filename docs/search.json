@@ -852,11 +852,21 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "Le Dinh",
     "section": "",
-    "text": "About this site",
+    "text": "I’m a junior double-majoring in Educational Studies and Psychological Science at Colgate University.",
     "crumbs": [
-      "About"
+      "Le Dinh"
+    ]
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "Le Dinh",
+    "section": "Education",
+    "text": "Education\nColgate University | Hamilton, NY Bachelor of Arts | Aug 2023 - Present\nAbout this site",
+    "crumbs": [
+      "Le Dinh"
     ]
   },
   {

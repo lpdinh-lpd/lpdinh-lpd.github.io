@@ -1,7 +1,4 @@
 ---
-title: "website"
+title: "Le Dinh"
+description: "A website for my statistics work at Colgate University 2025-2026"
 ---
-
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
