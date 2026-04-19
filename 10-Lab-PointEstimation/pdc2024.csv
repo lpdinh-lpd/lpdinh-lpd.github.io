@@ -1,0 +1,116 @@
+Night,Round,Winner,Score,Loser,Venue
+1,Quarter-Final,Rob Cross,6-3,Peter Wright,Cardiff
+1,Quarter-Final,Gerwyn Price,6-4,Nathan Aspinall,Cardiff
+1,Quarter-Final,Michael Smith,6-5,Michael van Gerwen,Cardiff
+1,Quarter-Final,Luke Littler,6-2,Luke Humphries,Cardiff
+1,Semi-Final,Gerwyn Price,6-2,Rob Cross,Cardiff
+1,Semi-Final,Michael Smith,6-5,Luke Littler,Cardiff
+1,Final,Michael Smith,6-2,Gerwyn Price,Cardiff
+2,Quarter-Final,Michael van Gerwen,6-4,Nathan Aspinall,Berlin
+2,Quarter-Final,Michael Smith,6-5,Gerwyn Price,Berlin
+2,Quarter-Final,Luke Littler,6-5,Rob Cross,Berlin
+2,Quarter-Final,Luke Humphries,6-4,Peter Wright,Berlin
+2,Semi-Final,Michael van Gerwen,6-5,Michael Smith,Berlin
+2,Semi-Final,Luke Littler,6-5,Luke Humphries,Berlin
+2,Final,Michael van Gerwen,6-5,Luke Littler,Berlin
+3,Quarter-Final,Rob Cross,6-4,Michael Smith,Glasgow
+3,Quarter-Final,Michael van Gerwen,6-2,Peter Wright,Glasgow
+3,Quarter-Final,Luke Humphries,6-3,Nathan Aspinall,Glasgow
+3,Quarter-Final,Gerwyn Price,6-5,Luke Littler,Glasgow
+3,Semi-Final,Michael van Gerwen,6-4,Rob Cross,Glasgow
+3,Semi-Final,Luke Humphries,6-3,Gerwyn Price,Glasgow
+3,Final,Michael van Gerwen,6-5,Luke Humphries,Glasgow
+4,Quarter-Final,Nathan Aspinall,6-5,Michael Smith,Newcastle
+4,Quarter-Final,Rob Cross,6-5,Luke Humphries,Newcastle
+4,Quarter-Final,Luke Littler,6-5,Peter Wright,Newcastle
+4,Quarter-Final,Michael van Gerwen,6-4,Gerwyn Price,Newcastle
+4,Semi-Final,Nathan Aspinall,6-4,Rob Cross,Newcastle
+4,Semi-Final,Michael van Gerwen,6-5,Luke Littler,Newcastle
+4,Final,Michael van Gerwen,6-4,Nathan Aspinall,Newcastle
+5,Quarter-Final,Luke Humphries,6-3,Michael van Gerwen,Exeter
+5,Quarter-Final,Nathan Aspinall,6-4,Peter Wright,Exeter
+5,Quarter-Final,Rob Cross,6-1,Gerwyn Price,Exeter
+5,Quarter-Final,Luke Littler,6-2,Michael Smith,Exeter
+5,Semi-Final,Nathan Aspinall,6-5,Luke Humphries,Exeter
+5,Semi-Final,Rob Cross,6-3,Luke Littler,Exeter
+5,Final,Nathan Aspinall,6-2,Rob Cross,Exeter
+6,Quarter-Final,Luke Humphries,6-2,Gerwyn Price,Brighton
+6,Quarter-Final,Rob Cross,6-2,Michael van Gerwen,Brighton
+6,Quarter-Final,Luke Littler,6-3,Nathan Aspinall,Brighton
+6,Quarter-Final,Michael Smith,6-5,Peter Wright,Brighton
+6,Semi-Final,Luke Humphries,6-3,Rob Cross,Brighton
+6,Semi-Final,Michael Smith,6-3,Luke Littler,Brighton
+6,Final,Luke Humphries,6-3,Michael Smith,Brighton
+7,Quarter-Final,Peter Wright,6-5,Gerwyn Price,Nottingham
+7,Quarter-Final,Luke Humphries,6-4,Michael Smith,Nottingham
+7,Quarter-Final,Luke Littler,6-2,Michael van Gerwen,Nottingham
+7,Quarter-Final,Nathan Aspinall,6-5,Rob Cross,Nottingham
+7,Semi-Final,Luke Humphries,6-1,Peter Wright,Nottingham
+7,Semi-Final,Nathan Aspinall,6-3,Luke Littler,Nottingham
+7,Final,Luke Humphries,6-3,Nathan Aspinall,Nottingham
+8,Quarter-Final,Luke Humphries,6-1,Peter Wright,Dublin
+8,Quarter-Final,Nathan Aspinall,6-5,Rob Cross,Dublin
+8,Quarter-Final,Gerwyn Price,6-5,Michael van Gerwen,Dublin
+8,Quarter-Final,Michael Smith,6-4,Luke Littler,Dublin
+8,Semi-Final,Luke Humphries,6-4,Nathan Aspinall,Dublin
+8,Semi-Final,Michael Smith,6-5,Gerwyn Price,Dublin
+8,Final,Luke Humphries,6-2,Michael Smith,Dublin
+9,Quarter-Final,Luke Littler,6-5,Luke Humphries,Belfast
+9,Quarter-Final,Michael van Gerwen,6-4,Michael Smith,Belfast
+9,Quarter-Final,Nathan Aspinall,6-5,Gerwyn Price,Belfast
+9,Quarter-Final,Peter Wright,6-3,Rob Cross,Belfast
+9,Semi-Final,Luke Littler,6-3,Michael van Gerwen,Belfast
+9,Semi-Final,Nathan Aspinall,6-2,Peter Wright,Belfast
+9,Final,Luke Littler,6-4,Nathan Aspinall,Belfast
+10,Quarter-Final,Nathan Aspinall,6-3,Rob Cross,Manchester
+10,Quarter-Final,Luke Littler,6-3,Michael van Gerwen,Manchester
+10,Quarter-Final,Michael Smith,6-3,Luke Humphries,Manchester
+10,Quarter-Final,Gerwyn Price,6-4,Peter Wright,Manchester
+10,Semi-Final,Luke Littler,6-4,Nathan Aspinall,Manchester
+10,Semi-Final,Gerwyn Price,6-3,Michael Smith,Manchester
+10,Final,Luke Littler,6-3,Gerwyn Price,Manchester
+11,Quarter-Final,Luke Humphries,6-4,Peter Wright,Birmingham
+11,Quarter-Final,Luke Littler,6-5,Rob Cross,Birmingham
+11,Quarter-Final,Michael Smith,6-3,Gerwyn Price,Birmingham
+11,Quarter-Final,Michael van Gerwen,6-4,Nathan Aspinall,Birmingham
+11,Semi-Final,Luke Littler,6-5,Luke Humphries,Birmingham
+11,Semi-Final,Michael van Gerwen,6-4,Michael Smith,Birmingham
+11,Final,Michael van Gerwen,6-3,Luke Littler,Birmingham
+12,Quarter-Final,Michael Smith,6-3,Luke Littler,Rotterdam
+12,Quarter-Final,Gerwyn Price,6-3,Rob Cross,Rotterdam
+12,Quarter-Final,Nathan Aspinall,6-2,Peter Wright,Rotterdam
+12,Quarter-Final,Luke Humphries,6-4,Michael van Gerwen,Rotterdam
+12,Semi-Final,Michael Smith,6-5,Gerwyn Price,Rotterdam
+12,Semi-Final,Nathan Aspinall,6-4,Luke Humphries,Rotterdam
+12,Final,Nathan Aspinall,6-4,Michael Smith,Rotterdam
+13,Quarter-Final,Luke Littler,6-3,Gerwyn Price,Liverpool
+13,Quarter-Final,Nathan Aspinall,6-2,Luke Humphries,Liverpool
+13,Quarter-Final,Michael van Gerwen,6-3,Peter Wright,Liverpool
+13,Quarter-Final,Rob Cross,6-4,Michael Smith,Liverpool
+13,Semi-Final,Luke Littler,6-5,Nathan Aspinall,Liverpool
+13,Semi-Final,Rob Cross,6-2,Michael van Gerwen,Liverpool
+13,Final,Luke Littler,6-2,Rob Cross,Liverpool
+14,Quarter-Final,Michael Smith,6-4,Peter Wright,Aberdeen
+14,Quarter-Final,Luke Littler,6-5,Nathan Aspinall,Aberdeen
+14,Quarter-Final,Rob Cross,6-5,Michael van Gerwen,Aberdeen
+14,Quarter-Final,Luke Humphries,w/o,Gerwyn Price,Aberdeen
+14,Semi-Final,Luke Littler,6-1,Michael Smith,Aberdeen
+14,Semi-Final,Rob Cross,6-5,Luke Humphries,Aberdeen
+14,Final,Luke Littler,6-4,Rob Cross,Aberdeen
+15,Quarter-Final,Michael van Gerwen,6-3,Gerwyn Price,Leeds
+15,Quarter-Final,Luke Littler,6-1,Peter Wright,Leeds
+15,Quarter-Final,Luke Humphries,6-1,Rob Cross,Leeds
+15,Quarter-Final,Michael Smith,6-3,Nathan Aspinall,Leeds
+15,Semi-Final,Luke Littler,6-2,Michael van Gerwen,Leeds
+15,Semi-Final,Luke Humphries,6-3,Michael Smith,Leeds
+15,Final,Luke Humphries,6-5,Luke Littler,Leeds
+16,Quarter-Final,Luke Littler,6-4,Peter Wright,Sheffield
+16,Quarter-Final,Michael Smith,6-3,Nathan Aspinall,Sheffield
+16,Quarter-Final,Luke Humphries,6-4,Gerwyn Price,Sheffield
+16,Quarter-Final,Michael van Gerwen,6-4,Rob Cross,Sheffield
+16,Semi-Final,Michael Smith,6-5,Luke Littler,Sheffield
+16,Semi-Final,Luke Humphries,6-3,Michael van Gerwen,Sheffield
+16,Final,Michael Smith,6-3,Luke Humphries,Sheffield
+Finals,Semi-Final,Luke Littler,10-5,Michael Smith,London (O2)
+Finals,Semi-Final,Luke Humphries,10-5,Michael van Gerwen,London (O2)
+Finals,Final,Luke Littler,11-7,Luke Humphries,London (O2)

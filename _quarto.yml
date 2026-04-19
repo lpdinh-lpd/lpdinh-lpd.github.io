@@ -15,8 +15,8 @@ website:
     - 03-Lab-ObjectsInR2/Lab3WriteUp.qmd
     - 04-Lab-Programming/Lab4WriteUp.qmd
     - 05-Lab-DataWrangling/Lab5WriteUp.qmd
-    - 08-Lab-probability/Lab8WriteUp.qmd
-    - 10-Lab-pointestimation/Lab10WriteUp.qmd
+    - 08-Lab-Probability/Lab8WriteUp.qmd
+    - 10-Lab-PointEstimation/Lab10WriteUp.qmd
     - 11-Lab-Estimation/Lab11WriteUp.qmd
   
 format:

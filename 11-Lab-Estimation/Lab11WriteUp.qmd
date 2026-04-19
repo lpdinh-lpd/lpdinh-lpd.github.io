@@ -1,0 +1,1208 @@
+---
+title: Lab Eleven -- Point Estimation and Resampling # Title of the document
+
+# Bibliography Details
+bibliography: Lab11References.bib  # Name of bib file in the same folder 
+bibliographystyle: apa            # Bibliography style
+
+execute:               # Default settings for code blocks
+  warning: false       # Do not print warnings
+  message: false       # Do not print messages
+  size: "scriptsize"   # Set code size to script size
+
+# Below will do html by default. To render the entire project
+# Use the following code:
+# quarto::quarto_render("Lab10WriteUp.qmd")
+format:
+  pdf:        # Specify .pdf formatting options 
+    documentclass: article     # Document Class
+    number-sections: true      # Number Sections
+    reference-section-title: "References" # Title for reference section
+    code-line-numbers: true    # Line numbers printed in code
+    cap-location: top          # Captions at the top of tables 
+    geometry:
+      - top=0.75in
+      - left=0.75in
+      - bottom=0.75in
+      - right=0.75in
+  html:       # Specify HTML formatting options 
+    number-sections: true      # Number Sections
+    code-fold: true            # Button to show code
+    code-line-numbers: true    # Line numbers printed in code
+    cap-location: top          # Captions at the top of tables and figures
+format-links: [pdf]
+---
+```{r}
+#| echo: false
+
+default_chunk_hook  <- knitr::knit_hooks$get("chunk")
+
+latex_font_size <- c("Huge", "huge", "LARGE", "Large", 
+                     "large", "normalsize", "small", 
+                     "footnotesize", "scriptsize", "tiny")
+
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- default_chunk_hook(x, options)
+  if(options$size %in% latex_font_size) {
+    paste0("\n \\", options$size, "\n\n", 
+      x, 
+      "\n\n \\normalsize"
+    )
+  } else {
+    x
+  }
+})
+```
+
+```{r}
+#| label: load-packages
+#| include: false
+library(tidyverse)
+library(patchwork)
+```
+
+**Tips**
+
+* Complete the tasks below. Make sure to start your solutions in on a new line that starts with "**Solution**:".
+* Make sure to use the Quarto Cheatsheet. This will make completing and writing up the lab *much* easier.
+* Make sure to use "enter" to make your code readable, so it doesn't run off the page. I switched the Quarto document to automatically render to .pdf, so you can see what you're submitting by default. You can switch back for the highlighting by moving the html block above the pdf block in the YAML header.
+* Don't forget that you can copy-and-paste code when you're doing something similar as we did in class!
+* Make sure to plot all computed probabilities. This is good `ggplot` practice AND will help make sure you don't make a mistake when computing the probability.
+
+
+# Introduction
+When performing point estimation, there isn't just one *right* answer. For example, the Method of Moments (MOM) and Maximum Likelihood Estimates (MLEs) aren't always the same.
+
+One question that comes up, is why we calculate the sample variance as
+$$S_{n-1}^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i -\bar{X})^2,$$
+when it is supposed to be the ``average squared distance from the mean, i.e., 
+$$S_n^2 = \frac{1}{n} \sum_{i=1}^n (X_i -\bar{X})^2.$$
+
+
+# Comparing Estimators
+
+## Initial Simulation
+In this lab, we will explore why we use $S_{n-1}^2$ and not $S_n^2$. To do this, we will generate data from four known distributions:
+
+* Poisson$(\lambda=2)$
+* Binomial$\left(n=50, p=\frac{5-\sqrt{21}}{10}\right)$
+* Normal$(\mu=0, \sigma=\sqrt{2})$
+* Exponential$\left(\lambda = \frac{1}{\sqrt{2}}\right).$
+
+**Remark**: Note that I have selected the parameters so that the true variance for all four models is 2.
+
+For each distribution, write a loop that completes the following 1000 times. Put `set.seed(7272)` at the top of your code chunk.
+
+* Generate a sample of size $n$ from the distribution.
+* Calculate and save $S_{n-1}^2$ and $S_n^2.$
+
+Start with $n=20$. Is there evidence that $S_{n-1}^2$ is a better estimator than $S_n^2$?
+
+Create a plot or combination of plots (using patchwork) to show the results across all four distributions. Make sure to create a corresponding table that numerically summarizes the results of the simulation. You should include
+\begin{align*}
+\textrm{Bias} &= \textrm{Average of Estimates} - \textrm{True Value}\\
+\textrm{Precision} &= \frac{1}{\textrm{Variance of Estimates}}\\
+\textrm{Mean Square Error} &= \textrm{Bias}^2 + \textrm{Variance of Estimates}.
+\end{align*}
+
+**Solution**
+
+There is not enough evidence that $S_{n-1}^2$ is a better estimator than $S_n^2$ because across all distributions, on average (across 1000 simulations), $S_{n-1}^2$ has lower bias compared to $S_n^2$, but also lower precision (higher variance) and lower (MSE). 
+
+```{r}
+set.seed(7272)
+
+n.sims <- 1000
+# sample size is 20
+n <- 20
+
+# Poisson
+S1_pois <- rep(NA, n.sims)
+S2_pois <- rep(NA, n.sims)
+
+for(i in 1:n.sims){
+  curr.sample <- rpois(n=n, lambda = 2)
+  x_bar = mean(curr.sample)
+  # don't need for (i in 1:n){Xi <- curr.sample[i] S1[i] <- (1/(n - 1)) * sum((Xi - x_bar)^2) S2[i] <- 1/n * sum((Xi - x_bar)^2)}, because it's vectorized.
+  S1_pois[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+  S2_pois[i] <- sum((curr.sample - x_bar)^2) / n
+  }
+
+# Binomial
+p <- (5-sqrt(21))/10
+
+S1_binom <- rep(NA, n.sims)
+S2_binom <- rep(NA, n.sims)
+
+for(i in 1:n.sims){
+  curr.sample <- rbinom(n = n, size = 50, prob = p)
+  x_bar <- mean(curr.sample)
+  S1_binom[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+  S2_binom[i] <- sum((curr.sample - x_bar)^2) / n
+}
+
+# Normal
+S1_norm <- rep(NA, n.sims)
+S2_norm <- rep(NA, n.sims)
+
+for(i in 1:n.sims){
+  curr.sample <- rnorm(n = n, mean = 0, sd = sqrt(2))
+  x_bar <- mean(curr.sample)
+  S1_norm[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+  S2_norm[i] <- sum((curr.sample - x_bar)^2) / n
+}
+
+# Exponential
+S1_exp <- rep(NA, n.sims)
+S2_exp <- rep(NA, n.sims)
+
+for(i in 1:n.sims){
+  curr.sample <- rexp(n = n, rate = 1/sqrt(2))
+  x_bar <- mean(curr.sample)
+  S1_exp[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+  S2_exp[i] <- sum((curr.sample - x_bar)^2) / n
+}
+```
+
+```{r}
+raw <- tibble(
+  Estimator= rep(c("S1", "S2"), each = 1000, times = 4),
+  Distribution= rep(c("Poisson", "Binomial", "Normal", "Exponential"), 
+                   each = 2000),
+  Estimate=c(S1_pois, S2_pois, S1_binom, S2_binom, 
+              S1_norm, S2_norm, S1_exp, S2_exp)
+)
+```
+```{r}
+#| label: fig-box-estimate
+#| fig-cap: "S1 vs S2 from 1000 simulations for different distributions"
+#| fig-width: 14
+#| fig-height: 10
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+ggplot(raw) +
+  geom_boxplot(aes(x = Estimator,
+                   y= Estimate),
+               width = 0.1) +
+  theme(axis.ticks.x = element_blank()) +
+  facet_wrap(~ Distribution) 
+```
+
+```{r}
+# saving these codes for future reference about different ways i approached the problem
+# results.S1 <- tibble(
+#   Distribution = c("Poisson", "Binomial", "Normal", "Exponential"),
+#   Bias = c(
+#     mean(S1_pois) - 2,
+#     mean(S1_binom) - 2,
+#     mean(S1_norm) - 2,
+#     mean(S1_exp) - 2
+#   ),
+#   Variance = c(
+#     var(S1_pois),
+#     var(S1_binom),
+#     var(S1_norm),
+#     var(S1_exp)
+#   ),
+#   Precision = c(
+#     1/var(S1_pois),
+#     1/var(S1_bin),
+#     1/var(S1_norm),
+#     1/var(S1_exp)
+#   ),
+#   MSE = c(
+#     (mean(S1_pois) - 2)^2 + var(S1_pois),
+#     (mean(S1_bin) - 2)^2 + var(S1_bin),
+#     (mean(S1_norm) - 2)^2 + var(S1_norm),
+#     (mean(S1_exp) - 2)^2 + var(S1_exp)
+#   )
+# )
+
+results <- tibble(
+  Distribution = rep(c("Poisson", "Binomial", "Normal", "Exponential"), each = 2),
+  Estimator = rep(c("S1", "S2"), times = 4),
+  Bias = c(
+    mean(S1_pois) - 2, mean(S2_pois) - 2,
+    mean(S1_binom)  - 2, mean(S2_binom)  - 2,
+    mean(S1_norm) - 2, mean(S2_norm) - 2,
+    mean(S1_exp)  - 2, mean(S2_exp)  - 2
+  ),
+  Variance = c(
+    var(S1_pois), var(S2_pois),
+    var(S1_binom),  var(S2_binom),
+    var(S1_norm), var(S2_norm),
+    var(S1_exp),  var(S2_exp)
+  ),
+  Precision = 1 / Variance,
+  MSE = Bias^2 + Variance
+)
+```
+
+```{r}
+# ggplot(results, aes(x = Estimator, y = Bias, fill = Estimator)) +
+#   geom_col() +
+#   facet_wrap(~ Distribution) +
+#   labs(title = "Bias")
+```
+
+```{r}
+#| label: tbl-estimate
+#| tbl-cap: "S1 and S2 across 1000 simulations."
+#| tbl-align: "center"
+#| size: scriptsize
+results |> knitr::kable(digits = 2)
+```
+
+## Simulation over various sample sizes
+Consider the effect of the sample size have on these results. Provide a graphical and numerical summary of what happens as $n$ increases -- say $n=20$, $n=50$, $n=100$, and $n=500$. Does the result in your initial simulation hold across samples? Or, do things change as the sample size changes? Ensure to set your randomization seed.
+
+**Solution**
+
+As sample size increases, the estimates of variance become less variable, and the average values of S1 and S2 seem to converge. In the original simulation, the samples of S1 and S2 for Exponential and Poisson contain a lot of outliers and their distributions seem right-skewed, but they become approximately Gaussian at n=100 and n=500.  
+
+* Poisson
+
+```{r}
+set.seed(7272)
+
+n.sims <- 1000
+ss <- c(20, 50, 100, 500)
+
+S1_pois <- list()
+S2_pois <- list()
+
+for(n in ss){
+  S1 <- rep(NA, n.sims)
+  S2 <- rep(NA, n.sims)
+  for(i in 1:n.sims){
+    curr.sample <- rpois(n = n, lambda = 2)
+    x_bar <- mean(curr.sample)
+    S1[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+    S2[i] <- sum((curr.sample - x_bar)^2) / n
+  }
+  # convert number to string to use as a name
+  S1_pois[[as.character(n)]] <- S1
+  S2_pois[[as.character(n)]] <- S2
+}
+
+# raw data 
+raw_pois <- tibble(
+  Estimator = rep(c("S1", "S2"), each = 1000, times = 4),
+  # so that they're in order
+  n = factor(rep(c("n=20", "n=50", "n=100", "n=500"), each = 2000),
+            levels = c("n=20", "n=50", "n=100", "n=500")),
+  Estimate = c(S1_pois[["20"]], S2_pois[["20"]],
+              S1_pois[["50"]], S2_pois[["50"]],
+              S1_pois[["100"]], S2_pois[["100"]],
+              S1_pois[["500"]], S2_pois[["500"]])
+)
+# summary 
+results_pois <- tibble(
+  n = rep(c(20, 50, 100, 500), each=2),
+  Estimator = rep(c("S1", "S2"), times = 4),
+  Bias = c(
+    mean(S1_pois[["20"]]) - 2, mean(S2_pois[["20"]]) - 2,
+    mean(S1_pois[["50"]]) - 2, mean(S2_pois[["50"]]) - 2,
+    mean(S1_pois[["100"]]) - 2, mean(S2_pois[["100"]]) - 2,
+    mean(S1_pois[["500"]]) - 2, mean(S2_pois[["500"]]) - 2
+  ),
+  Variance = c(
+    var(S1_pois[["20"]]),  var(S2_pois[["20"]]),
+    var(S1_pois[["50"]]),  var(S2_pois[["50"]]),
+    var(S1_pois[["100"]]), var(S2_pois[["100"]]),
+    var(S1_pois[["500"]]), var(S2_pois[["500"]])
+  ),
+  Precision = 1 / Variance,
+  MSE = Bias^2 + Variance)
+
+# plot
+p_pois2 = ggplot(raw_pois) +
+  geom_boxplot(aes(x = Estimator,
+                   y= Estimate),
+               width = 0.1) +
+  ggtitle("Poisson") +
+  theme(axis.ticks.x = element_blank()) +
+  facet_wrap(~ n) 
+
+```
+
+* Binomial
+
+```{r}
+set.seed(7272)
+
+S1_binom <- list()
+S2_binom <- list()
+
+for(n in ss){
+  S1 <- rep(NA, n.sims)
+  S2 <- rep(NA, n.sims)
+  for(i in 1:n.sims){
+    curr.sample <- curr.sample <- rbinom(n = n, size = 50, prob = p)
+    x_bar <- mean(curr.sample)
+    S1[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+    S2[i] <- sum((curr.sample - x_bar)^2) / n
+  }
+  S1_binom[[as.character(n)]] <- S1
+  S2_binom[[as.character(n)]] <- S2
+}
+
+# raw data 
+raw_binom <- tibble(
+  Estimator = rep(c("S1", "S2"), each = 1000, times = 4),
+  n = factor(rep(c("n=20", "n=50", "n=100", "n=500"), each = 2000),
+            levels = c("n=20", "n=50", "n=100", "n=500")),
+  Estimate = c(S1_binom[["20"]], S2_binom[["20"]],
+              S1_binom[["50"]], S2_binom[["50"]],
+              S1_binom[["100"]], S2_binom[["100"]],
+              S1_binom[["500"]], S2_binom[["500"]])
+)
+# summary 
+results_binom <- tibble(
+  n = rep(c(20, 50, 100, 500), each=2),
+  Estimator = rep(c("S1", "S2"), times = 4),
+  Bias = c(
+    mean(S1_binom[["20"]]) - 2, mean(S2_binom[["20"]]) - 2,
+    mean(S1_binom[["50"]]) - 2, mean(S2_binom[["50"]]) - 2,
+    mean(S1_binom[["100"]]) - 2, mean(S2_binom[["100"]]) - 2,
+    mean(S1_binom[["500"]]) - 2, mean(S2_binom[["500"]]) - 2
+  ),
+  Variance = c(
+    var(S1_binom[["20"]]),  var(S2_binom[["20"]]),
+    var(S1_binom[["50"]]),  var(S2_binom[["50"]]),
+    var(S1_binom[["100"]]), var(S2_binom[["100"]]),
+    var(S1_binom[["500"]]), var(S2_binom[["500"]])
+  ),
+  Precision = 1 / Variance,
+  MSE = Bias^2 + Variance)
+
+# plot
+p_binom2 = ggplot(raw_binom) +
+  geom_boxplot(aes(x = Estimator,
+                   y= Estimate),
+               width = 0.1) +
+  ggtitle("Binomial") +
+  theme(axis.ticks.x = element_blank()) +
+  facet_wrap(~ n) 
+```
+
+* Normal
+
+```{r}
+set.seed(7272)
+
+S1_norm <- list()
+S2_norm <- list()
+
+for(n in ss){
+  S1 <- rep(NA, n.sims)
+  S2 <- rep(NA, n.sims)
+  for(i in 1:n.sims){
+    curr.sample <- rnorm(n = n, mean = 0, sd = sqrt(2))
+    x_bar <- mean(curr.sample)
+    S1[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+    S2[i] <- sum((curr.sample - x_bar)^2) / n
+  }
+  S1_norm[[as.character(n)]] <- S1
+  S2_norm[[as.character(n)]] <- S2
+}
+
+# raw data 
+raw_norm <- tibble(
+  Estimator = rep(c("S1", "S2"), each = 1000, times = 4),
+  n = factor(rep(c("n=20", "n=50", "n=100", "n=500"), each = 2000),
+            levels = c("n=20", "n=50", "n=100", "n=500")),
+  Estimate = c(S1_norm[["20"]], S2_norm[["20"]],
+              S1_norm[["50"]], S2_norm[["50"]],
+              S1_norm[["100"]], S2_norm[["100"]],
+              S1_norm[["500"]], S2_norm[["500"]])
+)
+# summary 
+results_norm <- tibble(
+  n = rep(c(20, 50, 100, 500), each=2),
+  Estimator = rep(c("S1", "S2"), times = 4),
+  Bias = c(
+    mean(S1_norm[["20"]]) - 2, mean(S2_norm[["20"]]) - 2,
+    mean(S1_norm[["50"]]) - 2, mean(S2_norm[["50"]]) - 2,
+    mean(S1_norm[["100"]]) - 2, mean(S2_norm[["100"]]) - 2,
+    mean(S1_norm[["500"]]) - 2, mean(S2_norm[["500"]]) - 2
+  ),
+  Variance = c(
+    var(S1_norm[["20"]]),  var(S2_norm[["20"]]),
+    var(S1_norm[["50"]]),  var(S2_norm[["50"]]),
+    var(S1_norm[["100"]]), var(S2_norm[["100"]]),
+    var(S1_norm[["500"]]), var(S2_norm[["500"]])
+  ),
+  Precision = 1 / Variance,
+  MSE = Bias^2 + Variance)
+
+# plot
+p_norm2 = ggplot(raw_norm) +
+  geom_boxplot(aes(x = Estimator,
+                   y= Estimate),
+               width = 0.1) +
+  ggtitle("Normal") +
+  theme(axis.ticks.x = element_blank()) +
+  facet_wrap(~ n) 
+```
+
+* Exponential
+
+```{r}
+set.seed(7272)
+
+S1_exp <- list()
+S2_exp <- list()
+
+for(n in ss){
+  S1 <- rep(NA, n.sims)
+  S2 <- rep(NA, n.sims)
+  for(i in 1:n.sims){
+    curr.sample <- rexp(n = n, rate = 1/sqrt(2))
+    x_bar <- mean(curr.sample)
+    S1[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+    S2[i] <- sum((curr.sample - x_bar)^2) / n
+  }
+  S1_exp[[as.character(n)]] <- S1
+  S2_exp[[as.character(n)]] <- S2
+}
+
+# raw data 
+raw_exp <- tibble(
+  Estimator = rep(c("S1", "S2"), each = 1000, times = 4),
+  n = factor(rep(c("n=20", "n=50", "n=100", "n=500"), each = 2000),
+            levels = c("n=20", "n=50", "n=100", "n=500")),
+  Estimate = c(S1_exp[["20"]], S2_exp[["20"]],
+              S1_exp[["50"]], S2_exp[["50"]],
+              S1_exp[["100"]], S2_exp[["100"]],
+              S1_exp[["500"]], S2_exp[["500"]])
+)
+# summary 
+results_exp <- tibble(
+  n = rep(c(20, 50, 100, 500), each=2),
+  Estimator = rep(c("S1", "S2"), times = 4),
+  Bias = c(
+    mean(S1_exp[["20"]]) - 2, mean(S2_exp[["20"]]) - 2,
+    mean(S1_exp[["50"]]) - 2, mean(S2_exp[["50"]]) - 2,
+    mean(S1_exp[["100"]]) - 2, mean(S2_exp[["100"]]) - 2,
+    mean(S1_exp[["500"]]) - 2, mean(S2_exp[["500"]]) - 2
+  ),
+  Variance = c(
+    var(S1_exp[["20"]]),  var(S2_exp[["20"]]),
+    var(S1_exp[["50"]]),  var(S2_exp[["50"]]),
+    var(S1_exp[["100"]]), var(S2_exp[["100"]]),
+    var(S1_exp[["500"]]), var(S2_exp[["500"]])
+  ),
+  Precision = 1 / Variance,
+  MSE = Bias^2 + Variance)
+
+# plot
+p_exp2 = ggplot(raw_exp) +
+  geom_boxplot(aes(x = Estimator,
+                   y= Estimate),
+               width = 0.1) +
+  ggtitle("") +
+  theme(axis.ticks.x = element_blank()) +
+  facet_wrap(~ n) 
+```
+
+```{r}
+#| label: tbl-estimatep
+#| tbl-cap: "S1 and S2 across 1000 simulations for Poisson Distribution"
+#| tbl-align: "center"
+#| size: scriptsize
+results_pois |> knitr::kable(digits = 2)
+```
+```{r}
+#| label: tbl-estimateb
+#| tbl-cap: "S1 and S2 across 1000 simulations for Binomial Distribution"
+#| tbl-align: "center"
+#| size: scriptsize
+results_binom |> knitr::kable(digits = 2)
+```
+```{r}
+#| label: tbl-estimaten
+#| tbl-cap: "S1 and S2 across 1000 simulations for Normal Distribution"
+#| tbl-align: "center"
+#| size: scriptsize
+results_norm |> knitr::kable(digits = 2)
+```
+
+```{r}
+#| label: tbl-estimatee
+#| tbl-cap: "S1 and S2 across 1000 simulations for Exponential Distribution"
+#| tbl-align: "center"
+#| size: scriptsize
+results_exp |> knitr::kable(digits = 2)
+```
+
+```{r}
+#| label: fig-box-estimate1
+#| fig-cap: "S1 vs S2 from 1000 simulations across Sample Sizes and Distributions"
+#| fig-width: 14
+#| fig-height: 10
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+(p_pois2 + p_binom2) / (p_norm2 + p_exp2)
+```
+
+## Simulation
+You have written code to draw a random sample of various sizes from each distribution, and to calculate and store the calculated estimates. Rework your code to produce a density plot of the $s_{n-1}^2$ and $s_{n}^2$. Do you have a guess about their distribution? Ensure to set your randomization seed. 
+
+**Solution**
+
+Based on the boxplots, their distributions become less right-skewed and have lower variance as sample size increases. When n=500, the distributions of S1 and S2 are approximately Gaussian.
+
+```{r}
+# n20.s1 <- tibble(
+#   Poisson = raw_pois[raw_pois[raw_pois$n == "n=20" & raw_pois$Estimator == "S1"]],
+#   Binomial = raw_binom[raw_binom[raw_binom$n == "n=20" & raw_binom$Estimator == "S1"]],
+# )
+
+set.seed(7272)
+library(ggridges)
+
+# recording initial thought process
+# raw_all <- bind_rows(
+#   raw_pois |> mutate(Distribution = "Poisson"),
+#   raw_binom |> mutate(Distribution = "Binomial"),
+#   raw_norm |> mutate(Distribution = "Normal"),
+#   raw_exp |> mutate(Distribution = "Exponential")
+# )
+
+# # S1
+# raw_all |>
+#   filter(Estimator == "S1") |>
+#   ggplot(aes(x=Estimate, color = Distribution)) +
+#   geom_density() +
+#   facet_wrap(~ n) +
+#   xlab("Estimate") +
+#   ylab("Density") +
+#   ggtitle("Sampling Distribution of S1 across sample sizes and distributions")
+
+# poisson
+# raw_pois |>
+#       filter(Estimator == "S1") |>
+#       ggplot(aes(x=Estimate, color = n)) +
+#       geom_density() +
+#       xlab("S1") +
+#       ylab("Density") +
+#       ggtitle("Poisson")
+
+# poisson
+
+p_pois1 = ggplot(raw_pois) +
+  geom_density_ridges(aes(x = Estimate, y=0, color=`Estimator`), fill=NA) +
+  geom_hline(yintercept = 0) +
+  ggtitle("Poisson") +
+  # lets each facet panel have its own x and y axes instead of forcing them to share the same range
+  facet_wrap(~ n, scales = "free") +
+  ylab("Density") +
+  theme_bw()
+  
+# binomial
+p_binom1 = ggplot(raw_binom) +
+  geom_density_ridges(aes(x = Estimate, y=0, color=`Estimator`), fill=NA) +
+  geom_hline(yintercept = 0) +
+  ggtitle("Binomial") +
+  facet_wrap(~ n, scales = "free") +
+  ylab("Density") +
+  theme_bw()
+
+# normal
+p_norm1 = ggplot(raw_norm) +
+  geom_density_ridges(aes(x = Estimate, y=0, color=`Estimator`), fill=NA) +
+  geom_hline(yintercept = 0) +
+  ggtitle("Normal") +
+  facet_wrap(~ n, scales = "free") +
+  ylab("Density") +
+  theme_bw()
+
+# Exponential
+p_exp1 = ggplot(raw_exp) +
+  geom_density_ridges(aes(x = Estimate, y=0, color=`Estimator`), fill=NA) +
+  geom_hline(yintercept = 0) +
+  ggtitle("Exponential") +
+  facet_wrap(~ n, scales = "free") +
+  ylab("Density") +
+  theme_bw()
+```
+
+```{r}
+#| label: fig-box-estimate2
+#| fig-cap: "Density of S1 vs S2 across Sample Sizes and Distributions"
+#| fig-width: 14
+#| fig-height: 10
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+(p_pois1 + p_binom1) / (p_norm1 + p_exp1)
+```
+
+## Bootstrap
+Now, take *one* sample from each distribution. Instead of drawing a random sample at each iteration, sample *with replacement* from the one sample. Produce a density plot of the $s_{n-1}^2$ and $s_{n}^2$. Do we get roughly the same information as we do in the full simulation? Try this over several seeds -- what do you notice? Ensure to set your randomization seed.
+
+**Solution**
+
+When we conduct bootstrap sampling, the distributions of S1 and S2 resemble a Gaussian distribution even when sample size is small (n=20) and are generally less right-skewed, except for the Exponential Distribution. When we resample from 1 sample drawn from the Exponential Distribution, the density curves of S1 and S2 at n=20 is trimodal, except for when seed=10. The variability of the density curves don't change as significantly as sample size increases compared to when we did full simulation; however, we observe the same trend of curve for S1 and the curve for S1 converging as sample size increases and almost completely overlap at n=500.
+
+When we did full simulation, all density curves center around the true variance, which is 2. However, in bootstrap sampling, even at n=500, the curves of S1 and S2 for 1000 bootstrap samples of 1 random sample from all distributions (except for Exponential) don't center around 2
+
+When we change seeds, the shapes of the distributions largely remain the same, but their expected values shift significantly, especially when seed=10 and sample size is smaller than 100. In this case, across all distributions, the curves of both S1 and S2 center around 1.5, which is far off from the true variance. When n=20, for the Poisson and Binomial distributions, they center around values less than 1. 
+
+`set.seed` ensures one gets the same randomizatinon, so changing it will produce a different randomization. Perhaps when I set it to 10, it produced random samples with variance that is really off from the true variance.
+
+* Poisson
+
+```{r}
+set.seed(7272)
+
+# poisson
+one_pois <- list()
+S1_pois_b <- list()
+S2_pois_b <- list()
+S1 <- rep(NA, n.sims)
+S2 <- rep(NA, n.sims)
+
+for(n in ss){
+  # take 1 random sample of different sizes
+  one_pois[[as.character(n)]] <- rpois(n = n, lambda = 2)
+  for(i in 1:n.sims){
+    curr.sample <- sample(one_pois[[as.character(n)]], size = n, replace = TRUE)
+    x_bar <- mean(curr.sample)
+    S1[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+    S2[i] <- sum((curr.sample - x_bar)^2) / n
+  }
+  S1_pois_b[[as.character(n)]] <- S1
+  S2_pois_b[[as.character(n)]] <- S2
+}
+
+raw_b_pois <- tibble(
+  Estimator = rep(c("S1", "S2"), each = 1000, times = 4),
+  n = factor(rep(c("n=20", "n=50", "n=100", "n=500"), each = 2000),
+             levels = c("n=20", "n=50", "n=100", "n=500")),
+  Estimate = c(S1_pois_b[["20"]], S2_pois_b[["20"]],
+               S1_pois_b[["50"]], S2_pois_b[["50"]],
+               S1_pois_b[["100"]], S2_pois_b[["100"]],
+               S1_pois_b[["500"]], S2_pois_b[["500"]])
+)
+
+p_pois = ggplot(raw_b_pois) +
+  geom_density_ridges(aes(x = Estimate, y = 0, color = Estimator), fill = NA) +
+  geom_hline(yintercept = 0) +
+  ggtitle("Poisson") +
+  facet_wrap(~ n, scales = "free") +
+  ylab("Density") + 
+  theme_bw()
+```
+
+* Binomial
+
+```{r}
+set.seed(7272)
+
+one_binom <- list()
+S1_binom_b <- list()
+S2_binom_b <- list()
+S1 <- rep(NA, n.sims)
+S2 <- rep(NA, n.sims)
+
+for(n in ss){
+  one_binom[[as.character(n)]] <- rbinom(n = n, size = 50, prob = p)
+  for(i in 1:n.sims){
+    curr.sample <- sample(one_binom[[as.character(n)]], size = n, replace = TRUE)
+    x_bar <- mean(curr.sample)
+    S1[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+    S2[i] <- sum((curr.sample - x_bar)^2) / n
+  }
+  S1_binom_b[[as.character(n)]] <- S1
+  S2_binom_b[[as.character(n)]] <- S2
+}
+
+raw_b_binom <- tibble(
+  Estimator = rep(c("S1", "S2"), each = 1000, times = 4),
+  n = factor(rep(c("n=20", "n=50", "n=100", "n=500"), each = 2000),
+             levels = c("n=20", "n=50", "n=100", "n=500")),
+  Estimate = c(S1_binom_b[["20"]], S2_binom_b[["20"]],
+               S1_binom_b[["50"]], S2_binom_b[["50"]],
+               S1_binom_b[["100"]], S2_binom_b[["100"]],
+               S1_binom_b[["500"]], S2_binom_b[["500"]])
+)
+
+p_binom = ggplot(raw_b_binom) +
+  geom_density_ridges(aes(x = Estimate, y = 0, color = Estimator), fill = NA) +
+  geom_hline(yintercept = 0) +
+  ggtitle("Binomial") +
+  facet_wrap(~ n, scales = "free") +
+  ylab("Density") + 
+  theme_bw()
+```
+
+* Normal
+```{r}
+set.seed(7272)
+
+one_norm <- list()
+S1_norm_b <- list()
+S2_norm_b <- list()
+S1 <- rep(NA, n.sims)
+S2 <- rep(NA, n.sims)
+
+for(n in ss){
+  one_norm[[as.character(n)]] <- rnorm(n = n, mean = 0, sd = sqrt(2))
+  for(i in 1:n.sims){
+    curr.sample <- sample(one_norm[[as.character(n)]], size = n, replace = TRUE)
+    x_bar <- mean(curr.sample)
+    S1[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+    S2[i] <- sum((curr.sample - x_bar)^2) / n
+  }
+  S1_norm_b[[as.character(n)]] <- S1
+  S2_norm_b[[as.character(n)]] <- S2
+}
+
+raw_b_norm <- tibble(
+  Estimator = rep(c("S1", "S2"), each = 1000, times = 4),
+  n = factor(rep(c("n=20", "n=50", "n=100", "n=500"), each = 2000),
+             levels = c("n=20", "n=50", "n=100", "n=500")),
+  Estimate = c(S1_norm_b[["20"]], S2_norm_b[["20"]],
+               S1_norm_b[["50"]], S2_norm_b[["50"]],
+               S1_norm_b[["100"]], S2_norm_b[["100"]],
+               S1_norm_b[["500"]], S2_norm_b[["500"]])
+)
+
+p_norm = ggplot(raw_b_norm) +
+  geom_density_ridges(aes(x = Estimate, y = 0, color = Estimator), fill = NA) +
+  geom_hline(yintercept = 0) +
+  ggtitle("Normal") +
+  facet_wrap(~ n, scales = "free") +
+  ylab("Density") + 
+  theme_bw()
+```
+
+* Exponential
+```{r}
+set.seed(7272)
+
+one_exp <- list()
+S1_exp_b <- list()
+S2_exp_b <- list()
+S1 <- rep(NA, n.sims)
+S2 <- rep(NA, n.sims)
+
+for(n in ss){
+  one_exp[[as.character(n)]] <- rexp(n = n, rate = 1/sqrt(2))
+  for(i in 1:n.sims){
+    curr.sample <- sample(one_exp[[as.character(n)]], size = n, replace = TRUE)
+    x_bar <- mean(curr.sample)
+    S1[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+    S2[i] <- sum((curr.sample - x_bar)^2) / n
+  }
+  S1_exp_b[[as.character(n)]] <- S1
+  S2_exp_b[[as.character(n)]] <- S2
+}
+
+raw_b_exp <- tibble(
+  Estimator = rep(c("S1", "S2"), each = 1000, times = 4),
+  n = factor(rep(c("n=20", "n=50", "n=100", "n=500"), each = 2000),
+             levels = c("n=20", "n=50", "n=100", "n=500")),
+  Estimate = c(S1_exp_b[["20"]], S2_exp_b[["20"]],
+               S1_exp_b[["50"]], S2_exp_b[["50"]],
+               S1_exp_b[["100"]], S2_exp_b[["100"]],
+               S1_exp_b[["500"]], S2_exp_b[["500"]])
+)
+
+p_exp = ggplot(raw_b_exp) +
+  geom_density_ridges(aes(x = Estimate, y = 0, color = Estimator), fill = NA) +
+  geom_hline(yintercept = 0) +
+  ggtitle("Exponential") +
+  facet_wrap(~ n, scales = "free") +
+  ylab("Density") + 
+  theme_bw()
+
+```
+
+* Trying this with seed = 10
+
+```{r}
+set.seed(10)
+
+# poisson
+one_pois <- list()
+S1_pois_b <- list()
+S2_pois_b <- list()
+S1 <- rep(NA, n.sims)
+S2 <- rep(NA, n.sims)
+
+for(n in ss){
+  # take 1 random sample of different sizes
+  one_pois[[as.character(n)]] <- rpois(n = n, lambda = 2)
+  for(i in 1:n.sims){
+    curr.sample <- sample(one_pois[[as.character(n)]], size = n, replace = TRUE)
+    x_bar <- mean(curr.sample)
+    S1[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+    S2[i] <- sum((curr.sample - x_bar)^2) / n
+  }
+  S1_pois_b[[as.character(n)]] <- S1
+  S2_pois_b[[as.character(n)]] <- S2
+}
+
+raw_b_pois <- tibble(
+  Estimator = rep(c("S1", "S2"), each = 1000, times = 4),
+  n = factor(rep(c("n=20", "n=50", "n=100", "n=500"), each = 2000),
+             levels = c("n=20", "n=50", "n=100", "n=500")),
+  Estimate = c(S1_pois_b[["20"]], S2_pois_b[["20"]],
+               S1_pois_b[["50"]], S2_pois_b[["50"]],
+               S1_pois_b[["100"]], S2_pois_b[["100"]],
+               S1_pois_b[["500"]], S2_pois_b[["500"]])
+)
+
+p_pois10 = ggplot(raw_b_pois) +
+  geom_density_ridges(aes(x = Estimate, y = 0, color = Estimator), fill = NA) +
+  geom_hline(yintercept = 0) +
+  ggtitle("Poisson") +
+  facet_wrap(~ n, scales = "free") +
+  ylab("Density") + 
+  theme_bw()
+```
+
+```{r}
+set.seed(10)
+
+one_binom <- list()
+S1_binom_b <- list()
+S2_binom_b <- list()
+S1 <- rep(NA, n.sims)
+S2 <- rep(NA, n.sims)
+
+for(n in ss){
+  one_binom[[as.character(n)]] <- rbinom(n = n, size = 50, prob = p)
+  for(i in 1:n.sims){
+    curr.sample <- sample(one_binom[[as.character(n)]], size = n, replace = TRUE)
+    x_bar <- mean(curr.sample)
+    S1[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+    S2[i] <- sum((curr.sample - x_bar)^2) / n
+  }
+  S1_binom_b[[as.character(n)]] <- S1
+  S2_binom_b[[as.character(n)]] <- S2
+}
+
+raw_b_binom <- tibble(
+  Estimator = rep(c("S1", "S2"), each = 1000, times = 4),
+  n = factor(rep(c("n=20", "n=50", "n=100", "n=500"), each = 2000),
+             levels = c("n=20", "n=50", "n=100", "n=500")),
+  Estimate = c(S1_binom_b[["20"]], S2_binom_b[["20"]],
+               S1_binom_b[["50"]], S2_binom_b[["50"]],
+               S1_binom_b[["100"]], S2_binom_b[["100"]],
+               S1_binom_b[["500"]], S2_binom_b[["500"]])
+)
+
+p_binom10 = ggplot(raw_b_binom) +
+  geom_density_ridges(aes(x = Estimate, y = 0, color = Estimator), fill = NA) +
+  geom_hline(yintercept = 0) +
+  ggtitle("Binomial") +
+  facet_wrap(~ n, scales = "free") +
+  ylab("Density") + 
+  theme_bw()
+```
+
+```{r}
+set.seed(10)
+
+one_norm <- list()
+S1_norm_b <- list()
+S2_norm_b <- list()
+S1 <- rep(NA, n.sims)
+S2 <- rep(NA, n.sims)
+
+for(n in ss){
+  one_norm[[as.character(n)]] <- rnorm(n = n, mean = 0, sd = sqrt(2))
+  for(i in 1:n.sims){
+    curr.sample <- sample(one_norm[[as.character(n)]], size = n, replace = TRUE)
+    x_bar <- mean(curr.sample)
+    S1[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+    S2[i] <- sum((curr.sample - x_bar)^2) / n
+  }
+  S1_norm_b[[as.character(n)]] <- S1
+  S2_norm_b[[as.character(n)]] <- S2
+}
+
+raw_b_norm <- tibble(
+  Estimator = rep(c("S1", "S2"), each = 1000, times = 4),
+  n = factor(rep(c("n=20", "n=50", "n=100", "n=500"), each = 2000),
+             levels = c("n=20", "n=50", "n=100", "n=500")),
+  Estimate = c(S1_norm_b[["20"]], S2_norm_b[["20"]],
+               S1_norm_b[["50"]], S2_norm_b[["50"]],
+               S1_norm_b[["100"]], S2_norm_b[["100"]],
+               S1_norm_b[["500"]], S2_norm_b[["500"]])
+)
+
+p_norm10 = ggplot(raw_b_norm) +
+  geom_density_ridges(aes(x = Estimate, y = 0, color = Estimator), fill = NA) +
+  geom_hline(yintercept = 0) +
+  ggtitle("Normal") +
+  facet_wrap(~ n, scales = "free") +
+  ylab("Density") + 
+  theme_bw()
+```
+
+```{r}
+set.seed(10)
+
+one_exp <- list()
+S1_exp_b <- list()
+S2_exp_b <- list()
+S1 <- rep(NA, n.sims)
+S2 <- rep(NA, n.sims)
+
+for(n in ss){
+  one_exp[[as.character(n)]] <- rexp(n = n, rate = 1/sqrt(2))
+  for(i in 1:n.sims){
+    curr.sample <- sample(one_exp[[as.character(n)]], size = n, replace = TRUE)
+    x_bar <- mean(curr.sample)
+    S1[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+    S2[i] <- sum((curr.sample - x_bar)^2) / n
+  }
+  S1_exp_b[[as.character(n)]] <- S1
+  S2_exp_b[[as.character(n)]] <- S2
+}
+
+raw_b_exp <- tibble(
+  Estimator = rep(c("S1", "S2"), each = 1000, times = 4),
+  n = factor(rep(c("n=20", "n=50", "n=100", "n=500"), each = 2000),
+             levels = c("n=20", "n=50", "n=100", "n=500")),
+  Estimate = c(S1_exp_b[["20"]], S2_exp_b[["20"]],
+               S1_exp_b[["50"]], S2_exp_b[["50"]],
+               S1_exp_b[["100"]], S2_exp_b[["100"]],
+               S1_exp_b[["500"]], S2_exp_b[["500"]])
+)
+
+p_exp10 = ggplot(raw_b_exp) +
+  geom_density_ridges(aes(x = Estimate, y = 0, color = Estimator), fill = NA) +
+  geom_hline(yintercept = 0) +
+  ggtitle("Exponential") +
+  facet_wrap(~ n, scales = "free") +
+  ylab("Density") + 
+  theme_bw()
+
+```
+
+* Trying this with seed = 99999
+
+```{r}
+set.seed(99999)
+
+# poisson
+one_pois <- list()
+S1_pois_b <- list()
+S2_pois_b <- list()
+S1 <- rep(NA, n.sims)
+S2 <- rep(NA, n.sims)
+
+for(n in ss){
+  # take 1 random sample of different sizes
+  one_pois[[as.character(n)]] <- rpois(n = n, lambda = 2)
+  for(i in 1:n.sims){
+    curr.sample <- sample(one_pois[[as.character(n)]], size = n, replace = TRUE)
+    x_bar <- mean(curr.sample)
+    S1[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+    S2[i] <- sum((curr.sample - x_bar)^2) / n
+  }
+  S1_pois_b[[as.character(n)]] <- S1
+  S2_pois_b[[as.character(n)]] <- S2
+}
+
+raw_b_pois <- tibble(
+  Estimator = rep(c("S1", "S2"), each = 1000, times = 4),
+  n = factor(rep(c("n=20", "n=50", "n=100", "n=500"), each = 2000),
+             levels = c("n=20", "n=50", "n=100", "n=500")),
+  Estimate = c(S1_pois_b[["20"]], S2_pois_b[["20"]],
+               S1_pois_b[["50"]], S2_pois_b[["50"]],
+               S1_pois_b[["100"]], S2_pois_b[["100"]],
+               S1_pois_b[["500"]], S2_pois_b[["500"]])
+)
+
+p_pois99 = ggplot(raw_b_pois) +
+  geom_density_ridges(aes(x = Estimate, y = 0, color = Estimator), fill = NA) +
+  geom_hline(yintercept = 0) +
+  ggtitle("Poisson") +
+  facet_wrap(~ n, scales = "free") +
+  ylab("Density") + 
+  theme_bw()
+```
+
+```{r}
+set.seed(99999)
+
+one_binom <- list()
+S1_binom_b <- list()
+S2_binom_b <- list()
+S1 <- rep(NA, n.sims)
+S2 <- rep(NA, n.sims)
+
+for(n in ss){
+  one_binom[[as.character(n)]] <- rbinom(n = n, size = 50, prob = p)
+  for(i in 1:n.sims){
+    curr.sample <- sample(one_binom[[as.character(n)]], size = n, replace = TRUE)
+    x_bar <- mean(curr.sample)
+    S1[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+    S2[i] <- sum((curr.sample - x_bar)^2) / n
+  }
+  S1_binom_b[[as.character(n)]] <- S1
+  S2_binom_b[[as.character(n)]] <- S2
+}
+
+raw_b_binom <- tibble(
+  Estimator = rep(c("S1", "S2"), each = 1000, times = 4),
+  n = factor(rep(c("n=20", "n=50", "n=100", "n=500"), each = 2000),
+             levels = c("n=20", "n=50", "n=100", "n=500")),
+  Estimate = c(S1_binom_b[["20"]], S2_binom_b[["20"]],
+               S1_binom_b[["50"]], S2_binom_b[["50"]],
+               S1_binom_b[["100"]], S2_binom_b[["100"]],
+               S1_binom_b[["500"]], S2_binom_b[["500"]])
+)
+
+p_binom99 = ggplot(raw_b_binom) +
+  geom_density_ridges(aes(x = Estimate, y = 0, color = Estimator), fill = NA) +
+  geom_hline(yintercept = 0) +
+  ggtitle("Binomial") +
+  facet_wrap(~ n, scales = "free") +
+  ylab("Density") + 
+  theme_bw()
+```
+
+```{r}
+set.seed(99999)
+
+one_norm <- list()
+S1_norm_b <- list()
+S2_norm_b <- list()
+S1 <- rep(NA, n.sims)
+S2 <- rep(NA, n.sims)
+
+for(n in ss){
+  one_norm[[as.character(n)]] <- rnorm(n = n, mean = 0, sd = sqrt(2))
+  for(i in 1:n.sims){
+    curr.sample <- sample(one_norm[[as.character(n)]], size = n, replace = TRUE)
+    x_bar <- mean(curr.sample)
+    S1[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+    S2[i] <- sum((curr.sample - x_bar)^2) / n
+  }
+  S1_norm_b[[as.character(n)]] <- S1
+  S2_norm_b[[as.character(n)]] <- S2
+}
+
+raw_b_norm <- tibble(
+  Estimator = rep(c("S1", "S2"), each = 1000, times = 4),
+  n = factor(rep(c("n=20", "n=50", "n=100", "n=500"), each = 2000),
+             levels = c("n=20", "n=50", "n=100", "n=500")),
+  Estimate = c(S1_norm_b[["20"]], S2_norm_b[["20"]],
+               S1_norm_b[["50"]], S2_norm_b[["50"]],
+               S1_norm_b[["100"]], S2_norm_b[["100"]],
+               S1_norm_b[["500"]], S2_norm_b[["500"]])
+)
+
+p_norm99 = ggplot(raw_b_norm) +
+  geom_density_ridges(aes(x = Estimate, y = 0, color = Estimator), fill = NA) +
+  geom_hline(yintercept = 0) +
+  ggtitle("Normal") +
+  facet_wrap(~ n, scales = "free") +
+  ylab("Density") + 
+  theme_bw()
+```
+
+```{r}
+set.seed(99999)
+
+one_exp <- list()
+S1_exp_b <- list()
+S2_exp_b <- list()
+S1 <- rep(NA, n.sims)
+S2 <- rep(NA, n.sims)
+
+for(n in ss){
+  one_exp[[as.character(n)]] <- rexp(n = n, rate = 1/sqrt(2))
+  for(i in 1:n.sims){
+    curr.sample <- sample(one_exp[[as.character(n)]], size = n, replace = TRUE)
+    x_bar <- mean(curr.sample)
+    S1[i] <- sum((curr.sample - x_bar)^2) / (n - 1)
+    S2[i] <- sum((curr.sample - x_bar)^2) / n
+  }
+  S1_exp_b[[as.character(n)]] <- S1
+  S2_exp_b[[as.character(n)]] <- S2
+}
+
+raw_b_exp <- tibble(
+  Estimator = rep(c("S1", "S2"), each = 1000, times = 4),
+  n = factor(rep(c("n=20", "n=50", "n=100", "n=500"), each = 2000),
+             levels = c("n=20", "n=50", "n=100", "n=500")),
+  Estimate = c(S1_exp_b[["20"]], S2_exp_b[["20"]],
+               S1_exp_b[["50"]], S2_exp_b[["50"]],
+               S1_exp_b[["100"]], S2_exp_b[["100"]],
+               S1_exp_b[["500"]], S2_exp_b[["500"]])
+)
+
+p_exp99 = ggplot(raw_b_exp) +
+  geom_density_ridges(aes(x = Estimate, y = 0, color = Estimator), fill = NA) +
+  geom_hline(yintercept = 0) +
+  ggtitle("Exponential") +
+  facet_wrap(~ n, scales = "free") +
+  ylab("Density") + 
+  theme_bw()
+
+```
+```{r}
+#| label: fig-box-estimateb
+#| fig-cap: "Bootstrap Density of S1 vs S2 across Sample Sizes and Distributions (seed=7272)"
+#| fig-width: 14
+#| fig-height: 10
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize 
+(p_pois + p_binom) / (p_norm + p_exp)
+```
+```{r}
+#| label: fig-box-estimateb1
+#| fig-cap: "Bootstrap Density of S1 vs S2 across Sample Sizes and Distributions (seed=10)"
+#| fig-width: 14
+#| fig-height: 10
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize 
+(p_pois10 + p_binom10) / (p_norm10 + p_exp10) 
+```
+```{r}
+#| label: fig-box-estimateb2
+#| fig-cap: "Bootstrap Density of S1 vs S2 across Sample Sizes and Distributions (seed=99999)"
+#| fig-width: 14
+#| fig-height: 10
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize 
+(p_pois99 + p_binom99) / (p_norm99 + p_exp99) 
+```
+
+# Executive Summary
+Summarize the work you've done here to provide a brief (200-300 word) summary of the simulation and the results using your work in Lab 11. Your summary should be professional, clear, and all claims should be corroborated with statistical support.
+
+**Solution**
+
+When performing point estimation, we sometimes caculate sample variance as 
+$$S1 = S_{n-1}^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i -\bar{X})^2,$$
+and sometimes as
+$$S2 = S_n^2 = \frac{1}{n} \sum_{i=1}^n (X_i -\bar{X})^2.$$.
+
+This lab compares the two estimators across 1000 simulations drawn from different distributions and across different sample sizes. At small sample size, n=20, across all distributions:
+
+* As seen in @tbl-estimate, S1 shows lower bias but lower precision and higher MSE than S2. 
+
+* As seen in @fig-box-estimate, the distributions of S1 and S2 have long right tails, i.e., many high-value outliers, especially for the Exponential Distribution.
+
+According to @tbl-estimateb, @tbl-estimatee, @tbl-estimaten and @tbl-estimatep, for all distributions, the average bias and variance decreases substantially for both S1 and S2 as sample size increases. Their precision becomes 5-6 times higher as the sample size increases from 100 to 500. S1 still has lower bias and lower precision than S2 overall, but their MSE converges at n=100 and n=500. This indicates that when sample size is large enough, S1 and S2 are equally good estimators. As shown in @fig-box-estimate2, their density curves overlap increases and almost completely overlap at n=500, and become closer to the Gaussian Distribution as sample size increases.
+
+Except for the Exponential Distribution, when n=500, the bias and variance of S1 across all other distributions are 0 and 0.02, respectively. This means that S1 provides estimates very close to the true variance on average, when n=500. 
+
+In bootstrap simulations, the distributions of S1 and S2 have less variability and approximate the Gaussian Distribution regardless of sample size, except for the Exponential Distribution, as demonstrated in @fig-box-estimateb. However, while in the full simulation, estimator distributions center around the true variance ($\sigma=2$), this is not necessarily the case for bootstrap sampling. This is because the one sample that we're resampling from with replacement still have less variability compared to drawing samples repeatedly from a distribution. However, as sample size increases, meaning we're more likely to capture the true variance with our one sample, the average value of the distributions of estimators approach 2.
