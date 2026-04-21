@@ -42,7 +42,7 @@ Annoyingly, the calculations we perform to gather evidence from our data are bas
 
 Recall that we're assuming the population mean is 0 (that $H_0$ is true). In this world, how unusual is our sample mean, $\bar{x}=10$? 
 
-If we compare 10 with 0, we might say there is indeed a difference—a whole 10 points! But this alone cannot be considered good evidence for $H_a$, because a raw difference does not account for the variability in our data. Consider two scenarios: in one, every student who took notes on paper scored almost exactly 10 points higher than every computer note-taker—the difference is consistent and striking. In another, the paper group's advantage ranged wildly from -20 to +40 points, and the 10-point difference is simply the result of an average that masks a lot of noise. Both scenarios give us $\bar{x} = 10$, but they tell very different stories about how convincing that difference really is.
+If we compare 10 with 0, we might say there is indeed a difference—a whole 10 points! But this alone cannot be considered good evidence for $H_a$, because a raw difference does not account for the variability in our data. Consider two scenarios: in one, every student who took notes on paper scored almost exactly 10 points higher than every computer note-taker. In another, the paper group's advantage ranged wildly from -20 to +40 points, and the 10-point difference is simply the result of a mathematical average that cancels out a lot of noise. Both scenarios give us $\bar{x} = 10$, but they tell very different stories about how convincing that difference really is.
 
 This is why we standardize our evidence into a **test statistic**. For a one-sample t-test, this is:
 $$t = \frac{\bar{x} - \mu}{s / \sqrt{n}}$$

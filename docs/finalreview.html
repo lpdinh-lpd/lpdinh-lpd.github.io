@@ -113,9 +113,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
-      website
-      </li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./finalreview.html">What is Confidence Interval?</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -187,8 +185,11 @@ window.Quarto = {
   </div>
 </li>
         <li class="sidebar-item">
- <span class="menu-text">Final Preparation/finalreview.qmd</span>
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="./finalreview.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">What is Confidence Interval?</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -270,7 +271,7 @@ window.Quarto = {
 <section id="step-3" class="level2">
 <h2 class="anchored" data-anchor-id="step-3">Step 3</h2>
 <p>Recall that we’re assuming the population mean is 0 (that <span class="math inline">\(H_0\)</span> is true). In this world, how unusual is our sample mean, <span class="math inline">\(\bar{x}=10\)</span>?</p>
-<p>If we compare 10 with 0, we might say there is indeed a difference—a whole 10 points! But this alone cannot be considered good evidence for <span class="math inline">\(H_a\)</span>, because a raw difference does not account for the variability in our data. Consider two scenarios: in one, every student who took notes on paper scored almost exactly 10 points higher than every computer note-taker—the difference is consistent and striking. In another, the paper group’s advantage ranged wildly from -20 to +40 points, and the 10-point difference is simply the result of an average that masks a lot of noise. Both scenarios give us <span class="math inline">\(\bar{x} = 10\)</span>, but they tell very different stories about how convincing that difference really is.</p>
+<p>If we compare 10 with 0, we might say there is indeed a difference—a whole 10 points! But this alone cannot be considered good evidence for <span class="math inline">\(H_a\)</span>, because a raw difference does not account for the variability in our data. Consider two scenarios: in one, every student who took notes on paper scored almost exactly 10 points higher than every computer note-taker. In another, the paper group’s advantage ranged wildly from -20 to +40 points, and the 10-point difference is simply the result of a mathematical average that cancels out a lot of noise. Both scenarios give us <span class="math inline">\(\bar{x} = 10\)</span>, but they tell very different stories about how convincing that difference really is.</p>
 <p>This is why we standardize our evidence into a <strong>test statistic</strong>. For a one-sample t-test, this is: <span class="math display">\[t = \frac{\bar{x} - \mu}{s / \sqrt{n}}\]</span></p>
 <p>where</p>
 <ul>
