@@ -288,7 +288,7 @@ window.Quarto = {
 <p><em>If <span class="math inline">\(H_0\)</span> were true (i.e., if there really were no difference in grades), how likely would we be to observe a sample mean at least as extreme as <span class="math inline">\(\bar{x} = 10\)</span>?</em></p>
 <p>To compute this, we use the <strong>t-distribution</strong> centered at <span class="math inline">\(\mu_0 = 0\)</span>.</p>
 <ul>
-<li>The p-value is the probability of observing a <span class="math inline">\(t\)</span>-statistic as unusual as ours—or even more unusual—assuming <span class="math inline">\(H_0\)</span> is true.</li>
+<li>The p-value is the probability of observing a <span class="math inline">\(t\)</span>-statistic as unusual as or more unusual than ours assuming <span class="math inline">\(H_0\)</span> is true.</li>
 <li>Since we’re conducting a two-tailed test, we care about values that are unusually small <em>or</em> unusually large. We take the smaller of the two one-tailed probabilities and double it: <span class="math inline">\(2 \min(P(T \leq t),\ P(T \geq t))\)</span>.</li>
 </ul>
 <p>The intuition is this: our observed <span class="math inline">\(t\)</span>-statistic lands in one tail, giving us one of the two one-tailed probabilities. But because we’re asking about extremity in either direction, a value equally far out in the opposite tail would provide just as much evidence against <span class="math inline">\(H_0\)</span>. Doubling accounts for that symmetric possibility.</p>

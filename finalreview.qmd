@@ -65,7 +65,7 @@ _If $H_0$ were true (i.e., if there really were no difference in grades), how li
 
 To compute this, we use the **t-distribution** centered at $\mu_0 = 0$.
 
-* The p-value is the probability of observing a $t$-statistic as unusual as ours—or even more unusual—assuming $H_0$ is true.
+* The p-value is the probability of observing a $t$-statistic as unusual as or more unusual than ours assuming $H_0$ is true.
 * Since we're conducting a two-tailed test, we care about values that are unusually small *or* unusually large. We take the smaller of the two one-tailed probabilities and double it: $2 \min(P(T \leq t),\ P(T \geq t))$.
 
 The intuition is this: our observed $t$-statistic lands in one tail, giving us one of the two one-tailed probabilities. But because we're asking about extremity in either direction, a value equally far out in the opposite tail would provide just as much evidence against $H_0$. Doubling accounts for that symmetric possibility.
