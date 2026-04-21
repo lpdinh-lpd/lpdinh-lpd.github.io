@@ -18,6 +18,7 @@ website:
     - 08-Lab-Probability/Lab8WriteUp.qmd
     - 10-Lab-PointEstimation/Lab10WriteUp.qmd
     - 11-Lab-Estimation/Lab11WriteUp.qmd
+    - finalreview.qmd
   
 format:
   html:

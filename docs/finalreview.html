@@ -186,6 +186,9 @@ window.Quarto = {
  <span class="menu-text">Lab Eleven – Point Estimation and Resampling</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+ <span class="menu-text">Final Preparation/finalreview.qmd</span>
+  </li>
     </ul>
     </div>
 </nav>
@@ -233,8 +236,8 @@ window.Quarto = {
 
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>Imagine conducting a study about whether taking notes on computer or on paper would result in better grades in MATH 240. Students are randomly assigned to either take notes on their computer or their notebooks throughout the semester, and assume all individual differences are balanced out by random assignment and there’s an experimenter sitting at the back of the class ensuring people are following the requirements of the condition they’re assigned into. We find that those taking notes on paper have a 10 point higher on their grade for the whole course compared to those taking notes on computer (100-point scale).</p>
-<p>In hypothesis testing, we’re making a decision about whether this 10-point difference would be unusual in a world where there is no difference between two groups. With confidence interval, we’re determining the range of point-difference within which this 10-point difference is not unusual.</p>
+<p>Imagine conducting a study about whether taking notes on computer or on paper would result in better grades in MATH 240. Students are randomly assigned to either take notes on their computer or their notebooks throughout the semester, and assume all individual differences are balanced out by random assignment and there’s an experimenter sitting at the back of the class ensuring people are following the requirements of the condition they’re assigned into. We find that those taking notes on paper have a 10 point higher grade for the whole course compared to those taking notes on computer (100-point scale).</p>
+<p>In hypothesis testing, we’re making a decision about whether this 10-point difference would be unusual in a world where there is no difference between two groups. With confidence interval, we’re determining the range of point-differences within which this 10-point difference is not unusual.</p>
 </section>
 <section id="overview" class="level1">
 <h1>Overview</h1>
@@ -248,49 +251,47 @@ window.Quarto = {
 <h1>What is hypothesis testing?</h1>
 <section id="step-1" class="level2">
 <h2 class="anchored" data-anchor-id="step-1">Step 1:</h2>
-<p>Hypothesis testing is a method with which we determine whether there is enough evidence in our sample data to support an assumption about a population. Particularly, we assume the true the true population parameter to be a certain value. Let’s take the mean (<span class="math inline">\(\mu_x\)</span>) as an example. In our study, we assume <span class="math inline">\(\mu_x=0\)</span> (for no particular reason, just to get started). Is <span class="math inline">\(\mu_x\)</span> really 0? We then have 2 hypotheses:</p>
+<p>Hypothesis testing is a method with which we determine whether there is enough evidence in our sample data to support an assumption about a population. Particularly, we assume the true population parameter to be a certain value. Let’s take the mean (<span class="math inline">\(\mu_x\)</span>) as an example. In our study, we assume <span class="math inline">\(\mu_x=0\)</span> (as a convention, just to get started). Is <span class="math inline">\(\mu_x\)</span> really 0? We then have 2 hypotheses:</p>
 <ul>
-<li>Null hypothesis (<span class="math inline">\(H_0\)</span>): The true population mean is indeed 0 (i.e., there is no difference in grades between those who take notes with computer and those who take notes with paper).</li>
-<li>Alternative hypothesis (<span class="math inline">\(H_a\)</span>): The true population mean is different than 0 (e.g., there IS a difference in grades between those who take notes with computer and those who take notes with paper).</li>
+<li>Null hypothesis (<span class="math inline">\(H_0\)</span>): The true population mean is indeed 0 (i.e., there is no difference in grades between those who take notes with a computer and those who take notes on paper).</li>
+<li>Alternative hypothesis (<span class="math inline">\(H_a\)</span>): The true population mean is different from 0 (i.e., there IS a difference in grades between those who take notes with a computer and those who take notes on paper).</li>
 </ul>
 <p>How are we going to decide if our data supports <span class="math inline">\(H_0\)</span> or <span class="math inline">\(H_a\)</span>? What exactly is the kind of evidence that our data could provide to compare these two hypotheses?</p>
 </section>
 <section id="step-2" class="level2">
 <h2 class="anchored" data-anchor-id="step-2">Step 2</h2>
-<p>Annoyingly, the calculations we perform to gather evidence from our data is based on certain assumptions about our data. We need to check these first.</p>
+<p>Annoyingly, the calculations we perform to gather evidence from our data are based on certain assumptions about our data. We need to check these first.</p>
 <ul>
-<li><p>Is the sample size representative of the population of interest? This is helpful for sampling with replacement–if my sample of MATH 240 has 1 Maggie and 1 Le, and is representative of the population I’m interested in (i.e., students at Colgate University), then a resample with 2 Maggies and 0 Le should represent another sample I can draw from the population.</p></li>
+<li><p>Is the sample representative of the population of interest? This is important for sampling with replacement. If my sample of MATH 240 has 1 Maggie and 1 Le, and is representative of the population I’m interested in (i.e., students at Colgate University), then a resample with 2 Maggies and 0 Le should represent another plausible sample from that population.</p></li>
 <li><p>Are individual observations independent? Normally, if researchers collect data through random sampling, they should be.</p></li>
-<li><p>Are assumptions about sampling distributions met? This topic requires another page to cover, but for the sake of this one let’s assume the sample size is large enough that we can apply Central Limit Theorem for our tests.</p></li>
+<li><p>Are assumptions about sampling distributions met? This topic requires another page to cover, but for the sake of this one let’s assume the sample size is large enough that we can apply the Central Limit Theorem for our tests.</p></li>
 </ul>
 </section>
 <section id="step-3" class="level2">
 <h2 class="anchored" data-anchor-id="step-3">Step 3</h2>
-<p>Recall that we’re assuming that the population mean is 0 (that <span class="math inline">\(H_0\)</span> is true). In this world, how unusual is our sample mean, <span class="math inline">\(\bar{x}=10\)</span>?</p>
-<p>If we compare 10 with 0, we might say there is indeed a difference. A whole 10 point! But still this cannot be considered good evidence to support <span class="math inline">\(H_a\)</span>, because because a difference alone does not account for the variability in our data. Consider two scenarios: in one, every student who took notes on paper scored almost exactly 10 points higher than every computer note-taker—the difference is consistent and striking. In another, the paper group’s advantage ranged wildly from -20 to +40 points, and the 10-point difference is just the result of a mathematical average that cancels out the noises. Both scenarios give us a sample mean of <span class="math inline">\(\bar{x} = 10\)</span>, but they tell very different stories about how convincing that difference really is.</p>
+<p>Recall that we’re assuming the population mean is 0 (that <span class="math inline">\(H_0\)</span> is true). In this world, how unusual is our sample mean, <span class="math inline">\(\bar{x}=10\)</span>?</p>
+<p>If we compare 10 with 0, we might say there is indeed a difference—a whole 10 points! But this alone cannot be considered good evidence for <span class="math inline">\(H_a\)</span>, because a raw difference does not account for the variability in our data. Consider two scenarios: in one, every student who took notes on paper scored almost exactly 10 points higher than every computer note-taker—the difference is consistent and striking. In another, the paper group’s advantage ranged wildly from -20 to +40 points, and the 10-point difference is simply the result of an average that masks a lot of noise. Both scenarios give us <span class="math inline">\(\bar{x} = 10\)</span>, but they tell very different stories about how convincing that difference really is.</p>
 <p>This is why we standardize our evidence into a <strong>test statistic</strong>. For a one-sample t-test, this is: <span class="math display">\[t = \frac{\bar{x} - \mu}{s / \sqrt{n}}\]</span></p>
 <p>where</p>
 <ul>
 <li><span class="math inline">\(\bar{x}\)</span> is our sample mean (10)</li>
-<li><span class="math inline">\(\mu\)</span> is a hypothesized population mean (which is 0 under <span class="math inline">\(H_0\)</span>)</li>
+<li><span class="math inline">\(\mu\)</span> is the hypothesized population mean (which is 0 under <span class="math inline">\(H_0\)</span>)</li>
 <li><span class="math inline">\(s\)</span> is the sample standard deviation, and <span class="math inline">\(n\)</span> is the sample size.</li>
 </ul>
 <p>The denominator <span class="math inline">\(s/\sqrt{n}\)</span> is the <strong>standard error</strong>, which captures the variability we’d expect in our sample mean across many repeated samples.</p>
-<p>Under <span class="math inline">\(H_0\)</span>, a <span class="math inline">\(t\)</span>-value tells us how many standard error <span class="math inline">\(\bar{x}\)</span> is away from <span class="math inline">\(\mu_0\)</span>. A <span class="math inline">\(t\)</span>-value of 2 means our observed difference is 2 standard errors away from what <span class="math inline">\(H_0\)</span> predicted. The further our <span class="math inline">\(t\)</span>-statistic is from 0, the more statistical support we have for <span class="math inline">\(H_a\)</span>.</p>
+<p>Under <span class="math inline">\(H_0\)</span>, the <span class="math inline">\(t\)</span>-value tells us how many standard errors <span class="math inline">\(\bar{x}\)</span> is away from <span class="math inline">\(\mu_0\)</span>. This is how we decide how “unusual” our observed difference is. The further our <span class="math inline">\(t\)</span>-statistic is from what <span class="math inline">\(H_0\)</span> predicted, the more statistical support we have for <span class="math inline">\(H_a\)</span>.</p>
 </section>
 <section id="step-4" class="level2">
 <h2 class="anchored" data-anchor-id="step-4">Step 4</h2>
-<p>Now we need to translate the <span class="math inline">\(t\)</span>-statistic into a probability statement (<strong>p-value</strong>). The p-value answers the question:</p>
+<p>Now we need to translate the <span class="math inline">\(t\)</span>-statistic into a probability statement—the <strong>p-value</strong>. The p-value answers the question:</p>
 <p><em>If <span class="math inline">\(H_0\)</span> were true (i.e., if there really were no difference in grades), how likely would we be to observe a sample mean at least as extreme as <span class="math inline">\(\bar{x} = 10\)</span>?</em></p>
 <p>To compute this, we use the <strong>t-distribution</strong> centered at <span class="math inline">\(\mu_0 = 0\)</span>.</p>
 <ul>
-<li>The p-value is the probability of observing a <span class="math inline">\(t\)</span>-statistic as unsual or even more unusual than ours, assuming <span class="math inline">\(H_0\)</span> is true.</li>
-<li>Since we’re conducting a two-tailed tests, we care about values that are unusually small <em>or</em> unusually large. We take the smaller of the two one-tailed probabilities and double it: <span class="math inline">\(2 \min(P(T \leq t),\ P(T \geq t))\)</span>.</li>
+<li>The p-value is the probability of observing a <span class="math inline">\(t\)</span>-statistic as unusual as ours—or even more unusual—assuming <span class="math inline">\(H_0\)</span> is true.</li>
+<li>Since we’re conducting a two-tailed test, we care about values that are unusually small <em>or</em> unusually large. We take the smaller of the two one-tailed probabilities and double it: <span class="math inline">\(2 \min(P(T \leq t),\ P(T \geq t))\)</span>.</li>
 </ul>
-<p>The intuition is this: our observed <span class="math inline">\(t\)</span>-statistic lands in one tail, giving us one of the two probabilities. But because we’re asking about extremity in either direction, a value equally far out in the opposite tail would give just as much evidence against <span class="math inline">\(H_0\)</span>.</p>
-<ul>
-<li>If our p-value is really small, that means that in a world where there’s no difference between those who take notes by computer and those who take notes by paper, it’s very unlikely that we can obtaining a 10-point difference between 2 groups. The question begs: what is really small?</li>
-</ul>
+<p>The intuition is this: our observed <span class="math inline">\(t\)</span>-statistic lands in one tail, giving us one of the two one-tailed probabilities. But because we’re asking about extremity in either direction, a value equally far out in the opposite tail would provide just as much evidence against <span class="math inline">\(H_0\)</span>. Doubling accounts for that symmetric possibility.</p>
+<p>If our p-value is very small, that means that in a world where there’s no difference between those who take notes by computer and those who take notes on paper, obtaining a 10-point difference in grades between the two groups would be very unlikely. The question is: what counts as “very small”?</p>
 </section>
 <section id="step-5" class="level2">
 <h2 class="anchored" data-anchor-id="step-5">Step 5</h2>
