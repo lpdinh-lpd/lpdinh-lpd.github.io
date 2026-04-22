@@ -210,6 +210,7 @@ window.Quarto = {
   <li><a href="#step-4" id="toc-step-4" class="nav-link" data-scroll-target="#step-4">Step 4</a></li>
   <li><a href="#step-5" id="toc-step-5" class="nav-link" data-scroll-target="#step-5">Step 5</a></li>
   </ul></li>
+  <li><a href="#what-is-confidence-interval" id="toc-what-is-confidence-interval" class="nav-link" data-scroll-target="#what-is-confidence-interval">What is confidence interval?</a></li>
   </ul>
 </nav>
     </div>
@@ -257,11 +258,11 @@ window.Quarto = {
 <li>Null hypothesis (<span class="math inline">\(H_0\)</span>): The true population mean is indeed 0 (i.e., there is no difference in grades between those who take notes with a computer and those who take notes on paper).</li>
 <li>Alternative hypothesis (<span class="math inline">\(H_a\)</span>): The true population mean is different from 0 (i.e., there IS a difference in grades between those who take notes with a computer and those who take notes on paper).</li>
 </ul>
-<p>How are we going to decide if our data supports <span class="math inline">\(H_0\)</span> or <span class="math inline">\(H_a\)</span>? What exactly is the kind of evidence that our data could provide to compare these two hypotheses?</p>
+<p>How are we going to decide if our data supports <span class="math inline">\(H_a\)</span>? What exactly is the kind of evidence that our data could provide to compare these two hypotheses?</p>
 </section>
 <section id="step-2" class="level2">
 <h2 class="anchored" data-anchor-id="step-2">Step 2</h2>
-<p>Annoyingly, the calculations we perform to gather evidence from our data are based on certain assumptions about our data. We need to check these first.</p>
+<p>The calculations we perform to gather evidence from our data are based on certain assumptions about our data. We need to check these first.</p>
 <ul>
 <li><p>Is the sample representative of the population of interest? This is important for sampling with replacement. If my sample of MATH 240 has 1 Maggie and 1 Le, and is representative of the population I’m interested in (i.e., students at Colgate University), then a resample with 2 Maggies and 0 Le should represent another plausible sample from that population.</p></li>
 <li><p>Are individual observations independent? Normally, if researchers collect data through random sampling, they should be.</p></li>
@@ -279,26 +280,27 @@ window.Quarto = {
 <li><span class="math inline">\(\mu\)</span> is the hypothesized population mean (which is 0 under <span class="math inline">\(H_0\)</span>)</li>
 <li><span class="math inline">\(s\)</span> is the sample standard deviation, and <span class="math inline">\(n\)</span> is the sample size.</li>
 </ul>
-<p>The denominator <span class="math inline">\(s/\sqrt{n}\)</span> is the <strong>standard error</strong>, which captures the variability we’d expect in our sample mean across many repeated samples.</p>
-<p>Under <span class="math inline">\(H_0\)</span>, the <span class="math inline">\(t\)</span>-value tells us how many standard errors <span class="math inline">\(\bar{x}\)</span> is away from <span class="math inline">\(\mu_0\)</span>. This is how we decide how “unusual” our observed difference is. The further our <span class="math inline">\(t\)</span>-statistic is from what <span class="math inline">\(H_0\)</span> predicted, the more statistical support we have for <span class="math inline">\(H_a\)</span>.</p>
+<p>The denominator <span class="math inline">\(s/\sqrt{n}\)</span> is the <strong>standard error</strong>, which captures how much we’d expect the sample mean to vary if we repeated the study many times.</p>
+<p>Under <span class="math inline">\(H_0\)</span>, the <span class="math inline">\(t\)</span>-statistic tells us how many standard errors <span class="math inline">\(\bar{x}\)</span> is away from <span class="math inline">\(\mu_0\)</span>. This is how we decide how “unusual” our observed difference would be in a world there is no difference. The further our <span class="math inline">\(t\)</span>-statistic is from what <span class="math inline">\(H_0\)</span> predicted, the more statistical support we have for <span class="math inline">\(H_a\)</span> (i.e., against <span class="math inline">\(H_0\)</span>).</p>
 </section>
 <section id="step-4" class="level2">
 <h2 class="anchored" data-anchor-id="step-4">Step 4</h2>
-<p>Now we need to translate the <span class="math inline">\(t\)</span>-statistic into a probability statement—the <strong>p-value</strong>. The p-value answers the question:</p>
-<p><em>If <span class="math inline">\(H_0\)</span> were true (i.e., if there really were no difference in grades), how likely would we be to observe a sample mean at least as extreme as <span class="math inline">\(\bar{x} = 10\)</span>?</em></p>
-<p>To compute this, we use the <strong>t-distribution</strong> centered at <span class="math inline">\(\mu_0 = 0\)</span>.</p>
-<ul>
-<li>The p-value is the probability of observing a <span class="math inline">\(t\)</span>-statistic as unusual as or more unusual than ours assuming <span class="math inline">\(H_0\)</span> is true.</li>
-<li>Since we’re conducting a two-tailed test, we care about values that are unusually small <em>or</em> unusually large. We take the smaller of the two one-tailed probabilities and double it: <span class="math inline">\(2 \min(P(T \leq t),\ P(T \geq t))\)</span>.</li>
-</ul>
-<p>The intuition is this: our observed <span class="math inline">\(t\)</span>-statistic lands in one tail, giving us one of the two one-tailed probabilities. But because we’re asking about extremity in either direction, a value equally far out in the opposite tail would provide just as much evidence against <span class="math inline">\(H_0\)</span>. Doubling accounts for that symmetric possibility.</p>
+<p>By the Central Limit Theorem, the <span class="math inline">\(t\)</span>-statistic follows a known distribution (approximately Gaussian) centered at <span class="math inline">\(\mu_0 = 0\)</span>, assuming <span class="math inline">\(H_0\)</span> is true. This allows us to translate our <span class="math inline">\(t\)</span>-statistic into a probability statement: the probability of seeing a value as extreme or more extreme than ours is the area under the curve beyond our observed <span class="math inline">\(t\)</span>-value.</p>
+<p>Importantly, our observed <span class="math inline">\(t\)</span>-statistic lands in one tail, but we’re conducting a two-tailed test, meaing we care about values that are unusually small <em>or</em> unusually large. A value equally far out in the opposite tail would provide just as much evidence against <span class="math inline">\(H_0\)</span>. Therefore, we obtain our <strong>p-value</strong>-the probability of observing a sample mean at least as unusual as ours if there really was no difference in grades-by taking the smaller of the two one-tailed probabilities and double it: <span class="math inline">\(2 \min(P(T \leq t),\ P(T \geq t))\)</span>.</p>
 <p>If our p-value is very small, that means that in a world where there’s no difference between those who take notes by computer and those who take notes on paper, obtaining a 10-point difference in grades between the two groups would be very unlikely. The question is: what counts as “very small”?</p>
 </section>
 <section id="step-5" class="level2">
 <h2 class="anchored" data-anchor-id="step-5">Step 5</h2>
-
-
+<p>Historically and conventionally, when <span class="math inline">\(p\leq0.05\)</span>, we say that we have <strong>statistically discernible</strong> support for <span class="math inline">\(H_a\)</span>. If <span class="math inline">\(\geq0.05\)</span>, we say that we don’t have statisically discernible support for <span class="math inline">\(H_a\)</span>.</p>
+<p>This doesn’t mean that <span class="math inline">\(H_0\)</span> is not true. In fact, the only way to know if <span class="math inline">\(H_0\)</span> is true or not is to have data on the whole population of interest. If we have statistically discernible support for <span class="math inline">\(H_a\)</span>, we say we reject the null hypothesis.</p>
+<p>Notice how litte information this is! We set up hypothesis testing by assuming a value of <span class="math inline">\(\mu_x\)</span> and calculating the probability of observing of our data under that assumption, so our decision is a single yes/no verdict against one value.</p>
+<p>We never asked: what is the true population mean? Our sample mean <span class="math inline">\(\bar{x}\)</span> gives us an estimation, but there is uncertainty around it. Well, we can’t know for sure the true population mean without data on the entire population! However, our sample data does allow us to ask: what <em>range</em> does the true population mean lie in?</p>
 </section>
+</section>
+<section id="what-is-confidence-interval" class="level1">
+<h1>What is confidence interval?</h1>
+
+
 </section>
 
 </main> <!-- /main -->

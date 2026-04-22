@@ -30,7 +30,7 @@ How are we going to decide if our data supports $H_a$? What exactly is the kind 
 
 ## Step 2
 
-Annoyingly, the calculations we perform to gather evidence from our data are based on certain assumptions about our data. We need to check these first.
+The calculations we perform to gather evidence from our data are based on certain assumptions about our data. We need to check these first.
 
 * Is the sample representative of the population of interest? This is important for sampling with replacement. If my sample of MATH 240 has 1 Maggie and 1 Le, and is representative of the population I'm interested in (i.e., students at Colgate University), then a resample with 2 Maggies and 0 Le should represent another plausible sample from that population.
 
@@ -55,22 +55,13 @@ where
 
 The denominator $s/\sqrt{n}$ is the **standard error**, which captures how much we'd expect the sample mean to vary if we repeated the study many times.
 
-Under $H_0$, the $t$-value tells us how many standard errors $\bar{x}$ is away from $\mu_0$. This is how we decide how "unusual" our observed difference is in a world there is no difference. The further our $t$-statistic is from what $H_0$ predicted, the more statistical support we have for $H_a$.
+Under $H_0$, the $t$-statistic tells us how many standard errors $\bar{x}$ is away from $\mu_0$. This is how we decide how "unusual" our observed difference would be in a world there is no difference. The further our $t$-statistic is from what $H_0$ predicted, the more statistical support we have for $H_a$ (i.e., against $H_0$).
 
 ## Step 4
 
-By the Central Limit Theorem, the $t$-statistic follows a known distribution (approximately Gaussian). This lets us calculate exactly how unusual our observed $t$-statistic is: we find the probability of seeing a value as unusual ours under that distribution.
+By the Central Limit Theorem, the $t$-statistic follows a known distribution (approximately Gaussian) centered at $\mu_0 = 0$, assuming $H_0$ is true. This allows us to translate our $t$-statistic into a probability statement: the probability of seeing a value as extreme or more extreme than ours is the area under the curve beyond our observed $t$-value.
 
-The **p-value** answers the question:
-
-_If $H_0$ were true (i.e., if there really were no difference in grades), how likely would we be to observe a sample mean at least as unusual as $\bar{x} = 10$?_
-
-To compute this, we use the **t-distribution** centered at $\mu_0 = 0$.
-
-* The p-value is the probability of observing a $t$-statistic as unusual as or more unusual than ours assuming $H_0$ is true.
-* Since we're conducting a two-tailed test, we care about values that are unusually small *or* unusually large. We take the smaller of the two one-tailed probabilities and double it: $2 \min(P(T \leq t),\ P(T \geq t))$.
-
-The intuition is this: our observed $t$-statistic lands in one tail, giving us one of the two one-tailed probabilities. But because we're asking about extremity in either direction, a value equally far out in the opposite tail would provide just as much evidence against $H_0$. Doubling accounts for that possibility.
+Importantly, our observed $t$-statistic lands in one tail, but we're conducting a two-tailed test, meaing we care about values that are unusually small *or* unusually large. A value equally far out in the opposite tail would provide just as much evidence against $H_0$. Therefore, we obtain our **p-value**-the probability of observing a sample mean at least as unusual as ours if there really was no difference in grades-by taking the smaller of the two one-tailed probabilities and double it: $2 \min(P(T \leq t),\ P(T \geq t))$. 
 
 If our p-value is very small, that means that in a world where there's no difference between those who take notes by computer and those who take notes on paper, obtaining a 10-point difference in grades between the two groups would be very unlikely. The question is: what counts as "very small"?
 
@@ -80,8 +71,8 @@ Historically and conventionally, when $p\leq0.05$, we say that we have **statist
 
 This doesn't mean that $H_0$ is not true. In fact, the only way to know if $H_0$ is true or not is to have data on the whole population of interest. If we have statistically discernible support for $H_a$, we say we reject the null hypothesis.
 
-Notice how uninformed this is! We set up hypothesis testing by assuming a value of $\mu_x$ and calculating the probability of observing of our data under that assumption, so our decision is a single yes/no verdict against one value. 
+Notice how litte information this is! We set up hypothesis testing by assuming a value of $\mu_x$ and calculating the probability of observing of our data under that assumption, so our decision is a single yes/no verdict against one value. 
 
-We never asked: what is the true population mean? Our sample mean $\bar{x}$ gives us an estimation, but there is uncertainty around it. We can't know for sure the true population mean without data on the entire population! Fortunately, our sample data allows us to ask: what *range* does the true population mean lie in?
+We never asked: what is the true population mean? Our sample mean $\bar{x}$ gives us an estimation, but there is uncertainty around it. Well, we can't know for sure the true population mean without data on the entire population! However, our sample data does allow us to ask: what *range* does the true population mean lie in?
 
 # What is confidence interval?
