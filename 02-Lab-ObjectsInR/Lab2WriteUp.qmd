@@ -103,11 +103,11 @@ help ("esquisse")
 ```
 
 ## Part d
-Is a demo or vignette available for the  `esquisse` package for `R`? Report the code below, ensuring to set the `eval` option to `false`, using "\#| eval: false", so that the you don't get errors when you compile your Quarto document.
+Is a demo or vignette available for the `esquisse` package for `R`? Report the code below, ensuring to set the `eval` option to `false`, using "\#| eval: false", so that the you don't get errors when you compile your Quarto document.
 
 **Solution**
 
-No demo or vignette was found for the package.
+No demo was found for the package. The following vignettes were found: `get-started` and      `shiny-usage`.
 
 ```{r}
 #| eval: false
@@ -136,54 +136,10 @@ iii. Describe what you see in words. What can you conclude about Adelie, Chinstr
 
 **Solution**
 
-I saw three historgrams the first time I did this, but this time I'm seeing three boxplots. The median body masses of Chinstrap and Adelie penguins are lower than that of Gentoo penguins. The body mass of Gentoo penguines have greater variability than the other groups'. In the dataset for the Chinstrap group, there are 2 outliers.
+Looking at the 3 boxplots, we observe that the median body masses of Chinstrap and Adelie penguins are lower than that of Gentoo penguins. The body mass of Gentoo penguines have greater variability than the other groups'. In the dataset for the Chinstrap group, there are 2 outliers.
 
 # Objects and Vectors
 Create the following vectors in `R`. In some cases, you may be able to use `seq()` or `rep()` while in others you cannot. Use these functions when possible, otherwise manually create the vector and explain why that was necessary.
-
-**Some Snowday Notes**
-
-There are three ways we will create a vector. Most simply, we can create one from scratch. For example, I create a vector of odds, and evens less than 10 below.
-
-```{r}
-#| size: "scriptsize"
-#| code-fold: FALSE
-(odds <- c(1, 3, 5, 7, 9))
-(evens <- c(2, 4, 6, 8))
-```
-
-There are also built-in functions like `seq(...)` for doing this:
-```{r}
-#| size: "scriptsize"
-#| code-fold: FALSE
-(odds <- seq(from=1, to=9, by=2))
-(evens <- seq(from=2, to=8, by=2))
-```
-Either approach is easy enough with a small number of elements, but what if I wanted odds less than 100? 1000? 1 million? The `rep(...)` and `seq()` approaches would be far more efficient.
-
-We can also create repeating sequences by hand
-```{r}
-#| size: "scriptsize"
-#| code-fold: FALSE
-(repeating.seq1 <- c(1, 2, 3, 1, 2, 3, 1, 2, 3))
-(repeating.seq2 <- c(1, 1, 1, 2, 2, 2, 3, 3, 3))
-```
-or using a built-in function `rep(...)`
-```{r}
-#| size: "scriptsize"
-#| code-fold: FALSE
-(repeating.seq1 <- rep(c(1,2,3), times=3))
-(repeating.seq2 <- rep(c(1,2,3), each=3))
-```
-
-There are some vectors for which we can't use a `seq()` or `rep()`. For example, consider the prime numbers less than 10. The primes are not sequential (e.g., jump by a fixed amount), nor are they repeating.
-```{r}
-#| size: "scriptsize"
-#| code-fold: FALSE
-primes <- c(2, 3, 5, 7)
-```
-**Note**: There is a `primes` package for `R` [@primes] that contains a `generate_primes(min, max)` function for generating a vector of primes from `min` to `max`.
-
 
 ## Part a
 The Fibonacci Sequence is a recursive formula:
@@ -192,9 +148,9 @@ where $F_0=0$ and $F_1=1$.
 
 Create a vector of the first 10 Fibonacci numbers.
 
-**Solutions**
+**Solution**
 
-For both part a and b: I can't use `seq(...)` because the distance between 2 observations in these vectors are not fixed. The numbers in this sequence are also not repeated, so I can't use `rep(...)`. 
+`seq(...)` cannot be used because the distance between 2 observations in these vectors are not fixed. The numbers in this sequence are also not repeated, so I can't use `rep(...)`. 
 
 ```{r}
 #| size: "scriptsize"
@@ -208,12 +164,16 @@ $$F_n = \frac{n(n+1)}{2}.$$
 
 Create a vector of the first 10 Triangular Numbers. 
 
-**Solutions**
+**Solution**
+
+We can use vectorized math to create this vectore
 
 ```{r}
 #| size: "scriptsize"
 #| code-fold: FALSE
-(triangular <- c(1, 3, 6, 10, 15, 21, 28, 36, 45, 55))
+n <- 1:10 
+triangular <- (n*(n+1))/2
+(triangular)
 ```
 
 ## Part c
@@ -224,7 +184,7 @@ Consider setting up data entry for this experiment.
 i. Create a vector containing each `ID` repeated three times, once for each treatment.
 ii. Create a vector containing each `Treatment` repeated for each participant ID.
 
-**Solutions**
+**Solution**
 
 ```{r}
 #| size: "scriptsize"
@@ -236,6 +196,10 @@ ii. Create a vector containing each `Treatment` repeated for each participant ID
 ## Part d
 Create a vector containing the `character` "MATH" and the `numeric` 240. What is the resulting class? Explain why in a sentence.
 
-**Solutions**
+**Solution**
 
-The resulting class is character because vectors can only contain one type of data, and the character class is further to the right than the numeric class, so 240 is coerced into character "240".
+Create a vector containing the `character` "MATH" and the `numeric` 240. What is the resulting class? Explain why in a sentence.
+
+**Solution**
+
+The resulting class is `character`. Vectors in R can only hold one type of data, so when types conflict R coerces everything to the most flexible type. Since any number can be represented as a string but not every string can be represented as a number, the `numeric` 240 becomes the `character` "240".
