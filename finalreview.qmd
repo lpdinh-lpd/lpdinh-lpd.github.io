@@ -138,7 +138,6 @@ for (i in 1:1000){
 
 ggplot(ggdat) +
     geom_line(aes(x=t, y=pdf.h0))+ 
-    stat_density(data=tibble(t=ts), aes(x=t), color="grey", geom="line")+
     geom_hline(yintercept=0)+
     geom_ribbon(data=ggdat |> 
         filter(t >= -t.critical & t <= t.critical),
@@ -200,7 +199,6 @@ for (i in 1:1000){
 
 ggplot(ggdat) +
     geom_line(aes(x=t, y=pdf.h0))+ 
-    stat_density(data=tibble(t=ts), aes(x=t), color="grey", geom="line")+
     geom_hline(yintercept=0)+
     geom_ribbon(data=ggdat |> filter(t >= t.critical),
                 aes(x=t, ymin=0, ymax= pdf.h0, fill="rejection"), alpha=0.3) +
@@ -232,21 +230,21 @@ set.seed(7272)
 n = 100
 mu = 85
 sigma = sd(Grade)
-ci_low  <- rep(NA, 100)
-ci_high <- rep(NA, 100)
+ci_lb  <- rep(NA, 100)
+ci_ub <- rep(NA, 100)
 result <- rep (NA, 100)
 
 for (i in 1:100){
     curr.dat <- rnorm(n, mean = mu, sd = sigma)
     ci = t.test(curr.dat)$conf.int
     result[i] <- (ci[1]<= mu) & (mu <= ci[2])
-    ci_low[i]  <- ci[1]
-    ci_high[i] <- ci[2]
+    ci_lb[i]  <- ci[1]
+    ci_ub[i] <- ci[2]
 }
 
 ci_dat <- tibble(sim = 1:100,
-                 ci_low = ci_low,
-                 ci_high = ci_high,
+                 ci_lb = ci_lb,
+                 ci_ub = ci_ub,
                  captures = result)
 ```
 
@@ -260,9 +258,9 @@ ci_dat <- tibble(sim = 1:100,
 #| fig-align: "center"
 #| size: scriptsize
 
-# used claude to help with this part
+# i used claude to help with this visualization
 ggplot(ci_dat, aes(y = sim)) +
-    geom_segment(aes(x = ci_low, xend = ci_high,
+    geom_segment(aes(x = ci_lb, xend = ci_ub,
                      y = sim, yend = sim,
                      color = captures),
                  linewidth = 0.3) +
@@ -274,3 +272,17 @@ ggplot(ci_dat, aes(y = sim)) +
     scale_y_continuous(breaks = c(1, 25, 50, 75, 100)) +
     labs(x = "Grade", y = "Sample", color = "")
 ```
+
+A 95% confidence interval is reported like this:
+
+$$\bar{X} \pm t_{0.975} \cdot \frac{s}{\sqrt{n}}$$
+
+where
+
+* $\bar{x}$ is a point estimate, the mean of our data
+
+* $t_{0.975} \cdot \frac{s}{\sqrt{n}}$ is the margin of error, which explains the random sampling error in using sample data to estimate a population parameter
+
+We say we are **95% confident** that the true value of $\mu_x$ is between $\bar{X} + t_{0.975}$ (upper bound) and $\bar{X} - t_{0.975}$ (lower bound).
+
+# Why is confidence interval helpful?
