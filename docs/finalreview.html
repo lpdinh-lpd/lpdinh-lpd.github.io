@@ -210,7 +210,7 @@ window.Quarto = {
   <li><a href="#step-4" id="toc-step-4" class="nav-link" data-scroll-target="#step-4">Step 4</a></li>
   <li><a href="#step-5" id="toc-step-5" class="nav-link" data-scroll-target="#step-5">Step 5</a></li>
   </ul></li>
-  <li><a href="#what-is-confidence-interval" id="toc-what-is-confidence-interval" class="nav-link" data-scroll-target="#what-is-confidence-interval">What is confidence interval?</a></li>
+  <li><a href="#what-is-a-confidence-interval" id="toc-what-is-a-confidence-interval" class="nav-link" data-scroll-target="#what-is-a-confidence-interval">What is a confidence interval?</a></li>
   </ul>
 </nav>
     </div>
@@ -238,8 +238,8 @@ window.Quarto = {
 
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>Imagine conducting a study about whether taking notes on computer or on paper would result in better grades in MATH 240. Students are randomly assigned to either take notes on their computer or their notebooks throughout the semester, and assume all individual differences are balanced out by random assignment and there’s an experimenter sitting at the back of the class ensuring people are following the requirements of the condition they’re assigned into. We find that those taking notes on paper have a 10 point higher grade for the whole course compared to those taking notes on computer (100-point scale).</p>
-<p>In hypothesis testing, we’re making a decision about whether this 10-point difference would be unusual in a world where there is no difference between two groups. With confidence interval, we’re determining the range of point-differences within which this 10-point difference is not unusual.</p>
+<p>Imagine conducting a study about whether banning computers improves grades in MATH 240. The historical average grade in the course is known to be 75, based on years when laptop was permitted. A new cohort of 30 students is required to keep all electronic devices away throughout the semester. At the end of the semester, we find that the mean grade of this cohort is 85, 10 point higher than the historical average.</p>
+<p>In hypothesis testing, we’re making a decision about whether the 10-point difference between would be unusual in a world where there is in fact no difference between the grades of the new cohort and the historical average. With confidence interval, we’re determining the range of point-differences within which this 10-point difference is not unusual.</p>
 </section>
 <section id="overview" class="level1">
 <h1>Overview</h1>
@@ -253,12 +253,11 @@ window.Quarto = {
 <h1>What is hypothesis testing?</h1>
 <section id="step-1" class="level2">
 <h2 class="anchored" data-anchor-id="step-1">Step 1:</h2>
-<p>Hypothesis testing is a method with which we determine whether there is enough evidence in our sample data to support an assumption about a population. Particularly, we assume the true population parameter to be a certain value. Let’s take the mean (<span class="math inline">\(\mu_x\)</span>) as an example. In our study, we assume <span class="math inline">\(\mu_x=0\)</span> (as a convention, just to get started). Is <span class="math inline">\(\mu_x\)</span> really 0? We then have 2 hypotheses:</p>
+<p>Hypothesis testing is a method with which we determine whether there is enough evidence in our sample data to support an assumption about a population. Particularly, we assume the true population parameter to be a certain value. Let’s take the mean (<span class="math inline">\(\mu_x\)</span>) as an example. In our study, we assume <span class="math inline">\(\mu_x = 75\)</span> (the historical average). Is <span class="math inline">\(\mu_x\)</span> really still 75 for the no-computer cohort? We then have 2 hypotheses:</p>
 <ul>
-<li><p>Null hypothesis (<span class="math inline">\(H_0\)</span>): The true population mean is indeed 0 (i.e., there is no difference in grades between those who take notes with a computer and those who take notes on paper). <span class="math display">\[\mu_x=\mu_0\]</span></p></li>
-<li><p>Alternative hypothesis (<span class="math inline">\(H_a\)</span>) for a two-tailed test: The true population mean is different from 0 (i.e., there IS a difference in grades between those who take notes with a computer and those who take notes on paper).</p></li>
+<li><p>Null hypothesis (<span class="math inline">\(H_0\)</span>): The true population mean grade for the no-computer cohort is equal to the historical average of 75 (i.e., banning computers has no effect on grades). <span class="math display">\[\mu_x = \mu_0 = 75\]</span></p></li>
+<li><p>Alternative hypothesis (<span class="math inline">\(H_a\)</span>) for a two-tailed test: The true population mean grade for the no-computer cohort differs from the historical average of 75 (i.e., banning computers does have an effect on grades). <span class="math display">\[\mu_x \neq 75\]</span></p></li>
 </ul>
-<p><span class="math display">\[\mu_x\neq\mu_0\]</span></p>
 <p>How are we going to decide if our data supports <span class="math inline">\(H_a\)</span>? What exactly is the kind of evidence that our data could provide to compare these two hypotheses?</p>
 </section>
 <section id="step-2" class="level2">
@@ -272,37 +271,83 @@ window.Quarto = {
 </section>
 <section id="step-3" class="level2">
 <h2 class="anchored" data-anchor-id="step-3">Step 3</h2>
-<p>Recall that we’re assuming the population mean is 0 (that <span class="math inline">\(H_0\)</span> is true). In this world, how unusual is our sample mean, <span class="math inline">\(\bar{x}=10\)</span>?</p>
-<p>If we compare 10 with 0, we might say there is indeed a difference—a whole 10 points! But this alone cannot be considered good evidence for <span class="math inline">\(H_a\)</span>, because a raw difference does not account for the variability in our data. Consider two scenarios: in one, every student who took notes on paper scored almost exactly 10 points higher than every computer note-taker. In another, the difference ranged wildly from -20 to +40 points, and the 10-point difference is simply the result of a mathematical average that cancels out a lot of noise. Both scenarios give us <span class="math inline">\(\bar{x} = 10\)</span>, but they tell very different stories about how convincing that difference really is.</p>
-<p>This is why we standardize our evidence into a <strong>test statistic</strong>. For a one-sample t-test, this is: <span class="math display">\[t = \frac{\bar{x} - \mu}{s / \sqrt{n}}\]</span></p>
+<p>Recall that we’re assuming the population mean is 75 (that <span class="math inline">\(H_0\)</span> is true). In this world, how unusual is our sample mean, <span class="math inline">\(\bar{x} = 85\)</span>?</p>
+<p>If we compare 85 with 75, we might say there is indeed a difference — a whole 10 points! But this alone cannot be considered good evidence for <span class="math inline">\(H_a\)</span>, because a raw difference does not account for the variability in our data. Consider two scenarios: in one, every student in the no-computer cohort scored almost exactly 10 points above the historical average. In another, grades ranged wildly from 50 to 100, and the 10-point difference is simply the result of a mathematical average that cancels out a lot of noise. Both scenarios give us <span class="math inline">\(\bar{x} = 85\)</span>, but they tell very different stories about how convincing that difference really is.</p>
+<p>This is why we standardize our evidence into a <strong>test statistic</strong>. For a one-sample t-test, this is: <span class="math display">\[t = \frac{\bar{x} - \mu_0}{s / \sqrt{n}}\]</span></p>
 <p>where</p>
 <ul>
-<li><span class="math inline">\(\bar{x}\)</span> is our sample mean (10)</li>
-<li><span class="math inline">\(\mu\)</span> is the hypothesized population mean (which is 0 under <span class="math inline">\(H_0\)</span>)</li>
+<li><span class="math inline">\(\bar{x}\)</span> is our sample mean (85)</li>
+<li><span class="math inline">\(\mu_0\)</span> is the hypothesized population mean (75 under <span class="math inline">\(H_0\)</span>)</li>
 <li><span class="math inline">\(s\)</span> is the sample standard deviation, and <span class="math inline">\(n\)</span> is the sample size.</li>
 </ul>
 <p>The denominator <span class="math inline">\(s/\sqrt{n}\)</span> is the <strong>standard error</strong>, which captures how much we’d expect the sample mean to vary if we repeated the study many times.</p>
-<p>Under <span class="math inline">\(H_0\)</span>, the <span class="math inline">\(t\)</span>-statistic tells us how many standard errors <span class="math inline">\(\bar{x}\)</span> is away from <span class="math inline">\(\mu_0\)</span>. This is how we decide how “unusual” our observed difference would be in a world there is no difference. The further our <span class="math inline">\(t\)</span>-statistic is from what <span class="math inline">\(H_0\)</span> predicted, the more statistical support we have for <span class="math inline">\(H_a\)</span> (i.e., against <span class="math inline">\(H_0\)</span>).</p>
+<p>Under <span class="math inline">\(H_0\)</span>, the <span class="math inline">\(t\)</span>-statistic tells us how many standard errors <span class="math inline">\(\bar{x}\)</span> is away from <span class="math inline">\(\mu_0 = 75\)</span>. This is how we decide how “unusual” our observed mean would be in a world where banning computers has no effect. The further our <span class="math inline">\(t\)</span>-statistic is from 0, the more statistical support we have for <span class="math inline">\(H_a\)</span>.</p>
 </section>
 <section id="step-4" class="level2">
 <h2 class="anchored" data-anchor-id="step-4">Step 4</h2>
-<p>By the Central Limit Theorem, the <span class="math inline">\(t\)</span>-statistic follows a known distribution (approximately Gaussian), centered at <span class="math inline">\(\mu_0 = 0\)</span> under <span class="math inline">\(H_0\)</span>. This allows us to translate our <span class="math inline">\(t\)</span>-statistic into a probability statement: assuming <span class="math inline">\(H_0\)</span> is true, the probability of seeing our observed difference or a difference that provides more support for <span class="math inline">\(H_a\)</span> is the area under the curve beyond our <span class="math inline">\(t\)</span>-statistic.</p>
-<p>Importantly, our observed <span class="math inline">\(t\)</span>-statistic lands in one tail, but we’re conducting a two-tailed test, meaing we care about values that are unusually small <em>or</em> unusually large. A value equally far out in the opposite tail would provide just as much evidence against <span class="math inline">\(H_0\)</span>. Therefore, we obtain our <strong>p-value</strong>, the probability of observing a sample mean at least as unusual as ours if there really was no difference in grades-by taking the smaller of the two one-tailed probabilities and double it: <span class="math inline">\(2 \min(P(T \leq t),\ P(T \geq t))\)</span>.</p>
-<p>If our p-value is very small, that means that in a world where there’s no difference between those who take notes by computer and those who take notes on paper, obtaining a 10-point difference in grades between the two groups would be very unlikely. The question is: what counts as “very small”?</p>
+<p>By the Central Limit Theorem, the <span class="math inline">\(t\)</span>-statistic follows a known distribution (approximately Gaussian), centered at 0 under <span class="math inline">\(H_0\)</span>. This allows us to translate our <span class="math inline">\(t\)</span>-statistic into a probability statement: assuming <span class="math inline">\(H_0\)</span> is true, the probability of observing our sample mean or one that provides more support for <span class="math inline">\(H_a\)</span> is the area under the curve beyond our <span class="math inline">\(t\)</span>-statistic.</p>
+<p>Importantly, our observed <span class="math inline">\(t\)</span>-statistic lands in one tail, but we’re conducting a two-tailed test, meaning we care about values that are unusually small <em>or</em> unusually large. A value equally far out in the opposite tail would provide just as much evidence against <span class="math inline">\(H_0\)</span>. Therefore, we obtain our <strong>p-value</strong>, the probability of observing a sample mean at least as unusual as ours if banning computers truly had no effect, by taking the smaller of the two one-tailed probabilities and doubling it: <span class="math inline">\(2 \min(P(T \leq t),\ P(T \geq t))\)</span>.</p>
+<p>If our p-value is very small, that means that in a world where banning computers has no effect on grades, obtaining a cohort mean of 85 when the historical average is 75 would be very unlikely. The question is: what counts as “very small”?</p>
 </section>
 <section id="step-5" class="level2">
 <h2 class="anchored" data-anchor-id="step-5">Step 5</h2>
-<p>Historically and conventionally, when <span class="math inline">\(p&lt;\)</span>$, we say that we have <strong>statistically discernible</strong> support for <span class="math inline">\(H_a\)</span>. If <span class="math inline">\(\geq0.05\)</span>, we say that we don’t have statisically discernible support for <span class="math inline">\(H_a\)</span>.</p>
+<p>Historically and conventionally, when <span class="math inline">\(p &lt; \alpha = 0.05\)</span>, we say that we have <strong>statistically discernible</strong> support for <span class="math inline">\(H_a\)</span>. If <span class="math inline">\(p \geq 0.05\)</span>, we say that we don’t have statistically discernible support for <span class="math inline">\(H_a\)</span>.</p>
 <p>This doesn’t mean that <span class="math inline">\(H_0\)</span> is not true. In fact, the only way to know if <span class="math inline">\(H_0\)</span> is true or not is to have data on the whole population of interest. If we have statistically discernible support for <span class="math inline">\(H_a\)</span>, we say we reject the null hypothesis.</p>
-<p>Notice how litte information this is! We set up hypothesis testing by assuming a value of <span class="math inline">\(\mu_x\)</span> and calculating the probability of observing of our data under that assumption, so our decision is a single yes/no verdict against one value.</p>
-<p>We never asked: what is the true population mean? Our sample mean <span class="math inline">\(\bar{x}\)</span> gives us an estimation, but there is uncertainty around it. Well, we can’t know for sure the true population mean without data on the entire population! However, our sample data does allow us to ask: what <em>range</em> does the true population mean lie in?</p>
+<p>Notice how little information this is! We set up hypothesis testing by assuming a value of <span class="math inline">\(\mu_x\)</span> and calculating the probability of observing our data under that assumption, so our decision is a single yes/no verdict against one value.</p>
+<p>We never asked: what is the true population mean for students in a no-computer class? Our sample mean <span class="math inline">\(\bar{x} = 85\)</span> gives us an estimate, but there is uncertainty around it. Well, we can’t know for sure the true population mean without data on the entire population! However, our sample data does allow us to ask: what <em>range</em> does the true population mean lie in?</p>
 </section>
 </section>
-<section id="what-is-confidence-interval" class="level1">
-<h1>What is confidence interval?</h1>
-<p>The confidence interval (CI) includes all values of <span class="math inline">\(\mu\)</span> for which our observed <span class="math inline">\(\bar{x}\)</span> is <strong>not</strong> unusual. In general, it provides a range of values that a population parameter can take on.</p>
-<p>Constructing a CI is like the inverse of hypothesis testing: in hypothesis testing, we assume that <span class="math inline">\(\mu_x=\mu_0\)</span> and asks whether our data provides evidence against this assumption (i.e., for the alternative hypothesis). In finding CI, we collects all values of <span class="math inline">\(\mu_0\)</span> that the data would <strong>fail to reject</strong> (i.e., not provide statistically discernible evidence against).</p>
-<p>which controls the confidence level as <span class="math inline">\(1 - \alpha\)</span>. For example, setting <span class="math inline">\(\alpha = 0.05\)</span> gives a 95% CI, meaning that if we repeatedly sample from a population and compute confidence intervals based for each sample, 95% of the these CIs would capture the true parameter <span class="math inline">\(\mu\)</span>.</p>
+<section id="what-is-a-confidence-interval" class="level1">
+<h1>What is a confidence interval?</h1>
+<p>A confidence interval (CI) includes all values of <span class="math inline">\(\mu\)</span> for which our observed <span class="math inline">\(\bar{x}\)</span> is <strong>not</strong> unusual. In general, it provides a range of values that a population parameter can take on.</p>
+<p>This is the t-distribution under our <span class="math inline">\(H_0\)</span>, in which we assume <span class="math inline">\(\mu_x=75\)</span>.</p>
+<div class="cell" data-layout-align="center" data-scale="80%">
+<div class="cell-output-display">
+<div id="fig-ttest" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ttest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="finalreview_files/figure-html/fig-ttest-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ttest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Distribution of t-statistic under <span class="math inline">\(\mu_0 = 75\)</span>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Imagine that instead of assuming <span class="math inline">\(\mu_x=\mu_0=75\)</span>, we assume <span class="math inline">\(\mu_x=\mu_0=81\)</span>. Under this assumption, our sample mean is not “unusual” enough for us to have statistically discernible support for <span class="math inline">\(H_a\)</span> (i.e., against <span class="math inline">\(H_0\)</span>).</p>
+<div class="cell" data-layout-align="center" data-scale="80%">
+<div class="cell-output-display">
+<div id="fig-ttest1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ttest1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="finalreview_files/figure-html/fig-ttest1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ttest1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Distribution of t-statistic under <span class="math inline">\(\mu_0 = 81\)</span>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Calculating a CI is essentiall collecting all values of <span class="math inline">\(\mu_0\)</span> that, similar to 81, our data would <strong>not</strong> provide statistically discernible evidence against. In other words, a CI includes all <span class="math inline">\(\mu_0\)</span> values that, under the sampling distribution centered at <span class="math inline">\(\mu_0\)</span>, our <span class="math inline">\(\bar{x}\)</span> falls in the <span class="math inline">\(1 - \alpha\)</span> proportion.</p>
+<p>Therefore, although we don’t need to conduct hypothesis testing to construct a CI, CI is tied to a chosen significance level <span class="math inline">\(\alpha\)</span>, which controls the confidence level as <span class="math inline">\(1 - \alpha\)</span>.</p>
+<p>For example, setting <span class="math inline">\(\alpha = 0.05\)</span> gives a 95% CI, meaning that if we repeatedly sample from a population of interest, 95% of the confidence intervals computed based on these samples would contain the true population mean.</p>
+<p>Any single confidence interval either contains the true <span class="math inline">\(\mu_X\)</span> or it does not, since <span class="math inline">\(\mu_X\)</span> is a fixed constant. We simply have no way of knowing which. Our one interval might be among the unlucky 5% that miss.</p>
+<div class="cell" data-layout-align="center" data-scale="80%">
+<div class="cell-output-display">
+<div id="fig-ci" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ci-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="finalreview_files/figure-html/fig-ci-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ci-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: 100 simulated 95% CIs drawn from a normal distribution with <span class="math inline">\(\mu = 85\)</span>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 
 
 </section>

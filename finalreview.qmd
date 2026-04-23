@@ -5,9 +5,9 @@ format: html
 
 # Introduction
 
-Imagine conducting a study about whether taking notes on computer or on paper would result in better grades in MATH 240. Students are randomly assigned to either take notes on their computer or their notebooks throughout the semester, and assume all individual differences are balanced out by random assignment and there's an experimenter sitting at the back of the class ensuring people are following the requirements of the condition they're assigned into. We find that those taking notes on paper have a 10 point higher grade for the whole course compared to those taking notes on computer (100-point scale).
+Imagine conducting a study about whether banning computers improves grades in MATH 240. The historical average grade in the course is known to be 75, based on years when laptop was permitted. A new cohort of 30 students is required to keep all electronic devices away throughout the semester. At the end of the semester, we find that the mean grade of this cohort is 85, 10 point higher than the historical average.
 
-In hypothesis testing, we're making a decision about whether this 10-point difference would be unusual in a world where there is no difference between two groups. With confidence interval, we're determining the range of point-differences within which this 10-point difference is not unusual.
+In hypothesis testing, we're making a decision about whether the 10-point difference between would be unusual in a world where there is in fact no difference between the grades of the new cohort and the historical average. With confidence interval, we're determining the range of point-differences within which this 10-point difference is not unusual.
 
 # Overview
 
@@ -21,14 +21,13 @@ In hypothesis testing, we're making a decision about whether this 10-point diffe
 
 ## Step 1:
 
-Hypothesis testing is a method with which we determine whether there is enough evidence in our sample data to support an assumption about a population. Particularly, we assume the true population parameter to be a certain value. Let's take the mean ($\mu_x$) as an example. In our study, we assume $\mu_x=0$ (as a convention, just to get started). Is $\mu_x$ really 0? We then have 2 hypotheses:
+Hypothesis testing is a method with which we determine whether there is enough evidence in our sample data to support an assumption about a population. Particularly, we assume the true population parameter to be a certain value. Let's take the mean ($\mu_x$) as an example. In our study, we assume $\mu_x = 75$ (the historical average). Is $\mu_x$ really still 75 for the no-computer cohort? We then have 2 hypotheses:
 
-* Null hypothesis ($H_0$): The true population mean is indeed 0 (i.e., there is no difference in grades between those who take notes with a computer and those who take notes on paper).
-$$\mu_x=\mu_0$$
+* Null hypothesis ($H_0$): The true population mean grade for the no-computer cohort is equal to the historical average of 75 (i.e., banning computers has no effect on grades).
+$$\mu_x = \mu_0 = 75$$
 
-* Alternative hypothesis ($H_a$) for a two-tailed test: The true population mean is different from 0 (i.e., there IS a difference in grades between those who take notes with a computer and those who take notes on paper).
-
-$$\mu_x\neq\mu_0$$
+* Alternative hypothesis ($H_a$) for a two-tailed test: The true population mean grade for the no-computer cohort differs from the historical average of 75 (i.e., banning computers does have an effect on grades).
+$$\mu_x \neq 75$$
 
 How are we going to decide if our data supports $H_a$? What exactly is the kind of evidence that our data could provide to compare these two hypotheses?
 
@@ -44,46 +43,234 @@ The calculations we perform to gather evidence from our data are based on certai
 
 ## Step 3
 
-Recall that we're assuming the population mean is 0 (that $H_0$ is true). In this world, how unusual is our sample mean, $\bar{x}=10$? 
+Recall that we're assuming the population mean is 75 (that $H_0$ is true). In this world, how unusual is our sample mean, $\bar{x} = 85$?
 
-If we compare 10 with 0, we might say there is indeed a difference—a whole 10 points! But this alone cannot be considered good evidence for $H_a$, because a raw difference does not account for the variability in our data. Consider two scenarios: in one, every student who took notes on paper scored almost exactly 10 points higher than every computer note-taker. In another, the difference ranged wildly from -20 to +40 points, and the 10-point difference is simply the result of a mathematical average that cancels out a lot of noise. Both scenarios give us $\bar{x} = 10$, but they tell very different stories about how convincing that difference really is.
+If we compare 85 with 75, we might say there is indeed a difference — a whole 10 points! But this alone cannot be considered good evidence for $H_a$, because a raw difference does not account for the variability in our data. Consider two scenarios: in one, every student in the no-computer cohort scored almost exactly 10 points above the historical average. In another, grades ranged wildly from 50 to 100, and the 10-point difference is simply the result of a mathematical average that cancels out a lot of noise. Both scenarios give us $\bar{x} = 85$, but they tell very different stories about how convincing that difference really is.
 
 This is why we standardize our evidence into a **test statistic**. For a one-sample t-test, this is:
-$$t = \frac{\bar{x} - \mu}{s / \sqrt{n}}$$
+$$t = \frac{\bar{x} - \mu_0}{s / \sqrt{n}}$$
 
-where 
+where
 
-* $\bar{x}$ is our sample mean (10)
-* $\mu$ is the hypothesized population mean (which is 0 under $H_0$)
-* $s$ is the sample standard deviation, and $n$ is the sample size. 
+* $\bar{x}$ is our sample mean (85)
+* $\mu_0$ is the hypothesized population mean (75 under $H_0$)
+* $s$ is the sample standard deviation, and $n$ is the sample size.
 
 The denominator $s/\sqrt{n}$ is the **standard error**, which captures how much we'd expect the sample mean to vary if we repeated the study many times.
 
-Under $H_0$, the $t$-statistic tells us how many standard errors $\bar{x}$ is away from $\mu_0$. This is how we decide how "unusual" our observed difference would be in a world there is no difference. The further our $t$-statistic is from what $H_0$ predicted, the more statistical support we have for $H_a$ (i.e., against $H_0$).
+Under $H_0$, the $t$-statistic tells us how many standard errors $\bar{x}$ is away from $\mu_0 = 75$. This is how we decide how "unusual" our observed mean would be in a world where banning computers has no effect. The further our $t$-statistic is from 0, the more statistical support we have for $H_a$.
 
 ## Step 4
 
-By the Central Limit Theorem, the $t$-statistic follows a known distribution (approximately Gaussian), centered at $\mu_0 = 0$ under $H_0$. This allows us to translate our $t$-statistic into a probability statement: assuming $H_0$ is true, the probability of seeing our observed difference or a difference that provides more support for $H_a$ is the area under the curve beyond our $t$-statistic.
+By the Central Limit Theorem, the $t$-statistic follows a known distribution (approximately Gaussian), centered at 0 under $H_0$. This allows us to translate our $t$-statistic into a probability statement: assuming $H_0$ is true, the probability of observing our sample mean or one that provides more support for $H_a$ is the area under the curve beyond our $t$-statistic.
 
-Importantly, our observed $t$-statistic lands in one tail, but we're conducting a two-tailed test, meaing we care about values that are unusually small *or* unusually large. A value equally far out in the opposite tail would provide just as much evidence against $H_0$. Therefore, we obtain our **p-value**, the probability of observing a sample mean at least as unusual as ours if there really was no difference in grades-by taking the smaller of the two one-tailed probabilities and double it: $2 \min(P(T \leq t),\ P(T \geq t))$. 
+Importantly, our observed $t$-statistic lands in one tail, but we're conducting a two-tailed test, meaning we care about values that are unusually small *or* unusually large. A value equally far out in the opposite tail would provide just as much evidence against $H_0$. Therefore, we obtain our **p-value**, the probability of observing a sample mean at least as unusual as ours if banning computers truly had no effect, by taking the smaller of the two one-tailed probabilities and doubling it: $2 \min(P(T \leq t),\ P(T \geq t))$.
 
-If our p-value is very small, that means that in a world where there's no difference between those who take notes by computer and those who take notes on paper, obtaining a 10-point difference in grades between the two groups would be very unlikely. The question is: what counts as "very small"?
+If our p-value is very small, that means that in a world where banning computers has no effect on grades, obtaining a cohort mean of 85 when the historical average is 75 would be very unlikely. The question is: what counts as "very small"?
 
 ## Step 5
 
-Historically and conventionally, when $p<$\alpha=0.05$, we say that we have **statistically discernible** support for $H_a$. If $\geq0.05$, we say that we don't have statisically discernible support for $H_a$. 
+Historically and conventionally, when $p < \alpha = 0.05$, we say that we have **statistically discernible** support for $H_a$. If $p \geq 0.05$, we say that we don't have statistically discernible support for $H_a$.
 
 This doesn't mean that $H_0$ is not true. In fact, the only way to know if $H_0$ is true or not is to have data on the whole population of interest. If we have statistically discernible support for $H_a$, we say we reject the null hypothesis.
 
-Notice how litte information this is! We set up hypothesis testing by assuming a value of $\mu_x$ and calculating the probability of observing of our data under that assumption, so our decision is a single yes/no verdict against one value. 
+Notice how little information this is! We set up hypothesis testing by assuming a value of $\mu_x$ and calculating the probability of observing our data under that assumption, so our decision is a single yes/no verdict against one value.
 
-We never asked: what is the true population mean? Our sample mean $\bar{x}$ gives us an estimation, but there is uncertainty around it. Well, we can't know for sure the true population mean without data on the entire population! However, our sample data does allow us to ask: what *range* does the true population mean lie in?
+We never asked: what is the true population mean for students in a no-computer class? Our sample mean $\bar{x} = 85$ gives us an estimate, but there is uncertainty around it. Well, we can't know for sure the true population mean without data on the entire population! However, our sample data does allow us to ask: what *range* does the true population mean lie in?
 
-# What is confidence interval?
+# What is a confidence interval?
 
-The confidence interval (CI) includes all values of $\mu$ for which our observed $\bar{x}$ is **not** unusual. In general, it provides a range of values that a population parameter can take on.
+A confidence interval (CI) includes all values of $\mu$ for which our observed $\bar{x}$ is **not** unusual. In general, it provides a range of values that a population parameter can take on.
 
-Constructing a CI is like the inverse of hypothesis testing: in hypothesis testing, we assume that $\mu_x=\mu_0$ and asks whether our data provides evidence against this assumption (i.e., for the alternative hypothesis). In finding CI, we collects all values of $\mu_0$ that the data would **fail to reject** (i.e., not provide statistically discernible evidence against).
+This is the t-distribution under our $H_0$, in which we assume $\mu_x=75$.
 
+```{r}
+#| include: false
+library(tidyverse)
+library(palmerpenguins)
+```
 
-which controls the confidence level as $1 - \alpha$. For example, setting $\alpha = 0.05$ gives a 95% CI, meaning that if we repeatedly sample from a population and compute confidence intervals based for each sample, 95% of the these CIs would capture the true parameter $\mu$.
+```{r}
+#| include: false
+set.seed(7272)
+repeat {
+    Grade <- sample(60:100, 30, replace = TRUE)
+    if (mean(Grade)== 85){
+        break
+    }
+}
+```
+
+```{r}
+#| include: false
+set.seed(7272)
+
+mu0 <- 75
+x.bar <- mean(Grade)
+s <- sd(Grade)
+n <- 30
+t.stat <- (x.bar - mu0)/(s/sqrt(n))
+alpha <- 0.05
+t.critical <- qt(1-alpha, df=n-1)
+
+ggdat <- tibble(t = seq(-8, 8, length.out=1000)) |>
+    mutate(pdf.h0 = dt(t, df=n-1))
+
+t.breaks <- seq(-8, 8, 1)
+xbar.breaks <- round(t.breaks * (s/sqrt(n)) + mu0, 2)
+ts <- rep(NA, 1000)
+
+for (i in 1:1000){
+    curr.sample <- sample(Grade, size=n, replace=T) 
+    ts[i] <- (mean(curr.sample) - mu0)/(s/sqrt(n))
+}
+```
+
+```{r}
+#| label: fig-ttest
+#| echo: false
+#| fig-cap: "Distribution of t-statistic under $\\mu_0 = 75$"
+#| fig-width: 8
+#| fig-height: 5
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+ggplot(ggdat) +
+    geom_line(aes(x=t, y=pdf.h0))+ 
+    stat_density(data=tibble(t=ts), aes(x=t), color="grey", geom="line")+
+    geom_hline(yintercept=0)+
+    geom_ribbon(data=ggdat |> 
+        filter(t >= -t.critical & t <= t.critical),
+        aes(x=t, ymin=0, ymax=pdf.h0, 
+        fill="1-alpha"), alpha=0.3) +
+    geom_ribbon(data=ggdat |> filter(t >= t.critical),
+                aes(x=t, ymin=0, ymax= pdf.h0, fill="rejection"), alpha=0.3) +
+    geom_ribbon(data=ggdat |> filter(t <= -t.critical),
+                aes(x=t, ymin=0, ymax= pdf.h0, fill="rejection"), alpha=0.3) +
+    geom_point(data=tibble(x=t.stat, y=0),
+                aes(x=x, y=y), color="red", size=3)+
+    scale_x_continuous("t", breaks=t.breaks,
+                        sec.axis = sec_axis(~., bquote (bar(x)),breaks=t.breaks, 
+                        labels=xbar.breaks))+
+    scale_fill_manual(
+        values = c("rejection" = "red", "1-alpha" = "steelblue"),
+        labels = c("rejection" = expression(alpha/2), 
+                    "1-alpha" = expression(1 - alpha))
+    )+
+    labs(y = "Density", fill="")
+```
+
+Imagine that instead of assuming $\mu_x=\mu_0=75$, we assume $\mu_x=\mu_0=81$. Under this assumption, our sample mean is not "unusual" enough for us to have statistically discernible support for $H_a$ (i.e., against $H_0$). 
+
+```{r}
+#| include: false
+set.seed(7272)
+
+mu0 <- 81
+x.bar <- mean(Grade)
+s <- sd(Grade)
+n <- 30
+t.stat <- (x.bar - mu0)/(s/sqrt(n))
+alpha <- 0.05
+t.critical <- qt(1-alpha, df=n-1)
+
+ggdat <- tibble(t = seq(-6, 6, length.out=1000)) |>
+    mutate(pdf.h0 = dt(t, df=n-1))
+
+t.breaks <- seq(-6, 6, 1)
+xbar.breaks <- round(t.breaks * (s/sqrt(n)) + mu0, 2)
+ts <- rep(NA, 1000)
+
+for (i in 1:1000){
+    curr.sample <- sample(Grade, size=n, replace=T) 
+    ts[i] <- (mean(curr.sample) - mu0)/(s/sqrt(n))
+}
+```
+
+```{r}
+#| label: fig-ttest1
+#| echo: false
+#| fig-cap: "Distribution of t-statistic under $\\mu_0 = 81$"
+#| fig-width: 8
+#| fig-height: 5
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+ggplot(ggdat) +
+    geom_line(aes(x=t, y=pdf.h0))+ 
+    stat_density(data=tibble(t=ts), aes(x=t), color="grey", geom="line")+
+    geom_hline(yintercept=0)+
+    geom_ribbon(data=ggdat |> filter(t >= t.critical),
+                aes(x=t, ymin=0, ymax= pdf.h0, fill="rejection"), alpha=0.3) +
+    geom_ribbon(data=ggdat |> filter(t <= -t.critical),
+                aes(x=t, ymin=0, ymax= pdf.h0, fill="rejection"), alpha=0.3) +
+    geom_point(data=tibble(x=t.stat, y=0),
+                aes(x=x, y=y), color="red", size=3)+
+    scale_x_continuous("t", breaks=t.breaks,
+                        sec.axis = sec_axis(~., bquote (bar(x)),breaks=t.breaks, 
+                        labels=xbar.breaks))+
+    scale_fill_manual(
+        values = c("rejection" = "red"),labels = c("rejection" = expression(alpha/2))
+)+
+    labs(y = "Density", fill="")
+```
+
+Calculating a CI is essentiall collecting all values of $\mu_0$ that, similar to 81, our data would **not** provide statistically discernible evidence against. In other words, a CI includes all $\mu_0$ values that, under the sampling distribution centered at $\mu_0$, our $\bar{x}$ falls in the $1 - \alpha$ proportion.
+
+Therefore, although we don't need to conduct hypothesis testing to construct a CI, CI is tied to a chosen significance level $\alpha$, which controls the confidence level as $1 - \alpha$. 
+
+For example, setting $\alpha = 0.05$ gives a 95% CI, meaning that if we repeatedly sample from a population of interest, 95% of the confidence intervals computed based on these samples would contain the true population mean. 
+
+Any single confidence interval either contains the true $\mu_X$ or it does not, since $\mu_X$ is a fixed constant. We simply have no way of knowing which. Our one interval might be among the unlucky 5% that miss.
+
+```{r}
+#| include: false
+set.seed(7272)
+
+n = 100
+mu = 85
+sigma = sd(Grade)
+ci_low  <- rep(NA, 100)
+ci_high <- rep(NA, 100)
+result <- rep (NA, 100)
+
+for (i in 1:100){
+    curr.dat <- rnorm(n, mean = mu, sd = sigma)
+    ci = t.test(curr.dat)$conf.int
+    result[i] <- (ci[1]<= mu) & (mu <= ci[2])
+    ci_low[i]  <- ci[1]
+    ci_high[i] <- ci[2]
+}
+
+ci_dat <- tibble(sim = 1:100,
+                 ci_low = ci_low,
+                 ci_high = ci_high,
+                 captures = result)
+```
+
+```{r}
+#| label: fig-ci
+#| echo: false
+#| fig-cap: "100 simulated 95% CIs drawn from a normal distribution with $\\mu = 85$"
+#| fig-width: 8
+#| fig-height: 5
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+# used claude to help with this part
+ggplot(ci_dat, aes(y = sim)) +
+    geom_segment(aes(x = ci_low, xend = ci_high,
+                     y = sim, yend = sim,
+                     color = captures),
+                 linewidth = 0.3) +
+    geom_vline(xintercept = mu, linetype = "dashed", linewidth = 0.5) +
+    scale_color_manual(
+        values = c("TRUE" = "steelblue", "FALSE" = "red"),
+        labels = c("TRUE" = "Captures \u03bc", "FALSE" = "Misses \u03bc")
+    ) +
+    scale_y_continuous(breaks = c(1, 25, 50, 75, 100)) +
+    labs(x = "Grade", y = "Sample", color = "")
+```
