@@ -1,5 +1,5 @@
 ---
-title: "What is A Confidence Interval?"
+title: "Hypothesis Testing & Confidence Interval"
 format: html
 ---
 
@@ -24,7 +24,11 @@ In hypothesis testing, we're making a decision about whether this 10-point diffe
 Hypothesis testing is a method with which we determine whether there is enough evidence in our sample data to support an assumption about a population. Particularly, we assume the true population parameter to be a certain value. Let's take the mean ($\mu_x$) as an example. In our study, we assume $\mu_x=0$ (as a convention, just to get started). Is $\mu_x$ really 0? We then have 2 hypotheses:
 
 * Null hypothesis ($H_0$): The true population mean is indeed 0 (i.e., there is no difference in grades between those who take notes with a computer and those who take notes on paper).
-* Alternative hypothesis ($H_a$): The true population mean is different from 0 (i.e., there IS a difference in grades between those who take notes with a computer and those who take notes on paper).
+$$\mu_x=\mu_0$$
+
+* Alternative hypothesis ($H_a$) for a two-tailed test: The true population mean is different from 0 (i.e., there IS a difference in grades between those who take notes with a computer and those who take notes on paper).
+
+$$\mu_x\neq\mu_0$$
 
 How are we going to decide if our data supports $H_a$? What exactly is the kind of evidence that our data could provide to compare these two hypotheses?
 
@@ -42,7 +46,7 @@ The calculations we perform to gather evidence from our data are based on certai
 
 Recall that we're assuming the population mean is 0 (that $H_0$ is true). In this world, how unusual is our sample mean, $\bar{x}=10$? 
 
-If we compare 10 with 0, we might say there is indeed a difference—a whole 10 points! But this alone cannot be considered good evidence for $H_a$, because a raw difference does not account for the variability in our data. Consider two scenarios: in one, every student who took notes on paper scored almost exactly 10 points higher than every computer note-taker. In another, the paper group's advantage ranged wildly from -20 to +40 points, and the 10-point difference is simply the result of a mathematical average that cancels out a lot of noise. Both scenarios give us $\bar{x} = 10$, but they tell very different stories about how convincing that difference really is.
+If we compare 10 with 0, we might say there is indeed a difference—a whole 10 points! But this alone cannot be considered good evidence for $H_a$, because a raw difference does not account for the variability in our data. Consider two scenarios: in one, every student who took notes on paper scored almost exactly 10 points higher than every computer note-taker. In another, the difference ranged wildly from -20 to +40 points, and the 10-point difference is simply the result of a mathematical average that cancels out a lot of noise. Both scenarios give us $\bar{x} = 10$, but they tell very different stories about how convincing that difference really is.
 
 This is why we standardize our evidence into a **test statistic**. For a one-sample t-test, this is:
 $$t = \frac{\bar{x} - \mu}{s / \sqrt{n}}$$
@@ -59,15 +63,15 @@ Under $H_0$, the $t$-statistic tells us how many standard errors $\bar{x}$ is aw
 
 ## Step 4
 
-By the Central Limit Theorem, the $t$-statistic follows a known distribution (approximately Gaussian) centered at $\mu_0 = 0$, assuming $H_0$ is true. This allows us to translate our $t$-statistic into a probability statement: the probability of seeing a value as extreme or more extreme than ours is the area under the curve beyond our observed $t$-value.
+By the Central Limit Theorem, the $t$-statistic follows a known distribution (approximately Gaussian), centered at $\mu_0 = 0$ under $H_0$. This allows us to translate our $t$-statistic into a probability statement: assuming $H_0$ is true, the probability of seeing our observed difference or a difference that provides more support for $H_a$ is the area under the curve beyond our $t$-statistic.
 
-Importantly, our observed $t$-statistic lands in one tail, but we're conducting a two-tailed test, meaing we care about values that are unusually small *or* unusually large. A value equally far out in the opposite tail would provide just as much evidence against $H_0$. Therefore, we obtain our **p-value**-the probability of observing a sample mean at least as unusual as ours if there really was no difference in grades-by taking the smaller of the two one-tailed probabilities and double it: $2 \min(P(T \leq t),\ P(T \geq t))$. 
+Importantly, our observed $t$-statistic lands in one tail, but we're conducting a two-tailed test, meaing we care about values that are unusually small *or* unusually large. A value equally far out in the opposite tail would provide just as much evidence against $H_0$. Therefore, we obtain our **p-value**, the probability of observing a sample mean at least as unusual as ours if there really was no difference in grades-by taking the smaller of the two one-tailed probabilities and double it: $2 \min(P(T \leq t),\ P(T \geq t))$. 
 
 If our p-value is very small, that means that in a world where there's no difference between those who take notes by computer and those who take notes on paper, obtaining a 10-point difference in grades between the two groups would be very unlikely. The question is: what counts as "very small"?
 
 ## Step 5
 
-Historically and conventionally, when $p\leq0.05$, we say that we have **statistically discernible** support for $H_a$. If $\geq0.05$, we say that we don't have statisically discernible support for $H_a$. 
+Historically and conventionally, when $p<$\alpha=0.05$, we say that we have **statistically discernible** support for $H_a$. If $\geq0.05$, we say that we don't have statisically discernible support for $H_a$. 
 
 This doesn't mean that $H_0$ is not true. In fact, the only way to know if $H_0$ is true or not is to have data on the whole population of interest. If we have statistically discernible support for $H_a$, we say we reject the null hypothesis.
 
@@ -76,3 +80,10 @@ Notice how litte information this is! We set up hypothesis testing by assuming a
 We never asked: what is the true population mean? Our sample mean $\bar{x}$ gives us an estimation, but there is uncertainty around it. Well, we can't know for sure the true population mean without data on the entire population! However, our sample data does allow us to ask: what *range* does the true population mean lie in?
 
 # What is confidence interval?
+
+The confidence interval (CI) includes all values of $\mu$ for which our observed $\bar{x}$ is **not** unusual. In general, it provides a range of values that a population parameter can take on.
+
+Constructing a CI is like the inverse of hypothesis testing: in hypothesis testing, we assume that $\mu_x=\mu_0$ and asks whether our data provides evidence against this assumption (i.e., for the alternative hypothesis). In finding CI, we collects all values of $\mu_0$ that the data would **fail to reject** (i.e., not provide statistically discernible evidence against).
+
+
+which controls the confidence level as $1 - \alpha$. For example, setting $\alpha = 0.05$ gives a 95% CI, meaning that if we repeatedly sample from a population and compute confidence intervals based for each sample, 95% of the these CIs would capture the true parameter $\mu$.
