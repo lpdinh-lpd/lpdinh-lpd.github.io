@@ -211,7 +211,6 @@ window.Quarto = {
   <li><a href="#step-5" id="toc-step-5" class="nav-link" data-scroll-target="#step-5">Step 5</a></li>
   </ul></li>
   <li><a href="#what-is-a-confidence-interval" id="toc-what-is-a-confidence-interval" class="nav-link" data-scroll-target="#what-is-a-confidence-interval">What is a confidence interval?</a></li>
-  <li><a href="#why-is-confidence-interval-helpful" id="toc-why-is-confidence-interval-helpful" class="nav-link" data-scroll-target="#why-is-confidence-interval-helpful">Why is confidence interval helpful?</a></li>
   </ul>
 </nav>
     </div>
@@ -247,7 +246,6 @@ window.Quarto = {
 <ul>
 <li><p>What is hypothesis testing?</p></li>
 <li><p>What is confidence interval?</p></li>
-<li><p>Why is confidence interval helpful?</p></li>
 </ul>
 </section>
 <section id="what-is-hypothesis-testing" class="level1">
@@ -331,7 +329,7 @@ Figure&nbsp;2: Distribution of t-statistic under <span class="math inline">\(\mu
 </div>
 </div>
 </div>
-<p>Calculating a CI is essentiall collecting all values of <span class="math inline">\(\mu_0\)</span> that, similar to 81, our data would <strong>not</strong> provide statistically discernible evidence against. In other words, a CI includes all <span class="math inline">\(\mu_0\)</span> values that, under the sampling distribution centered at <span class="math inline">\(\mu_0\)</span>, our <span class="math inline">\(\bar{x}\)</span> falls in the <span class="math inline">\(1 - \alpha\)</span> proportion.</p>
+<p>Calculating a CI is essentiall collecting all values of <span class="math inline">\(\mu_0\)</span> that, similar to 81, our data would <strong>not</strong> provide statistically discernible evidence against. In other words, a CI includes all <span class="math inline">\(\mu_0\)</span> values that, under the sampling distribution centered at <span class="math inline">\(\mu_0\)</span>, our <span class="math inline">\(\bar{x}\)</span> falls in the <span class="math inline">\(1 - \alpha\)</span> proportion (see <a href="#fig-ttest" class="quarto-xref">Figure&nbsp;1</a>).</p>
 <p>Therefore, although we don’t need to conduct hypothesis testing to construct a CI, CI is tied to a chosen significance level <span class="math inline">\(\alpha\)</span>, which controls the confidence level as <span class="math inline">\(1 - \alpha\)</span>.</p>
 <p>For example, setting <span class="math inline">\(\alpha = 0.05\)</span> gives a 95% CI, meaning that if we repeatedly sample from a population of interest, 95% of the confidence intervals computed based on these samples would contain the true population mean.</p>
 <p>Any single confidence interval either contains the true <span class="math inline">\(\mu_X\)</span> or it does not, since <span class="math inline">\(\mu_X\)</span> is a fixed constant. We simply have no way of knowing which. Our one interval might be among the unlucky 5% that miss.</p>
@@ -357,9 +355,7 @@ Figure&nbsp;3: 100 simulated 95% CIs drawn from a normal distribution with <span
 <li><p><span class="math inline">\(t_{0.975} \cdot \frac{s}{\sqrt{n}}\)</span> is the margin of error, which explains the random sampling error in using sample data to estimate a population parameter</p></li>
 </ul>
 <p>We say we are <strong>95% confident</strong> that the true value of <span class="math inline">\(\mu_x\)</span> is between <span class="math inline">\(\bar{X} + t_{0.975}\)</span> (upper bound) and <span class="math inline">\(\bar{X} - t_{0.975}\)</span> (lower bound).</p>
-</section>
-<section id="why-is-confidence-interval-helpful" class="level1">
-<h1>Why is confidence interval helpful?</h1>
+<p>Confidence intervals are helpful because they quantify uncertainty (“we’re 95% certain that…”). It also indicates precision—a narrower CI has a smaller margin of error, meaning our data provides a more precise estimate of a population parameter. Hypothesis testing and CI provide complementary information about what our sample data is able to tell about the population of interest and are often reported together.</p>
 
 
 </section>
