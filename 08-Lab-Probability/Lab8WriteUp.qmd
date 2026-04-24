@@ -100,53 +100,30 @@ There are eight possible outcomes for Player A:
 **Solution**
 ```{r}
 #| eval: false
+
 install.packages("tidyverse")
 ```
 ```{r}
 library("tidyverse")
+```
 
-ggdat <- tibble(x = 0:3) |>
-  mutate(PMF = dbinom(x, prob = 0.70, size = 3),
-         CDF = pbinom(x, prob = 0.70, size = 3))
+The probability that Player A wins the match is the probability of winning two or more legs.
 
-PMF.plot <- ggplot() +
-  geom_linerange(data = ggdat,
-                 aes(x = x, ymin = 0, ymax = PMF)) +
-  geom_hline(yintercept = 0) +
-  scale_x_continuous("x", breaks = 0:3) +
-  ylab("Probability") +
-  theme_bw()
+$P(X\geq2) = f_X(2) + f_X(3) = 0.784$
 
-CDF.plot <- ggplot() +
-  geom_step(data = ggdat, aes(x = x, y = CDF)) +
-  geom_point(data = ggdat, aes(x = x, y = CDF)) +
-  geom_hline(yintercept = 0) +
-  scale_x_continuous("x", breaks = 0:3) +
-  ylab("Cumulative Probability") +
-  theme_bw()
+```{r}
+(dbinom(x=2, prob = 0.70, size = 3) + dbinom(x=3, prob = 0.70, size = 3))
 ```
 
 ```{r}
 #| label: fig-bnom
-#| fig-cap: "PDF and CDF for the probability of Player A winning the match"
+#| fig-cap: "The probability that Player A wins the match"
 #| fig-width: 5
 #| fig-height: 3
 #| scale: "80%"
 #| fig-align: "center"
 #| size: scriptsize
 
-PMF.plot | CDF.plot
-```
-
-The probability that Player A wins the match is the probability of winning two or more legs.
-
-$P(X\geq2) = f_X(2)+f_X(3)=0.784$
-
-```{r}
-(dbinom(x=2, prob = 0.70, size = 3)+ dbinom(x=3, prob = 0.70, size = 3))
-```
-
-```{r}
 ggdat <- tibble(x = 0:3) |>
   mutate(PMF = dbinom(x, prob = 0.70, size = 3),
          CDF = pbinom(x, prob = 0.70, size = 3))
@@ -163,6 +140,14 @@ PMF.plot <- ggplot() +
   ylab("Probability") +
   theme_bw()
 
+CDF.plot <- ggplot() +
+  geom_step(data = ggdat, aes(x = x, y = CDF)) +
+  geom_point(data = ggdat, aes(x = x, y = CDF)) +
+  geom_hline(yintercept = 0) +
+  scale_x_continuous("x", breaks = 0:3) +
+  ylab("Cumulative Probability") +
+  theme_bw()
+
 PMF.plot | CDF.plot
 ```
 
@@ -175,37 +160,22 @@ In intermediate courses, we learn the Negative Binomial distribution that we use
 
 The two cases where Player A wins is when they have 1 loss or no loss before their 2nd success: (lose, win, win) or (win, lose, win).
 
-$P(X<2) = f_X(1)+f_X(0)=0.784$
+$P(X<2) = f_X(1) + f_X(0) = F_X(1) = 0.784$
 
 ```{r}
 (dnbinom(x=1, prob = 0.70, size = 2)+ dnbinom(x=0, prob = 0.70, size = 2))
 ```
 
 ```{r}
-ggdat <- tibble(x = 0:2) |>
-  mutate(PMF = dnbinom(x, prob = 0.70, size = 2),
-         CDF = pnbinom(x, prob = 0.70, size = 2))
+#| label: fig-nbnom
+#| fig-cap: "The probability that Player A wins the match"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
 
-PMF.plot <- ggplot() +
-  geom_linerange(data = ggdat,
-                 aes(x = x, ymin = 0, ymax = PMF)) +
-  geom_hline(yintercept = 0) +
-  scale_x_continuous("x", breaks = 0:2) +
-  ylab("Probability") +
-  theme_bw()
-
-CDF.plot <- ggplot() +
-  geom_step(data = ggdat, aes(x = x, y = CDF)) +
-  geom_point(data = ggdat, aes(x = x, y = CDF)) +
-  geom_hline(yintercept = 0) +
-  scale_x_continuous("x", breaks = 0:2) +
-  ylab("Cumulative Probability") +
-  theme_bw()
-
-PMF.plot | CDF.plot
-```
-```{r}
-ggdat <- tibble(x = 0:2) |>
+ggdat <- tibble(x = 0:3) |>
   mutate(PMF = dnbinom(x, prob = 0.70, size = 2),
          CDF = pnbinom(x, prob = 0.70, size = 2))
 
@@ -223,8 +193,11 @@ PMF.plot <- ggplot() +
 CDF.plot <- ggplot() +
   geom_step(data = ggdat, aes(x = x, y = CDF)) +
   geom_point(data = ggdat, aes(x = x, y = CDF)) +
+  geom_point(data = ggdat |> filter(x==1),
+            aes(x = x, y = CDF),
+            color="darkorchid2", size=2.5, alpha=0.50) +
   geom_hline(yintercept = 0) +
-  scale_x_continuous("x", breaks = 0:2) +
+  scale_x_continuous("x", breaks = 0:3) +
   ylab("Cumulative Probability") +
   theme_bw()
 
@@ -246,7 +219,6 @@ The primary benefit is that the Beta-Binomial enables us to specify some uncerta
 **Hint**: The Beta distribution is available in base `R` via `_beta()`.
 
 **Solution**
-
 ```{r}
 #| eval: false
 install.packages("extraDistr")
@@ -257,15 +229,22 @@ library("extraDistr")
 ```
 
 ```{r}
-# We're specifying a function for the probability of winning 1 leg rather than a number like Part 1. x is the probability of winning 1 leg. We're random-sampling so there's no size in dbeta and pbeta. 'length.out' to make it a smooth curve.
+# We're specifying a function for the probability of winning 1 leg rather than a number. 
+# x is the probability of winning 1 leg. We're random-sampling so there's no size in dbeta and pbeta.
+
+#| label: fig-beta
+#| fig-cap: "The probability that Player A wins the match"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
 
 ggdat <- tibble(x = seq(0, 1, length.out=1000))  |>
   mutate(PDF = dbeta(x, 7, 3, 
                       log = FALSE),
         CDF = pbeta(x, 7, 3, lower.tail = TRUE, 
                       log.p = FALSE))
-
-# delete the parts about point and step because it's a line.
 
 PDF.plot <- ggplot() +
   geom_line(data = ggdat,
@@ -313,18 +292,28 @@ integrand_variance = function(p) {
 
 **Solution**
 
-The probability of Player A having a win probability of exactly 0.70 is 0.
+The probability of Player A having a win probability of exactly 0.70 is 0. Under a continuous distribution, a unit can always be made finer (i.e., a variable can take on an infinite number of possible values within any interval).
 
 4. **What is the probability that Player A has a win probability of at least 0.50?  Make sure write out your probability statement and work to write it in terms of the distribution function (PDF/CDF) to plot the probability using `ggplot`.**
 
 **Solution**
-The probability of Player A having a win probability of at least 0.5 is $P(p\geq0.5)=P(p>0.5)=1-F_x(0.5)=0.91$
+
+The probability of Player A having a win probability of at least 0.5 is 
+$$P(p\geq0.5)=P(p>0.5)=1-F_x(0.5)=0.91$$
 
 ```{r}
 (1-pbeta(0.5, 7, 3))
 ```
 
 ```{r}
+#| label: fig-beta1
+#| fig-cap: "The probability that Player A has a win probability of at least 0.5"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
 ggdat <- tibble(x = seq(0, 1, length.out=1000))|>
   mutate(PDF = dbeta(x, 7, 3, 
                       log = FALSE),
@@ -354,12 +343,21 @@ PDF.plot | CDF.plot
 5. **What is the 90th percentile of Player A's win probability based on this Beta distribution? Make sure write out your probability statement and work to write it in terms of the distribution function (PDF/CDF) to plot the percentile using `ggplot`.**
 
 **Solution**
-The 90th percentile of Player A's win probability is $(F_x)^(-1).
+
+The 90th percentile of Player A's win probability is $F_X^{-1}(0.9) = 0.87$.
 ```{r}
 (qbeta(0.9, 7, 3))
 ```
 
 ```{r}
+#| label: fig-beta2
+#| fig-cap: "The 90th percentile of Player A’s win probability"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
 ggdat <- tibble(x = seq(0, 1, length.out=1000))|>
   mutate(PDF = dbeta(x, 7, 3, 
                       log = FALSE),
@@ -367,18 +365,18 @@ ggdat <- tibble(x = seq(0, 1, length.out=1000))|>
                       log.p = FALSE))
 
 PDF.plot <- ggplot() +
-  geom_line(data = ggdat,
-                 aes(x = x, y = PDF)) +
-  geom_linerange(data = tibble(x = qbeta(0.9, 7, 3)) |> 
-                 mutate(PDF = dbeta(x, 7, 3)),
-                 aes(x = x, ymin = 0, ymax = PDF), 
-                 color = "darkorchid2") +
+  geom_line(data = ggdat, aes(x = x, y = PDF)) +
+  geom_ribbon(data = ggdat |> filter(x <= qbeta(0.9, 7, 3)),
+              aes(x = x, ymin = 0, ymax = PDF),
+              fill = "darkorchid2", alpha = 0.5) +
   geom_hline(yintercept = 0) +
   ylab("Probability") +
   theme_bw()
 
 CDF.plot <- ggplot() +
   geom_line(data = ggdat, aes(x = x, y = CDF)) +
+  geom_point(data = tibble(x = qbeta(0.9, 7, 3))|> mutate(CDF = pbeta(x, 7, 3)),
+            aes(x = x, y=CDF), color="darkorchid2")+
   geom_hline(yintercept = 0) +
   ylab("Cumulative Probability") +
   theme_bw()
@@ -391,30 +389,6 @@ PDF.plot | CDF.plot
 
 **Solution**
 
-```{r}
-ggdat <- tibble(x = 0:3) |>
-  mutate(PMF = dbbinom(x,3,7,3),
-        CDF=dbbinom(x,3,7,3))
-
-PMF.plot <- ggplot() +
-  geom_linerange(data = ggdat,
-                 aes(x = x, ymin = 0, ymax = PMF)) +
-  geom_hline(yintercept = 0) +
-  scale_x_continuous("x", breaks = 0:3) +
-  ylab("Probability") +
-  theme_bw()
-
-CDF.plot <- ggplot() +
-  geom_step(data = ggdat, aes(x = x, y = CDF)) +
-  geom_point(data = ggdat, aes(x = x, y = CDF)) +
-  geom_hline(yintercept = 0) +
-  scale_x_continuous("x", breaks = 0:3) +
-  ylab("Cumulative Probability") +
-  theme_bw()
-
-PMF.plot | CDF.plot
-```
-
 The probability of Player A winning the match is $P(X\geq2)=0.76$. This is lower than the results from the binomial and negative binomial distribution, because of the uncertainty about the skill of Player A.
 
 ```{r}
@@ -422,6 +396,14 @@ The probability of Player A winning the match is $P(X\geq2)=0.76$. This is lower
 ```
 
 ```{r}
+#| label: fig-bbnom
+#| fig-cap: "The probability that Player A wins the match, considering uncertainty in skills"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
 ggdat <- tibble(x = 0:3) |>
   mutate(PMF = dbbinom(x,3,7,3),
         CDF=pbbinom(x,3,7,3))
@@ -508,6 +490,16 @@ daltbinom = function(x, n, p, theta) {
   c = sum(choose(n, i)*p^i*(1-p)^(n-i)*theta^(i*(n-i)))
   (1/c)*choose(n, x)*p^x*(1-p)^(n-x)*theta^(x*(n-x))
 }
+```
+
+```{r}
+#| label: fig-altbnom-pmf
+#| fig-cap: "PMF of Altham's Multiplicative Binomial Distribution when $\\theta$=0.5, $\\theta$=1 and $\\theta$=1.5"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
 
 ggdat <- tibble(x = 0:3) |>
   mutate(PMF = daltbinom(x,3,0.70,0.5))
@@ -549,7 +541,7 @@ PMF.plot.1 | PMF.plot.2 | PMF.plot.3
 
 ```
 
-When $\theta=1$, it's a binomial distribution, which is a probability distribution of the number of leg Player A can win out of 3 trials that are independent. When $\theta$ is smaller than 1, the probability of Player A winning the next leg after winning 1 leg is higher, so the probability of winning (WW"L" and WW"W") is significantly higher. When $\theta$ is larger than 1, Player A is more likely to win 2 trials out of 3 (2-1 wins are more likely than sweeps).
+When $\theta=1$, it's a binomial distribution, which is a probability distribution of the number of leg Player A can win out of 3 trials that are independent. When $\theta$ is smaller than 1, the probability of Player A winning more legs after winning 1 leg is higher, so the probability of winning (WW"L" and WW"W") is significantly higher. When $\theta$ is larger than 1, Player A is more likely to win 2 trials out of 3 (2-1 wins are more likely than sweeps).
 
 ## Cumulative Distribution Function
 **Use your `daltbinom()` function to create a `paltbinom()` function for computing the CDF of this distribution. Use your function to plot the distribution where $p=0.70$ where $\theta=0.50$, $\theta=1$, and $\theta=1.50$.**
@@ -562,6 +554,17 @@ The CDF at point x is just the sum of all the PMF values from 0 through x.
 paltbinom = function(x, n, p, theta) {
   sum(daltbinom(0:x, n, p, theta))
 }
+```
+
+```{r}
+#| label: fig-altbnom-cdf
+#| fig-cap: "CDF of Altham's Multiplicative Binomial Distribution when $\\theta$=0.5, $\\theta$=1 and $\\theta$=1.5"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
 ggdat <- tibble(x = 0:3) |>
   rowwise() |>
   mutate(CDF = paltbinom(x,3,0.70,0.5))
@@ -606,8 +609,10 @@ CDF.plot.1 | CDF.plot.2 | CDF.plot.3
 **Compute the probability that Player A wins the match using Altham's Multiplicative Binomial Distribution. Compare your result to the Binomial and Negative Binomial results. Compare your results to the Beta-Binomial model, too. Make sure write out your probability statement and work to write it in terms of the distribution function (PMF/CDF) to plot the probability using `ggplot`.**
 
 **Solution**
+
 The probability that Player A wins the match is the probability of winning two or more legs. 
-$P(X\geq2) = 1-F_X(1)$
+
+$$P(X\geq2) = 1-F_X(1)$$
 
 For each distribution with different $\theta$, this probability is:
 ```{r}
@@ -617,6 +622,14 @@ For each distribution with different $\theta$, this probability is:
 ```
 
 ```{r}
+#| label: fig-altbnom-pmf1
+#| fig-cap: "The probability that Player A wins the match when $\\theta$=0.5, $\\theta$=1 and $\\theta$=1.5"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
 ggdat <- tibble(x = 0:3) |>
   mutate(PMF = daltbinom(x,3,0.70,0.5))
 
@@ -694,6 +707,14 @@ daltbbinom = function(x, n, alpha, beta, theta) {
 ```
 
 ```{r}
+#| label: fig-altbbnom-pdf
+#| fig-cap: "PMF of Altham's Multiplicative Beta-Binomial Distribution when $\\theta$=0.5, $\\theta$=1 and $\\theta$=1.5"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
 ggdat <- tibble(x=0:3)|>
   rowwise()|>
   mutate(PMF = daltbbinom(x,3,7,3,0.5))
@@ -833,6 +854,16 @@ comparing <- tibble(
     (2/3)*daltbbinom(2,3,7,3,1.5)
   )
 )
+```
+
+```{r}
+#| label: fig-all-distributions
+#| fig-cap: "Probability of each outcome under different distributions"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
 ggplot(comparing) +
   geom_bar(aes (x = distribution,
                 y = probability),
@@ -841,12 +872,9 @@ geom_hline(yintercept = 0)+
 theme_bw()+
 labs(x = "Distribution Name",
       y = "Probability") +
-ggtitle("Probability of each outcome under different distributions") +
 facet_wrap(~outcome) +
 theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
-
-Comments:
 
 The probability of losing for Player A is generally lower across distributions, since the probability of winning each leg is 70%. 
 
