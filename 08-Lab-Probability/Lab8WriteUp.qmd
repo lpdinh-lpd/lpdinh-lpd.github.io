@@ -124,6 +124,16 @@ CDF.plot <- ggplot() +
   scale_x_continuous("x", breaks = 0:3) +
   ylab("Cumulative Probability") +
   theme_bw()
+```
+
+```{r}
+#| label: fig-bnom
+#| fig-cap: "PDF and CDF for the probability of Player A winning the match"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
 
 PMF.plot | CDF.plot
 ```
