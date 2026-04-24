@@ -98,7 +98,8 @@ Describe the process -- do not leave out any steps -- for how you can load the d
 
 **Solution**
 
-Download the source data from the website. Open it, go to "File", click "Export" then chose .csv format. Choose "Combine tables into a single file". Move that file into the Github folder, then use the code
+Download the source data from the website. Open it, go to "File", click "Export" then chose .csv format. Choose "Create a file for each table". Move the file titled "Fig. 3B-Table 1.csv" into the Github folder, then use the code:
+
 ```{r}
 dat.kitsberg.cleaned=read.csv("Fig. 3B-Table 1.csv")
 ```
@@ -111,7 +112,7 @@ The data need to be cleaned. Note that the sample type (Healthy Donor or THP-1),
 **Solution**
 
 ```{r}
-dat.kitsberg.cleaned=dat.kitsberg.cleaned|> 
+dat.kitsberg.cleaned = dat.kitsberg.cleaned |> 
   separate("sample", c("SampleType", "CellType", "Treatment"))
 ```
 
@@ -122,7 +123,7 @@ The researchers are only interested in observations in the treatment group (12hp
 
 **Solution**
 ```{r}
-dat.kitsberg.cleaned=filter(dat.kitsberg.cleaned, Treatment == "12hpi")
+dat.kitsberg.cleaned = dat.kitsberg.cleaned |> filter(Treatment == "12hpi")
 ```
 
 ### Part D
@@ -132,9 +133,8 @@ When `CellType` is "MDM", it is a Monocyte-Derived Macrophages. That is, the cel
 
 **Solution**
 ```{r}
-dat.kitsberg.cleaned=dat.kitsberg.cleaned|> 
-  mutate(CellType = case_when(CellType=="MDM" ~ "mac", TRUE ~ CellType))
-# dat.kitsberg.cleaned=dat.kitsberg.cleaned |> mutate(CellType = case_when(CellType=="MDM" ~ "mac", .default ~ CellType))
+dat.kitsberg.cleaned = dat.kitsberg.cleaned|> 
+  mutate(CellType = case_when(CellType == "MDM" ~ "mac", TRUE ~ CellType))
 ```
 
 ## Part E
@@ -144,7 +144,7 @@ The researchers are only interested in monocytes and macrophages. Remove any oth
 
 **Solution**
 ```{r}
-dat.kitsberg.cleaned=filter(dat.kitsberg.cleaned, CellType == "mono" | CellType == "mac")
+dat.kitsberg.cleaned = filter(dat.kitsberg.cleaned, CellType == "mono" | CellType == "mac")
 ```
 
 ## Part F
@@ -154,7 +154,7 @@ Clean up the data entry. Replace the shorthand the researchers used with the nea
 
 **Solution**
 ```{r}
-dat.kitsberg.cleaned=dat.kitsberg.cleaned|> 
+dat.kitsberg.cleaned = dat.kitsberg.cleaned|> 
   mutate(CellType = case_when(CellType=="mac" ~ "Macrophages", 
                               CellType=="mono" ~ "Monocytes", TRUE ~ CellType), 
         SampleType = case_when(SampleType=="primary" ~ "Healthy Donor",
@@ -171,20 +171,20 @@ In an `R` code block, combine your answers into one code block that completes th
 **Solution**
 
 ```{r}
-dat.bal.cleaned= read.csv("Fig. 3B-Table 1.csv")|>
-  separate("sample", c("SampleType", "CellType", "Treatment"))|>
-  filter(Treatment == "12hpi")|>
-  mutate(CellType = case_when(CellType=="MDM" ~ "mac", TRUE ~ CellType))|>
-  filter(CellType == "mono" | CellType == "mac")|>
+dat.bal.cleaned = read.csv("Fig. 3B-Table 1.csv") |>
+  separate("sample", c("SampleType", "CellType", "Treatment")) |>
+  filter(Treatment == "12hpi") |>
+  mutate(CellType = case_when(CellType=="MDM" ~ "mac", TRUE ~ CellType)) |>
+  filter(CellType == "mono" | CellType == "mac") |>
   mutate(
     CellType = case_when(
-      CellType=="mac" ~ "Macrophages", 
-      CellType=="mono" ~ "Monocytes", 
+      CellType == "mac" ~ "Macrophages", 
+      CellType == "mono" ~ "Monocytes", 
       TRUE ~ CellType
       ), 
     SampleType = case_when(
-      SampleType=="primary" ~ "Healthy Donor", 
-      SampleType=="THP1" ~ "THP-1", TRUE ~ SampleType
+      SampleType == "primary" ~ "Healthy Donor", 
+      SampleType == "THP1" ~ "THP-1", TRUE ~ SampleType
       ), 
     Treatment=case_when(Treatment=="12hpi" ~ "12 Hours Post-Infection", TRUE ~ Treatment)
     )
@@ -234,13 +234,14 @@ Compute a table containing relevant numerical summaries for Figure 3b.
 genomes = dat.kitsberg.cleaned |>
     group_by(SampleType, CellType) |>
     summarize(
-        Mean = mean(viruses.within.nucleus, na.rm=T),
-        SD = sd(viruses.within.nucleus, na.rm=T),
-        Median = median(viruses.within.nucleus, na.rm = T),
-        IQR = IQR(viruses.within.nucleus, na.rm = T),
-        Skewness = e1071::skewness(viruses.within.nucleus, na.rm = T)
-    )|>
-    rename("Sample Type"="SampleType", "Cell Type"="CellType")
+        n = n(),
+    ) |>
+    ungroup() |>
+    mutate(
+        Proportion = n / sum(n),
+        Percentage = round(Proportion * 100, 2)
+    ) |>
+    rename("Sample Type" = "SampleType", "Cell Type" = "CellType")
 ```
 
 ```{r}
@@ -252,7 +253,7 @@ genomes = dat.kitsberg.cleaned |>
 ```
 
 **Comments on data**:
-The data are heavily right-skewed across 4 groups (medians=0 and high skewness). Most cells had 0 viral genomes. Macrophages has higher means of genomes than monocytes in both sample types. The IQR for monocytes is 0 in both sample types, meaning at least 75% of monocyte had 0 genomes. 
+The data are heavily right-skewed across 4 groups (medians is 0 and high skewness). Most cells had 0 viral genomes. Macrophages has higher means of genomes than monocytes in both sample types. 
 
 # Ship Valuation
 
@@ -272,7 +273,7 @@ I downloaded the data from linked in the article ([https://journals.plos.org/plo
 **Solution**
 
 ```{r}
-dat.bal.cleaned=read.csv("ShipValuation-Bal25.csv")
+dat.bal.cleaned = read.csv("ShipValuation-Bal25.csv")
 ```
 
 ### Part B
@@ -284,7 +285,8 @@ Save the object as `dat.bal.cleaned`.
 
 **Solution**
 ```{r}
-dat.bal.cleaned=read.csv("ShipValuation-Bal25.csv")%>% mutate(.,SPLog=(10^SPLog)/1000000)
+dat.bal.cleaned = read.csv("ShipValuation-Bal25.csv") |>
+  mutate(SPLog = (10^SPLog)/1000000)
 ```
 
 ### Part C

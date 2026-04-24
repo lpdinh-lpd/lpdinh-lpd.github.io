@@ -195,32 +195,37 @@ Create a function called `evaluate.row(...)` that takes one argument and returns
 
 **Solution**
 ```{r}
+
 evaluate.row = function(x){
-  if(x<4) {
+  if(x < 4) {
     return("low")
-  }
-  if(x>=4 & x<=7) {
+  } else if (x >= 4 & x <= 7) {
     return("mid")
-  }
-  if(x>=8) {
+  } else {
     return("high")
   }
 }
-(sapply(df$x1, evaluate.row))
+sapply(df$x1, evaluate.row)
+
 ```
 
 ## Part k
 Did we need to use loops or functions in (h.)-(j.)? That is, can we use vectorization to attain the same results in 1 line each? Where it is possible, write the line of code. Where it is not, explain why.
 
 **Solution**
+
 We can use vectorization for h and i.
 
 ```{r}
-df$x12=(df$x1)*(df$x2)
-df$total.score=((df$x1)*2+df$x2-df$x3)
+df$x12 = (df$x1)*(df$x2)
+df$total.score = ((df$x1)*2+df$x2-df$x3)
 ```
 
-We can't use vectorization in part j because the block notation of `if()` function are not vectorized (it doesn't work simultaneously on all elements of a vector, but process each element at once to return TRUE/FALSE).
+We can't use vectorization in part j because the block notation of `if()` function are not vectorized (it doesn't work simultaneously on all elements of a vector, but process each element at once to return TRUE/FALSE). However, we can use the vectorized `ifelse` function: 
+
+```{r}
+df$category <- ifelse(df$x1 < 4, "low", ifelse(df$x1 <= 7, "mid", "high"))
+```
 
 # Complete Tasks for One Recipe
 
@@ -253,7 +258,7 @@ Find the name of the Ingredients section of the website and pull the HTML of the
 
 **Solution**
 ```{r}
-(ingredients.section=html_element(recipe.item, "#ingredients"))
+(ingredients.section = html_element(recipe.item, "#ingredients"))
 ```
 
 ## Part d
@@ -262,7 +267,7 @@ Now, we want to obtain all of the itemized items. Find the element type the indi
 
 **Solution**
 ```{r}
-(ingredients=html_elements(ingredients.section, "li"))
+(ingredients = html_elements(ingredients.section, "li"))
 ```
 
 ## Part e
@@ -270,7 +275,7 @@ Similar to Part c. Find the name of the Instructions section of the website and 
 
 **Solution**
 ```{r}
-(instruction.section=html_elements(recipe.item, "#instructions"))
+(instruction.section = html_elements(recipe.item, "#instructions"))
 ```
 
 ## Part f
@@ -278,7 +283,7 @@ Now, we want to obtain all of the enumerated items. Find the element type the in
 
 **Solution**
 ```{r}
-(instructions=html_elements(instruction.section, "li"))
+(instructions = html_elements(instruction.section, "li"))
 ```
 
 ## Part g
@@ -287,7 +292,7 @@ Find the class of the recipe image and pull the HTML using `html_element(...)` a
 
 **Solution**
 ```{r}
-image.element=html_element(recipe.item, ".figure-img")
+image.element = html_element(recipe.item, ".figure-img")
 ```
 
 ## Part h
@@ -296,7 +301,7 @@ Use the `html_attr(...)` function to pull the source link ("src"). Then, use `pa
 
 **Solution**
 ```{r}
-image.url=paste("website/",html_attr(image.element, "src"), sep="")
+image.url = paste("website/",html_attr(image.element, "src"), sep="")
 ```
 
 ## Part i
@@ -308,7 +313,8 @@ Now that we have all the things we need, let's try to print the recipe. Below, I
 #| echo: false
 #| results: 'asis'
 # width="50%" shrinks the image for printing
-title.1=html_element(read_html("website/KimchiGrilledCheese.html"), "h1") |> html_text()
+
+title.1 = html_element(read_html("website/KimchiGrilledCheese.html"), "h1") |> html_text()
 cat(paste('![', title.1, '](', image.url, "){width=50%}"))
 ```
 
@@ -317,6 +323,7 @@ cat(paste('![', title.1, '](', image.url, "){width=50%}"))
 ```{r}
 #| echo: false
 #| results: 'asis'
+
 formatted_list <- paste("-", html_text(ingredients))
 cat(formatted_list, sep = "\n")
 ```
@@ -326,6 +333,7 @@ cat(formatted_list, sep = "\n")
 ```{r}
 #| echo: false
 #| results: 'asis'
+
 formatted_list <- paste("1.", html_text(instructions))
 cat(formatted_list, sep = "\n")
 ```
@@ -368,14 +376,13 @@ Did you use functions in your code? If yes, how. If not, are there places you co
 I could have used a function to produce a list of all elements required for each recipe. It may look something like this:
 
 ```{r}
-link=as.character(df$recipe.link)
-# paste `link` to obtain all the website addresses that were sampled. then input each of those into the function.
+link = as.character(df$recipe.link)
 recipe.info <- function(link){ 
   recipe.item <- read_html(link)
-  ingredient.items=html_elements(html_element(recipe.item, "#ingredients"), "li")
-  instructions=html_elements(html_elements(recipe.item, "#instructions"), "li")
-  image.url=paste("website/",html_attr(html_element(recipe.item, ".figure-img"), "src"), sep="")
-  return(list(ingredient.items,instructions,image.url))
+  ingredient.items = html_elements(html_element(recipe.item, "#ingredients"), "li")
+  instructions = html_elements(html_elements(recipe.item, "#instructions"), "li")
+  image.url = paste("website/",html_attr(html_element(recipe.item, ".figure-img"), "src"), sep="")
+return(list(ingredient.items,instructions,image.url))
 }
 ```
 

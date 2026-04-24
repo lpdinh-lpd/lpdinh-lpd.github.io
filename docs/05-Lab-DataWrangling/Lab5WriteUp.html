@@ -347,7 +347,7 @@ window.Quarto = {
 <p>Describe the process – do not leave out any steps – for how you can load the data for Figures 3b and 3d from the manuscript into <code>R</code>.</p>
 <p><strong>Hint</strong>: You can use packages like <code>readxl</code> <span class="citation" data-cites="readxl">(<a href="#ref-readxl" role="doc-biblioref">Wickham and Bryan 2025</a>)</span> but you will find it substantially easier to open the <code>.xls</code> file using your computer’s spreadsheet software and create a new <code>.csv</code> file with the data you need.</p>
 <p><strong>Solution</strong></p>
-<p>Download the source data from the website. Open it, go to “File”, click “Export” then chose .csv format. Choose “Combine tables into a single file”. Move that file into the Github folder, then use the code</p>
+<p>Download the source data from the website. Open it, go to “File”, click “Export” then chose .csv format. Choose “Create a file for each table”. Move the file titled “Fig. 3B-Table 1.csv” into the Github folder, then use the code:</p>
 <p></p>
 <div class="cell">
 <details class="code-fold">
@@ -366,7 +366,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>dat.kitsberg.cleaned<span class="ot">=</span>dat.kitsberg.cleaned<span class="sc">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>dat.kitsberg.cleaned <span class="ot">=</span> dat.kitsberg.cleaned <span class="sc">|&gt;</span> </span>
 <span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">separate</span>(<span class="st">"sample"</span>, <span class="fu">c</span>(<span class="st">"SampleType"</span>, <span class="st">"CellType"</span>, <span class="st">"Treatment"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
@@ -381,7 +381,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dat.kitsberg.cleaned<span class="ot">=</span><span class="fu">filter</span>(dat.kitsberg.cleaned, Treatment <span class="sc">==</span> <span class="st">"12hpi"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dat.kitsberg.cleaned <span class="ot">=</span> dat.kitsberg.cleaned <span class="sc">|&gt;</span> <span class="fu">filter</span>(Treatment <span class="sc">==</span> <span class="st">"12hpi"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -395,9 +395,8 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>dat.kitsberg.cleaned<span class="ot">=</span>dat.kitsberg.cleaned<span class="sc">|&gt;</span> </span>
-<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">case_when</span>(CellType<span class="sc">==</span><span class="st">"MDM"</span> <span class="sc">~</span> <span class="st">"mac"</span>, <span class="cn">TRUE</span> <span class="sc">~</span> CellType))</span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="co"># dat.kitsberg.cleaned=dat.kitsberg.cleaned |&gt; mutate(CellType = case_when(CellType=="MDM" ~ "mac", .default ~ CellType))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>dat.kitsberg.cleaned <span class="ot">=</span> dat.kitsberg.cleaned<span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">case_when</span>(CellType <span class="sc">==</span> <span class="st">"MDM"</span> <span class="sc">~</span> <span class="st">"mac"</span>, <span class="cn">TRUE</span> <span class="sc">~</span> CellType))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -412,7 +411,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>dat.kitsberg.cleaned<span class="ot">=</span><span class="fu">filter</span>(dat.kitsberg.cleaned, CellType <span class="sc">==</span> <span class="st">"mono"</span> <span class="sc">|</span> CellType <span class="sc">==</span> <span class="st">"mac"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>dat.kitsberg.cleaned <span class="ot">=</span> <span class="fu">filter</span>(dat.kitsberg.cleaned, CellType <span class="sc">==</span> <span class="st">"mono"</span> <span class="sc">|</span> CellType <span class="sc">==</span> <span class="st">"mac"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -426,7 +425,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>dat.kitsberg.cleaned<span class="ot">=</span>dat.kitsberg.cleaned<span class="sc">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>dat.kitsberg.cleaned <span class="ot">=</span> dat.kitsberg.cleaned<span class="sc">|&gt;</span> </span>
 <span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">case_when</span>(CellType<span class="sc">==</span><span class="st">"mac"</span> <span class="sc">~</span> <span class="st">"Macrophages"</span>, </span>
 <span id="cb6-3"><a href="#cb6-3"></a>                              CellType<span class="sc">==</span><span class="st">"mono"</span> <span class="sc">~</span> <span class="st">"Monocytes"</span>, <span class="cn">TRUE</span> <span class="sc">~</span> CellType), </span>
 <span id="cb6-4"><a href="#cb6-4"></a>        <span class="at">SampleType =</span> <span class="fu">case_when</span>(SampleType<span class="sc">==</span><span class="st">"primary"</span> <span class="sc">~</span> <span class="st">"Healthy Donor"</span>,</span>
@@ -446,20 +445,20 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>dat.bal.cleaned<span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"Fig. 3B-Table 1.csv"</span>)<span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">separate</span>(<span class="st">"sample"</span>, <span class="fu">c</span>(<span class="st">"SampleType"</span>, <span class="st">"CellType"</span>, <span class="st">"Treatment"</span>))<span class="sc">|&gt;</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">filter</span>(Treatment <span class="sc">==</span> <span class="st">"12hpi"</span>)<span class="sc">|&gt;</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">case_when</span>(CellType<span class="sc">==</span><span class="st">"MDM"</span> <span class="sc">~</span> <span class="st">"mac"</span>, <span class="cn">TRUE</span> <span class="sc">~</span> CellType))<span class="sc">|&gt;</span></span>
-<span id="cb7-5"><a href="#cb7-5"></a>  <span class="fu">filter</span>(CellType <span class="sc">==</span> <span class="st">"mono"</span> <span class="sc">|</span> CellType <span class="sc">==</span> <span class="st">"mac"</span>)<span class="sc">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>dat.bal.cleaned <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"Fig. 3B-Table 1.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">separate</span>(<span class="st">"sample"</span>, <span class="fu">c</span>(<span class="st">"SampleType"</span>, <span class="st">"CellType"</span>, <span class="st">"Treatment"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">filter</span>(Treatment <span class="sc">==</span> <span class="st">"12hpi"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>  <span class="fu">mutate</span>(<span class="at">CellType =</span> <span class="fu">case_when</span>(CellType<span class="sc">==</span><span class="st">"MDM"</span> <span class="sc">~</span> <span class="st">"mac"</span>, <span class="cn">TRUE</span> <span class="sc">~</span> CellType)) <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>  <span class="fu">filter</span>(CellType <span class="sc">==</span> <span class="st">"mono"</span> <span class="sc">|</span> CellType <span class="sc">==</span> <span class="st">"mac"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb7-6"><a href="#cb7-6"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb7-7"><a href="#cb7-7"></a>    <span class="at">CellType =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-8"><a href="#cb7-8"></a>      CellType<span class="sc">==</span><span class="st">"mac"</span> <span class="sc">~</span> <span class="st">"Macrophages"</span>, </span>
-<span id="cb7-9"><a href="#cb7-9"></a>      CellType<span class="sc">==</span><span class="st">"mono"</span> <span class="sc">~</span> <span class="st">"Monocytes"</span>, </span>
+<span id="cb7-8"><a href="#cb7-8"></a>      CellType <span class="sc">==</span> <span class="st">"mac"</span> <span class="sc">~</span> <span class="st">"Macrophages"</span>, </span>
+<span id="cb7-9"><a href="#cb7-9"></a>      CellType <span class="sc">==</span> <span class="st">"mono"</span> <span class="sc">~</span> <span class="st">"Monocytes"</span>, </span>
 <span id="cb7-10"><a href="#cb7-10"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> CellType</span>
 <span id="cb7-11"><a href="#cb7-11"></a>      ), </span>
 <span id="cb7-12"><a href="#cb7-12"></a>    <span class="at">SampleType =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-13"><a href="#cb7-13"></a>      SampleType<span class="sc">==</span><span class="st">"primary"</span> <span class="sc">~</span> <span class="st">"Healthy Donor"</span>, </span>
-<span id="cb7-14"><a href="#cb7-14"></a>      SampleType<span class="sc">==</span><span class="st">"THP1"</span> <span class="sc">~</span> <span class="st">"THP-1"</span>, <span class="cn">TRUE</span> <span class="sc">~</span> SampleType</span>
+<span id="cb7-13"><a href="#cb7-13"></a>      SampleType <span class="sc">==</span> <span class="st">"primary"</span> <span class="sc">~</span> <span class="st">"Healthy Donor"</span>, </span>
+<span id="cb7-14"><a href="#cb7-14"></a>      SampleType <span class="sc">==</span> <span class="st">"THP1"</span> <span class="sc">~</span> <span class="st">"THP-1"</span>, <span class="cn">TRUE</span> <span class="sc">~</span> SampleType</span>
 <span id="cb7-15"><a href="#cb7-15"></a>      ), </span>
 <span id="cb7-16"><a href="#cb7-16"></a>    <span class="at">Treatment=</span><span class="fu">case_when</span>(Treatment<span class="sc">==</span><span class="st">"12hpi"</span> <span class="sc">~</span> <span class="st">"12 Hours Post-Infection"</span>, <span class="cn">TRUE</span> <span class="sc">~</span> Treatment)</span>
 <span id="cb7-17"><a href="#cb7-17"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -518,13 +517,14 @@ Figure&nbsp;1: HCMV Genomes in the Nucleus of Monocytes and Macrophages in Healt
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>genomes <span class="ot">=</span> dat.kitsberg.cleaned <span class="sc">|&gt;</span></span>
 <span id="cb9-2"><a href="#cb9-2"></a>    <span class="fu">group_by</span>(SampleType, CellType) <span class="sc">|&gt;</span></span>
 <span id="cb9-3"><a href="#cb9-3"></a>    <span class="fu">summarize</span>(</span>
-<span id="cb9-4"><a href="#cb9-4"></a>        <span class="at">Mean =</span> <span class="fu">mean</span>(viruses.within.nucleus, <span class="at">na.rm=</span>T),</span>
-<span id="cb9-5"><a href="#cb9-5"></a>        <span class="at">SD =</span> <span class="fu">sd</span>(viruses.within.nucleus, <span class="at">na.rm=</span>T),</span>
-<span id="cb9-6"><a href="#cb9-6"></a>        <span class="at">Median =</span> <span class="fu">median</span>(viruses.within.nucleus, <span class="at">na.rm =</span> T),</span>
-<span id="cb9-7"><a href="#cb9-7"></a>        <span class="at">IQR =</span> <span class="fu">IQR</span>(viruses.within.nucleus, <span class="at">na.rm =</span> T),</span>
-<span id="cb9-8"><a href="#cb9-8"></a>        <span class="at">Skewness =</span> e1071<span class="sc">::</span><span class="fu">skewness</span>(viruses.within.nucleus, <span class="at">na.rm =</span> T)</span>
-<span id="cb9-9"><a href="#cb9-9"></a>    )<span class="sc">|&gt;</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a>    <span class="fu">rename</span>(<span class="st">"Sample Type"</span><span class="ot">=</span><span class="st">"SampleType"</span>, <span class="st">"Cell Type"</span><span class="ot">=</span><span class="st">"CellType"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-4"><a href="#cb9-4"></a>        <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb9-5"><a href="#cb9-5"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>    <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb9-8"><a href="#cb9-8"></a>        <span class="at">Proportion =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n),</span>
+<span id="cb9-9"><a href="#cb9-9"></a>        <span class="at">Percentage =</span> <span class="fu">round</span>(Proportion <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">2</span>)</span>
+<span id="cb9-10"><a href="#cb9-10"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a>    <span class="fu">rename</span>(<span class="st">"Sample Type"</span> <span class="ot">=</span> <span class="st">"SampleType"</span>, <span class="st">"Cell Type"</span> <span class="ot">=</span> <span class="st">"CellType"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -542,49 +542,39 @@ Table&nbsp;1: HCMV Genomes In the Nucleus.
 <tr class="header">
 <th style="text-align: left;">Sample Type</th>
 <th style="text-align: left;">Cell Type</th>
-<th style="text-align: right;">Mean</th>
-<th style="text-align: right;">SD</th>
-<th style="text-align: right;">Median</th>
-<th style="text-align: right;">IQR</th>
-<th style="text-align: right;">Skewness</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">Proportion</th>
+<th style="text-align: right;">Percentage</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Healthy Donor</td>
 <td style="text-align: left;">Macrophages</td>
-<td style="text-align: right;">0.37</td>
-<td style="text-align: right;">0.60</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1.69</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">20.13</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Healthy Donor</td>
 <td style="text-align: left;">Monocytes</td>
-<td style="text-align: right;">0.01</td>
-<td style="text-align: right;">0.11</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">9.01</td>
+<td style="text-align: right;">87</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">18.83</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">THP-1</td>
 <td style="text-align: left;">Macrophages</td>
-<td style="text-align: right;">0.33</td>
-<td style="text-align: right;">0.57</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1.53</td>
+<td style="text-align: right;">170</td>
+<td style="text-align: right;">0.37</td>
+<td style="text-align: right;">36.80</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">THP-1</td>
 <td style="text-align: left;">Monocytes</td>
-<td style="text-align: right;">0.04</td>
-<td style="text-align: right;">0.25</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">5.97</td>
+<td style="text-align: right;">112</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">24.24</td>
 </tr>
 </tbody>
 </table>
@@ -594,7 +584,7 @@ Table&nbsp;1: HCMV Genomes In the Nucleus.
 </div>
 </div>
 <p></p>
-<p><strong>Comments on data</strong>: The data are heavily right-skewed across 4 groups (medians=0 and high skewness). Most cells had 0 viral genomes. Macrophages has higher means of genomes than monocytes in both sample types. The IQR for monocytes is 0 in both sample types, meaning at least 75% of monocyte had 0 genomes.</p>
+<p><strong>Comments on data</strong>: The data are heavily right-skewed across 4 groups (medians is 0 and high skewness). Most cells had 0 viral genomes. Macrophages has higher means of genomes than monocytes in both sample types.</p>
 </section>
 </section>
 </section>
@@ -619,7 +609,7 @@ Table&nbsp;1: HCMV Genomes In the Nucleus.
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>dat.bal.cleaned<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">"ShipValuation-Bal25.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>dat.bal.cleaned <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"ShipValuation-Bal25.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -633,7 +623,8 @@ Table&nbsp;1: HCMV Genomes In the Nucleus.
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>dat.bal.cleaned<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">"ShipValuation-Bal25.csv"</span>)<span class="sc">%&gt;%</span> <span class="fu">mutate</span>(.,<span class="at">SPLog=</span>(<span class="dv">10</span><span class="sc">^</span>SPLog)<span class="sc">/</span><span class="dv">1000000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>dat.bal.cleaned <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"ShipValuation-Bal25.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">mutate</span>(<span class="at">SPLog =</span> (<span class="dv">10</span><span class="sc">^</span>SPLog)<span class="sc">/</span><span class="dv">1000000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>

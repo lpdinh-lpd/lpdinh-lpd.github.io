@@ -84,26 +84,26 @@ dinner <- c("website/AfricanPeanutSoup.html",
             "website/RedWineRagu.html",
             "website/SalmonChowder.html",
             "website/Shakshuka.html")
-sample.bf= sample(breakfasts, 1, replace=FALSE)
-sample.dinner =sample(dinner, 3, replace=FALSE)
+sample.bf = sample(breakfasts, 1, replace=FALSE)
+sample.dinner = sample(dinner, 3, replace=FALSE)
 chosen.recipes = c(sample.bf, sample.dinner)
-df=data.frame(recipe.link=chosen.recipes)
-all.ingredients=list()
-all.instructions=list()
-images.url=list()
+df = data.frame(recipe.link=chosen.recipes)
+all.ingredients = list()
+all.instructions = list()
+images.url = list()
 
 for(i in 1:nrow(df)){
-  recipe.item <- read_html(df$recipe.link[i])
+  recipe.item = read_html(df$recipe.link[i])
   # get ingredient items
-  ingredients.section=html_element(recipe.item, "#ingredients")
+  ingredients.section = html_element(recipe.item, "#ingredients")
   # store it as the ith element in the list
-  all.ingredients[[i]]=html_elements(ingredients.section, "li")
+  all.ingredients[[i]] = html_elements(ingredients.section, "li")
   # get instructions
-  instruction.section=html_elements(recipe.item, "#instructions")
-  all.instructions[[i]]=html_elements(instruction.section, "li")
+  instruction.section = html_elements(recipe.item, "#instructions")
+  all.instructions[[i]] = html_elements(instruction.section, "li")
   # get image url
-  image.element=html_element(recipe.item, ".figure-img")
-  images.url[[i]]=paste("website/",html_attr(image.element, "src"), sep="")
+  image.element = html_element(recipe.item, ".figure-img")
+  images.url[[i]] = paste("website/",html_attr(image.element, "src"), sep="")
 }
 ```
 
@@ -113,9 +113,8 @@ for(i in 1:nrow(df)){
 #| results: 'asis'
 # obtain the number length of the list
 # length(all.ingredients)
+
 for(i in 1:length(all.ingredients)){
-  #| echo: false
-  #| results: 'asis'
   formatted_list <- paste("-", html_text(all.ingredients[[i]]))
   # when use [i], the class is list. when use [[i]], the class is xml_nodeset which apparently worked. the code is to print the text of a singular html item (html_text).
   cat(formatted_list, sep = "\n")
@@ -129,6 +128,7 @@ for(i in 1:length(all.ingredients)){
 #| echo: false
 #| results: 'asis'
 # width="50%" shrinks the image for printing
+
 title.1=html_element(read_html(df$recipe.link[2]), "h1") |> html_text()
 cat(paste('![', title.1, '](', images.url[[2]], "){width=50%}"))
 ```
@@ -137,6 +137,7 @@ cat(paste('![', title.1, '](', images.url[[2]], "){width=50%}"))
 ```{r}
 #| echo: false
 #| results: 'asis'
+
 formatted_list <- paste("-", html_text(all.ingredients[[2]]))
 cat(formatted_list, sep = "\n")
 ```
@@ -145,6 +146,7 @@ cat(formatted_list, sep = "\n")
 ```{r}
 #| echo: false
 #| results: 'asis'
+
 formatted_list <- paste("1.", html_text(all.instructions[[2]]))
 cat(formatted_list, sep = "\n")
 ```
@@ -155,6 +157,7 @@ cat(formatted_list, sep = "\n")
 #| echo: false
 #| results: 'asis'
 # width="50%" shrinks the image for printing
+
 title.1=html_element(read_html(df$recipe.link[3]), "h1") |> html_text()
 cat(paste('![', title.1, '](', images.url[[3]], "){width=50%}"))
 ```
@@ -163,6 +166,7 @@ cat(paste('![', title.1, '](', images.url[[3]], "){width=50%}"))
 ```{r}
 #| echo: false
 #| results: 'asis'
+
 formatted_list <- paste("-", html_text(all.ingredients[[3]]))
 cat(formatted_list, sep = "\n")
 ```
@@ -171,6 +175,7 @@ cat(formatted_list, sep = "\n")
 ```{r}
 #| echo: false
 #| results: 'asis'
+
 formatted_list <- paste("1.", html_text(all.instructions[[3]]))
 cat(formatted_list, sep = "\n")
 ```
@@ -182,6 +187,7 @@ cat(formatted_list, sep = "\n")
 #| echo: false
 #| results: 'asis'
 # width="50%" shrinks the image for printing
+
 title.1=html_element(read_html(df$recipe.link[4]), "h1") |> html_text()
 cat(paste('![', title.1, '](', images.url[[4]], "){width=50%}"))
 ```
@@ -190,6 +196,7 @@ cat(paste('![', title.1, '](', images.url[[4]], "){width=50%}"))
 ```{r}
 #| echo: false
 #| results: 'asis'
+
 formatted_list <- paste("-", html_text(all.ingredients[[4]]))
 cat(formatted_list, sep = "\n")
 ```
@@ -198,6 +205,7 @@ cat(formatted_list, sep = "\n")
 ```{r}
 #| echo: false
 #| results: 'asis'
+
 formatted_list <- paste("1.", html_text(all.instructions[[4]]))
 cat(formatted_list, sep = "\n")
 ```
@@ -208,7 +216,7 @@ cat(formatted_list, sep = "\n")
 ```{r}
 #| echo: false
 #| results: 'asis'
-# width="50%" shrinks the image for printing
+
 title.1=html_element(read_html(df$recipe.link[1]), "h1") |> html_text()
 cat(paste('![', title.1, '](', images.url[[1]], "){width=50%}"))
 ```
@@ -217,6 +225,7 @@ cat(paste('![', title.1, '](', images.url[[1]], "){width=50%}"))
 ```{r}
 #| echo: false
 #| results: 'asis'
+
 formatted_list <- paste("-", html_text(all.ingredients[[1]]))
 cat(formatted_list, sep = "\n")
 ```
@@ -225,6 +234,7 @@ cat(formatted_list, sep = "\n")
 ```{r}
 #| echo: false
 #| results: 'asis'
+
 formatted_list <- paste("1.", html_text(all.instructions[[1]]))
 cat(formatted_list, sep = "\n")
 ```
