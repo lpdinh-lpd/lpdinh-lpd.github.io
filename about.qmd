@@ -1,11 +1,11 @@
 ---
 title: "About"
 about:
-  template: jolla
+  template: solana
 ---
 I'm a junior double-majoring in Educational Studies and Psychological Science at Colgate University. 
 
 ## Education
 
 Colgate University | Hamilton, NY
-Bachelor of Arts | Aug 2023 - Present
+Bachelor of Arts | Aug 2023 - May 2027

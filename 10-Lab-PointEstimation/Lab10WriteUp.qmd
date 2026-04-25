@@ -61,15 +61,6 @@ library(tidyverse)
 library(patchwork)
 ```
 
-**Tips**
-
-* Complete the tasks below. Make sure to start your solutions in on a new line that starts with "**Solution**:".
-* Make sure to use the Quarto Cheatsheet. This will make completing and writing up the lab *much* easier.
-* Make sure to use "enter" to make your code readable, so it doesn't run off the page. I switched the Quarto document to automatically render to .pdf, so you can see what you're submitting by default. You can switch back for the highlighting by moving the html block above the pdf block in the YAML header.
-* Don't forget that you can copy-and-paste code when you're doing something similar as we did in class!
-* Make sure to plot all computed probabilities. This is good `ggplot` practice AND will help make sure you don't make a mistake when computing the probability.
-
-
 # Lab 8 Notes
 
 ##  Altham's Multiplicative Binomial Distribution
@@ -98,7 +89,7 @@ daltbinom <- function(x, size, prob, theta){
 The PMF for Altham's Multiplicative Beta Binomial Distribution is
 $$f_X(x) = \left[\int_{0}^1 \left(\frac{1}{c} {n \choose x} p^x (1-p)^{n-x} \theta^{x(n-x)}\right)\left(\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} p^{\alpha-1}(1-p)^{\beta-1}\right) dp\right]I(x \in \{0, 1, ..., n\})$$
 
-Just so we start on the same page, I have included my `R` function for computing probability using this distribution.
+Prof. Cipolli included `R` function for computing probability using this distribution.
 ```{r}
 daltbbinom.single <- function(x, size, alpha, beta, theta){
     integrand <- function(p) {
@@ -146,6 +137,17 @@ for(i in 1:length(theta_seq)){
 }
 x6 <- tibble(theta = theta_seq,
             prob  = prob_x6)
+```
+
+```{r}
+#| label: fig-3a
+#| fig-cap: "The probability that the player wins the match across different $\\theta$"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
 ggplot(x6) +
   geom_line(aes(x = theta, y = prob), color = "darkorange3") +
   geom_hline(yintercept = 0) +
@@ -160,6 +162,14 @@ Now, plot Altham's Multiplicative Binomial Distribution under the same parameter
 **Solution**
 
 ```{r}
+#| label: fig-3b
+#| fig-cap: "Altham’s Multiplicative Binomial Distribution across different $\\theta$"
+#| fig-width: 8
+#| fig-height: 5
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
 ggdat <- tibble(x = 0:11) |>
   mutate(PMF = daltbinom(x,11,0.5,0.5))
 PMF.plot.1 <- ggplot() +
@@ -198,13 +208,12 @@ PMF.plot.3 <- ggplot() +
   theme_bw() +
   ggtitle("Distribution when theta=1.5")+
   theme(plot.title = element_text(size = 10))
-# title name was too large
 
 PMF.plot.1 / PMF.plot.2 / PMF.plot.3
 ```
 
 ## Part c
-What is your best assessment of what $\theta$ is doing in this setting. Consider when a 6-0 blowout is most likely, and when a 5-6 nail-biter is most likely. Note here we should treat the match as a fixed $n=11$ as we did for $n=3$ in Lab 8.\
+What is your best assessment of what $\theta$ is doing in this setting? Consider when a 6-0 blowout is most likely, and when a 5-6 nail-biter is most likely. Note here we should treat the match as a fixed $n=11$ as we did for $n=3$ in Lab 8.\
 **Note:** In lab 8, we saw that small $\theta$ meant wins came in bunches (clumped together), so there were more 2-0 wins in a best of three series.
 
 **Solution**
@@ -346,6 +355,16 @@ player.stats <- player.stats |>
 #| size: scriptsize
 #| echo: false
 player.stats |> knitr::kable(digits = 2)
+```
+
+```{r}
+#| label: fig-5a
+#| fig-cap: "Proportion of Legs Won for Each Player"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
 
 ggplot(player.stats |>
           mutate(Player = factor(Player, 
@@ -357,9 +376,9 @@ ggplot(player.stats |>
   theme_bw() +
   labs(x = "Players",
         y = "Proportion of Legs Won") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-ggtitle("Proportion of Legs Won for Each Player")
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+```{r}
 pdc.score <- pdc |>
   filter(Score!= "w/o",
         Night != "Finals")|> 
@@ -375,19 +394,24 @@ pdc.score <- pdc |>
 #| size: scriptsize
 #| echo: false
 pdc.score |> knitr::kable(digits = 2)
+```
 
+```{r}
+#| label: fig-5a1
+#| fig-cap: "Proportion of Score"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
 ggplot(pdc.score) +
   geom_col(aes (x= Score,
                 y = Proportion)) +
   geom_hline(yintercept = 0) +
   theme_bw()+
   labs (x = "Score",
-        y = "Proportion")+
-ggtitle("Proportion of Score")
-
+        y = "Proportion")
 ```
-
-Comments:
 
 Luke Humphries has the highest proportion of legs won, followed closely by Luke Littler and Nathan Aspinall. From the table, we can see that Gerwyn Price, Rob Cross, and Peter Wright had more legs lost than legs won (meaning their leg spread are negative). Michael van Gerwen and Michael Smith have leg spreads of 0.
 
@@ -476,8 +500,6 @@ results$Theta[i]<- exp(mle$par[2])
 #| echo: false
 results |> knitr::kable(digits = 2)
 ```
-
-Comments:
 
 When we treat each leg as independent from each other $\theta=1$, the probability of winning each leg for each player is all less than 0.5, with Luke Littler and Luke Humphries having the highest probability of winning each leg. They indeed ended up having high proportions of legs won and high standings overall. Their $\theta$ are all larger than 1, meaning legs won are less likely to clump together than spread out (wins of 6-5 or 6-3 are more likely), which is consistent with data summary. Peter Wright has $\theta$ of almost 1, meaning that the distribution of his probability of winning each leg is a binomial distribution, which means his legs are almost independent of each other.
 
@@ -592,18 +614,103 @@ plots[[i]] <- ggplot() +
   ylab("Densitiy") +
   theme_bw()
 }
-
-plots[[1]] / plots[[2]]  
-
-plots[[3]] / plots[[4]]
-
-plots[[5]] / plots[[6]]
-
-plots[[7]] / plots[[8]]
-
 ```
 
-Comments:
+```{r}
+#| label: fig-p1
+#| fig-cap: "Probability of winning a match for Luke Littler"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+plots[[1]] 
+```
+
+```{r}
+#| label: fig-p2
+#| fig-cap: "Probability of winning a match for Luke Humphries"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+plots[[2]] 
+```
+
+```{r}
+#| label: fig-p3
+#| fig-cap: "Probability of winning a match for Michael van Gerwen"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+plots[[3]] 
+```
+
+```{r}
+#| label: fig-p4
+#| fig-cap: "Probability of winning a match for Michael Smith"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+plots[[4]] 
+```
+
+```{r}
+#| label: fig-p5
+#| fig-cap: "Probability of winning a match for Nathan Aspinall"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+plots[[5]] 
+```
+
+```{r}
+#| label: fig-p6
+#| fig-cap: "Probability of winning a match for Rob Cross"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+plots[[6]] 
+```
+
+```{r}
+#| label: fig-p7
+#| fig-cap: "Probability of winning a match for Gerwyn Price"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+plots[[7]] 
+```
+
+```{r}
+#| label: fig-p8
+#| fig-cap: "Probability of winning a match for Peter Wright"
+#| fig-width: 5
+#| fig-height: 3
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+plots[[8]] 
+```
 
 The beta distribution is a distribution of the probability of winning each leg for each player. Player 8, Peter Wright, have a right-skewed and more narrow beta distribution. This means that his probability of winning each leg is much less variable and consistently low. The probability of Peter Wright having a 50% chance of winning 1 leg is very low. The probability of winning each leg for Player 5, Nathan Aspinall, has a slightly right-skewed Gaussian distribution
 

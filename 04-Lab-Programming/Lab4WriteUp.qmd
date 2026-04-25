@@ -61,9 +61,6 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 library(tidyverse)
 ```
 
-* Complete the tasks below. Make sure to start your solutions in on a new line that starts with "**Solution**:".
-* Make sure to use the Quarto Cheatsheet. This will make completing and writing up the lab *much* easier.
-
 In this lab, we will build a mealkit recipe generator. I created a small website of about 40 recipes. We will scrape recipes from that website, randomly select three meals, and print a grocery list with recipe cards.
 
 # Preliminaries 

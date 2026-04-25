@@ -61,14 +61,6 @@ library(tidyverse)
 library(patchwork)
 ```
 
-**Tips**
-
-* Complete the tasks below. Make sure to start your solutions in on a new line that starts with "**Solution**:".
-* Make sure to use the Quarto Cheatsheet. This will make completing and writing up the lab *much* easier.
-* Make sure to use "enter" to make your code readable, so it doesn't run off the page. I switched the Quarto document to automatically render to .pdf, so you can see what you're submitting by default. You can switch back for the highlighting by moving the html block above the pdf block in the YAML header.
-* Don't forget that you can copy-and-paste code when you're doing something similar as we did in class!
-* Make sure to plot all computed probabilities. This is good `ggplot` practice AND will help make sure you don't make a mistake when computing the probability.
-
 # The Binomial and Negative Binomial Distributions
 
 ## The Binomial Distribution

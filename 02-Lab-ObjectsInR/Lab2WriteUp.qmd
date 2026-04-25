@@ -70,8 +70,7 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 # Load Libraries here
 ```
 
-* Use `R` [@R] to complete the tasks below. Make sure to start your solutions in on a new line that starts with "**Solution**:".
-* Make sure to use the Quarto Cheatsheet. This will make completing and writing up the lab *much* easier.
+Use `R` [@R] to complete the tasks below. 
 
 # Libraries and Packages
 

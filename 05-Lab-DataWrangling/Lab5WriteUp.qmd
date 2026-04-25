@@ -61,20 +61,6 @@ library(tidyverse)
 library(patchwork)
 ```
 
-**Tips**
-
-* Complete the tasks below. Make sure to start your solutions in on a new line that starts with "**Solution**:".
-* Make sure to use the Quarto Cheatsheet. This will make completing and writing up the lab *much* easier.
-* Make sure to use "enter" to make your code readable, so it doesn't run off the page. I switched the Quarto document to automatically render to .pdf, so you can see what you're submitting by default. You can switch back for the highlighting by moving the html block above the pdf block in the YAML header.
-* Use the pipe operator (`|>`). It makes the data wrangling tasks much easier to write.
-* Use `head(...)` or `glimpse(...)` often to ensure your code did what you wanted it to and that you haven't accidentally deleted their entire dataset with a bad filter.
-* Don't forget that you can copy-and-paste code when you're doing something similar as we did in class!
-
-**Timeline**
-
-* Week of 2/16: Aim to complete the data wrangling sections
-* Week of 2/23: Aim to complete the data summaries sections
-
 # Biomedical Science Data
 
 @Kitsberg25 collect data on the Human Cytomegalovirus (HCMV). HCMV is a member of the herpesvirus family -- the same family that includes: chickenpox, mononucleosis (mono), and cold sores. Prevalence is high with a worldwide seroprevalence of 24% to 100% [@Gupta25]. The virus persists in a dormant state for the entire life of those infected. Primary cytomegalovirus infection is often asymptomatic but can present with flu-like symptoms. The infection can reactivate due to stress, aging, or a weakened immune system.
