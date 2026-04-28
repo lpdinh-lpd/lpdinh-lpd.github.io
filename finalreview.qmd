@@ -109,12 +109,13 @@ s <- sd(Grade)
 n <- 30
 t.stat <- (x.bar - mu0)/(s/sqrt(n))
 alpha <- 0.05
-t.critical <- qt(1-alpha, df=n-1)
+t.critical.lower <- qt(0.025, df=n-1)
+t.critical.upper <- qt(0.975, df=n-1)
 
-ggdat <- tibble(t = seq(-8, 8, length.out=1000)) |>
+ggdat <- tibble(t = seq(-5, 5, length.out=1000)) |>
     mutate(pdf.h0 = dt(t, df=n-1))
 
-t.breaks <- seq(-8, 8, 1)
+t.breaks <- seq(-5, 5, 1)
 xbar.breaks <- round(t.breaks * (s/sqrt(n)) + mu0, 2)
 ts <- rep(NA, 1000)
 
@@ -138,12 +139,12 @@ ggplot(ggdat) +
     geom_line(aes(x=t, y=pdf.h0))+ 
     geom_hline(yintercept=0)+
     geom_ribbon(data=ggdat |> 
-        filter(t >= -t.critical & t <= t.critical),
+        filter(t >= t.critical.upper & t <= t.critical.lower),
         aes(x=t, ymin=0, ymax=pdf.h0, 
         fill="1-alpha"), alpha=0.3) +
-    geom_ribbon(data=ggdat |> filter(t >= t.critical),
+    geom_ribbon(data=ggdat |> filter(t >= t.critical.upper),
                 aes(x=t, ymin=0, ymax= pdf.h0, fill="rejection"), alpha=0.3) +
-    geom_ribbon(data=ggdat |> filter(t <= -t.critical),
+    geom_ribbon(data=ggdat |> filter(t <= t.critical.lower),
                 aes(x=t, ymin=0, ymax= pdf.h0, fill="rejection"), alpha=0.3) +
     geom_point(data=tibble(x=t.stat, y=0),
                 aes(x=x, y=y), color="red", size=3)+
@@ -170,12 +171,13 @@ s <- sd(Grade)
 n <- 30
 t.stat <- (x.bar - mu0)/(s/sqrt(n))
 alpha <- 0.05
-t.critical <- qt(1-alpha, df=n-1)
+t.critical.lower <- qt(0.025, df=n-1)
+t.critical.upper <- qt(0.975, df=n-1)
 
-ggdat <- tibble(t = seq(-6, 6, length.out=1000)) |>
+ggdat <- tibble(t = seq(-5, 5, length.out=1000)) |>
     mutate(pdf.h0 = dt(t, df=n-1))
 
-t.breaks <- seq(-6, 6, 1)
+t.breaks <- seq(-5, 5, 1)
 xbar.breaks <- round(t.breaks * (s/sqrt(n)) + mu0, 2)
 ts <- rep(NA, 1000)
 
@@ -198,9 +200,9 @@ for (i in 1:1000){
 ggplot(ggdat) +
     geom_line(aes(x=t, y=pdf.h0))+ 
     geom_hline(yintercept=0)+
-    geom_ribbon(data=ggdat |> filter(t >= t.critical),
+    geom_ribbon(data=ggdat |> filter(t >= t.critical.upper),
                 aes(x=t, ymin=0, ymax= pdf.h0, fill="rejection"), alpha=0.3) +
-    geom_ribbon(data=ggdat |> filter(t <= -t.critical),
+    geom_ribbon(data=ggdat |> filter(t <= t.critical.lower),
                 aes(x=t, ymin=0, ymax= pdf.h0, fill="rejection"), alpha=0.3) +
     geom_point(data=tibble(x=t.stat, y=0),
                 aes(x=x, y=y), color="red", size=3)+
