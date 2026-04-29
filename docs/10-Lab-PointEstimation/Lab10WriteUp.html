@@ -739,7 +739,7 @@ Table&nbsp;1: Number of Legs Won and Lost for Each Player
 <span id="cb10-8"><a href="#cb10-8"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
 <span id="cb10-9"><a href="#cb10-9"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Players"</span>,</span>
 <span id="cb10-10"><a href="#cb10-10"></a>        <span class="at">y =</span> <span class="st">"Proportion of Legs Won"</span>) <span class="sc">+</span></span>
-<span id="cb10-11"><a href="#cb10-11"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">0.8</span>, <span class="fl">0.1</span>)) <span class="sc">+</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">0.6</span>, <span class="fl">0.1</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.6</span>)) <span class="sc">+</span></span>
 <span id="cb10-12"><a href="#cb10-12"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
@@ -828,7 +828,7 @@ Table&nbsp;2: Score for Each Match
 <span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span> (<span class="at">x=</span> Score,</span>
 <span id="cb12-3"><a href="#cb12-3"></a>                <span class="at">y =</span> Proportion)) <span class="sc">+</span></span>
 <span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">0.5</span>, <span class="fl">0.1</span>)) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">0.3</span>, <span class="fl">0.1</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.4</span>)) <span class="sc">+</span></span>
 <span id="cb12-6"><a href="#cb12-6"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
 <span id="cb12-7"><a href="#cb12-7"></a>  <span class="fu">labs</span> (<span class="at">x =</span> <span class="st">"Score"</span>,</span>
 <span id="cb12-8"><a href="#cb12-8"></a>        <span class="at">y =</span> <span class="st">"Proportion"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
