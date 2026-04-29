@@ -267,8 +267,9 @@ lldaltbinom <- function(prob, theta, x, size, mle = F) {
   # ensuring theta is positive
   theta <- ifelse(mle, exp(theta), theta)
 
-  sum(log(daltbinom(x, size, prob, theta)))
-  # if mle is true (we're trying to find mle), return the negative log-likelihood. if it's false, return the log-likelihood)
+  ll <- sum(log(daltbinom(x, size, prob, theta)))
+  # if mle is true (we're trying to find mle), return the negative log-likelihood. 
+  # if it's false, return the log-likelihood)
   ifelse(mle, -ll, ll)
 }
 
@@ -376,7 +377,9 @@ ggplot(player.stats |>
   theme_bw() +
   labs(x = "Players",
         y = "Proportion of Legs Won") +
+  scale_y_continuous(breaks = seq(0, 0.8, 0.1)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
 
 ```{r}
 pdc.score <- pdc |>
@@ -408,6 +411,7 @@ ggplot(pdc.score) +
   geom_col(aes (x= Score,
                 y = Proportion)) +
   geom_hline(yintercept = 0) +
+  scale_y_continuous(breaks = seq(0, 0.5, 0.1)) +
   theme_bw()+
   labs (x = "Score",
         y = "Proportion")
@@ -526,20 +530,6 @@ They start with 500 points, and then points are subtracted. So if a player plays
 **Solution**
 
 ```{r}
-daltbbinom.single <- function(x, size, alpha, beta, theta){
-    integrand <- function(p) {
-    sapply(p, function(p_val){
-             daltbinom(x, size, p_val, theta) * dbeta(p_val, alpha, beta)
-           }
-    )
-  }
-  res <- try(integrate(integrand, lower = 1e-7, upper = 1 - 1e-7)$value * 
-                  (x>=0)*(x<=size), 
-             silent = TRUE)
-  if(inherits(res, "try-error")) return(0.1^6)
-  
-  res
-}
 daltbbinom <- function(x, size, alpha, beta, theta){
   sapply(X=x, FUN=daltbbinom.single, size=size, alpha=alpha, beta=beta, theta=theta)
 }
@@ -712,7 +702,7 @@ plots[[7]]
 plots[[8]] 
 ```
 
-The beta distribution is a distribution of the probability of winning each leg for each player. Player 8, Peter Wright, have a right-skewed and more narrow beta distribution. This means that his probability of winning each leg is much less variable and consistently low. The probability of Peter Wright having a 50% chance of winning 1 leg is very low. The probability of winning each leg for Player 5, Nathan Aspinall, has a slightly right-skewed Gaussian distribution
+The beta distribution is a distribution of the probability of winning each leg for each player. Player 8, Peter Wright, have a right-skewed and more narrow beta distribution. This means that his probability of winning each leg is much less variable and consistently low. The probability of Peter Wright having a 50% chance of winning 1 leg is very low. The probability of winning each leg for Player 5, Nathan Aspinall, has a slightly right-skewed Beta distribution.
 
 For the rest of the players, the Beta distribution plots for has a U-shape (high density near 0 and 1). This means that the probability of winning each leg is highly variable, either really high or really low. Notably, Luke Littler has $\theta=10.80$ and Luke Humphries has $\theta=6.39$, meaning their legs won alternate and almost don't cluster--they often play very competitive, close matches.
 
@@ -721,9 +711,9 @@ Summarize the work you've done here to provide a brief (200-300 word) data-drive
 
 **Solution**
 
-The 2024 Premier League featured 8 best dart players, who competed in best-of-11-leg matches. Each player starts out with 500 points, and as they throw, points are extracted, so the player who throws first in a leg has the mathematical “head start” to reach a finish before their opponent takes another turn.
+The 2024 Premier League featured 8 best dart players, who competed in best-of-11-leg matches. Each player starts out with 501 points, and as they throw, points are subtracted, so the player who throws first in a leg has the mathematical “head start” to reach a finish before their opponent takes another turn.
 
-Luke Littler and Luke Humphries are the most dominant players. Excluding playoffs, they won 55% and 56% of total legs played respectively. The estimates of their probability of winning each leg, as modelled by Altham's Multiplicative Binomial Distributions, are 0.46 and 0.47, respectively. Peter Wright was the worst player of the season, winning only 37% of legs played and finishing with a leg spread of -43. Based on his Altham’s Multiplicative Beta Binomial Distribution, his probability of winning each leg is consistently low.
+Luke Littler and Luke Humphries are the most dominant players. Excluding playoffs, they won 55% and 56% of total legs played respectively. The estimates of their probability of winning each leg, as modelled by Altham's Multiplicative Binomial Distributions, are 0.46 and 0.47, respectively (adjusted for uncertainty in players' skills). Peter Wright was the worst player of the season, winning only 37% of legs played and finishing with a leg spread of -43. Based on his Altham’s Multiplicative Beta Binomial Distribution, his probability of winning each leg is consistently low.
 
 Over half (53%) of the matches have a score of 6-5 or 6-4, meaning most of them are close and competitive and players only win in the second-to-last or last leg. This is expected since the league is composed of world-class players.
 
