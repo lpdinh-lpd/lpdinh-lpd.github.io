@@ -211,6 +211,7 @@ The primary benefit is that the Beta-Binomial enables us to specify some uncerta
 **Hint**: The Beta distribution is available in base `R` via `_beta()`.
 
 **Solution**
+
 ```{r}
 #| eval: false
 install.packages("extraDistr")
@@ -221,9 +222,6 @@ library("extraDistr")
 ```
 
 ```{r}
-# We're specifying a function for the probability of winning 1 leg rather than a number. 
-# x is the probability of winning 1 leg. We're random-sampling so there's no size in dbeta and pbeta.
-
 #| label: fig-beta
 #| fig-cap: "The probability that Player A wins the match"
 #| fig-width: 5
