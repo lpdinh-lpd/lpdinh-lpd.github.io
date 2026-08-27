@@ -3,23 +3,47 @@ project:
   output-dir: docs
 
 website:
-  title: "website"
-  sidebar: 
-    style: "docked"
-    search: false
+  title: "Academic Portfolio"
+  sidebar:
+    style: "docked" 
+    collapse-level: 1
+    search: false 
     contents:
-    - href: index.qmd
-      text: Home
-    - about.qmd
-    - 02-Lab-ObjectsInR/Lab2WriteUp.qmd
-    - 03-Lab-ObjectsInR2/Lab3WriteUp.qmd
-    - 04-Lab-Programming/Lab4WriteUp.qmd
-    - 05-Lab-DataWrangling/Lab5WriteUp.qmd
-    - 08-Lab-Probability/Lab8WriteUp.qmd
-    - 10-Lab-PointEstimation/Lab10WriteUp.qmd
-    - 11-Lab-Estimation/Lab11WriteUp.qmd
-    - finalreview.qmd
+    - href: index.qmd 
+      text: " Home" 
+      icon: house
+    - href: about.qmd 
+    - text: " About" 
+    - icon: person
   
+# MATH 240
+- section: "Computational Statistics" 
+  contents:
+  - text: "Lab 2: Objects in R"
+    href: MATH240/02-Lab-ObjectsInR/Lab2WriteUp.qmd
+  - text: "Lab 3: Objects in R 2"
+    href: MATH240/03-Lab-ObjectsInR2/Lab3WriteUp.qmd
+  - text: "Lab 4: Programming"
+    href: MATH240/04-Lab-Programming/Lab4WriteUp.gmd
+  - text: "Lab 5: Data Wrangling"
+    href: MATH240/05-Lab-DataWrangling/Lab5WriteUp.gmd
+  - text: "Lab 8: Probability"
+    href: MATH240/08-Lab-probability/Lab8WriteUp.qmd
+  - text: "Lab 10: Point Estimation"
+    href: MATH240/10-Lab-pointestimation/Lab10WriteUp.qmd
+  - text: "Lab 11: Point Estimation and Resampling"
+    href: MATH240/11-Lab-Estimation/Lab11WriteUp.qmd
+  - finalreview.qmd
+
+# MATH 354
+- section: "Data Analysis I"
+  contents:
+  - text: "Homework 1: One Sample Inference"
+  
+page-footer:
+  left: "© 2026 Colgate University Student Portfolio"
+  right: "[GitHub Source](https://github.com/lpdinh-lpd)"
+
 format:
   html:
     theme:

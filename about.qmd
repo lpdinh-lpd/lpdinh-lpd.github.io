@@ -1,11 +1,21 @@
 ---
-title: "About"
+title: "About me"
 about:
   template: solana
----
-I'm a junior double-majoring in Educational Studies and Psychological Science at Colgate University. 
+  links:
+  - icon: linkedin
+    text: LinkedIn
+    href: https://www.linkedin.com/in/le-dinh-351bba2a1/
+  - icon: envelope
+    text: Email
+    href: mailto:lpdinh@colgate.edu
+--- 
 
 ## Education
 
-Colgate University | Hamilton, NY
-Bachelor of Arts | Aug 2023 - May 2027
+I'm a student double-majoring in Educational Studies and Psychological Science at Colgate University. My anticipated graduation date is May 2027. 
+
+## Technical skills
+
+* **Languages:** R
+* **Tools:** Positron, Quarto, Git/GitHub, LaTeX

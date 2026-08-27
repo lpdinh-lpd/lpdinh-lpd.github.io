@@ -1,5 +1,12 @@
 ---
-title: "Le Dinh"
+title: "Le's Academic Portfolio"
 ---
 
-A website for my statistics work at Colgate University 2025-2026.
+Welcome to my portfolio website! Here you will find write-ups and analysis projects completed
+8 across my courses:
+
+::: {.colgate-callout}
+**Computational Statistics (MATH 240):** R programming, data wrangling, and simulation models.\
+**Data Analysis I (MATH 354):** Applied statistical inference, hypothesis testing, and modeling.
+:::
+Use the sidebar menu to navigate through my coursework.
