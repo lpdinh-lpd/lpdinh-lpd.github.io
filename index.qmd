@@ -2,8 +2,7 @@
 title: "Le's Academic Portfolio"
 ---
 
-Welcome to my portfolio website! Here you will find write-ups and analysis projects completed
-8 across my courses:
+Welcome to my portfolio website! Here you will find write-ups and analysis projects completed across my courses:
 
 ::: {.colgate-callout}
 **Computational Statistics (MATH 240):** R programming, data wrangling, and simulation models.\
