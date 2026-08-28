@@ -41,7 +41,6 @@ website:
     
     - href: aiuse.qmd 
       text: " Declaration on AI use" 
-      icon: robot
   
   page-footer:
     left: "© 2026 Colgate University Student Portfolio"
