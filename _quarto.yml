@@ -11,10 +11,10 @@ website:
     contents:
     - href: index.qmd 
       text: " Home" 
-      icon: house
+      #icon: house
     - href: about.qmd 
-    - text: " About" 
-    - icon: person
+      text: " About" 
+      #icon: person
   
 # MATH 240
 - section: "Computational Statistics" 
