@@ -38,6 +38,10 @@ website:
     - section: "Data Analysis I"
       contents:
       - text: "Homework 1: One Sample Inference"
+    
+    - href: aiuse.qmd 
+      text: " Declaration on AI use" 
+      icon: robot
   
   page-footer:
     left: "© 2026 Colgate University Student Portfolio"
