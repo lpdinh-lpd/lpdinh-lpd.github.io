@@ -17,6 +17,7 @@ website:
       icon: person
     - href: aiuse.qmd 
       text: " Declaration on AI use" 
+
     # MATH 240
     - section: "Computational Statistics" 
       contents:
