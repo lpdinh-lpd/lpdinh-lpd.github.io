@@ -902,7 +902,7 @@
     "href": "about.html#declaration-of-ai-use",
     "title": "About me",
     "section": "Declaration of AI Use",
-    "text": "Declaration of AI Use\nIn creating this website, AI was used as a replacement of search tools (e.g., Google), double-checking and identify errors (e.g., Where is the error in this code chunk/logic? My website is not updated even though my repository is–where can the problem be?), trouble-shoot errors (e.g., How can I debug this?), clarifying or providing simpler explanations of conceptual problems (e.g., Why are the bars in the PDF “stacked” on each other in the CDF? In plain language, why do we use effect size in power analysis to identify sample size?), checking clarity and grammar of writing, and criticizing my output [@cipolli2026].",
+    "text": "Declaration of AI Use\nIn creating this website, AI was used as a replacement of search tools (e.g., Google), double-checking and identify errors (e.g., Where is the error in this code chunk/logic? My website is not updated even though my repository is–where can the problem be?), trouble-shoot errors (e.g., How can I debug this?), clarifying or providing simpler explanations of conceptual problems (e.g., Why are the bars in the PDF “stacked” on each other in the CDF? In plain language, why do we use effect size in power analysis to identify sample size?), checking clarity and grammar of writing, and criticizing my output (Cipolli 2026).",
     "crumbs": [
       " About"
     ]

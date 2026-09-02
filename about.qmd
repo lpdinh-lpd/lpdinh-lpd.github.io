@@ -1,5 +1,6 @@
 ---
 title: "About me"
+bibliography: aboutreferences.bib
 about:
   template: solana
   links:

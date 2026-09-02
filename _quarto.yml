@@ -4,9 +4,9 @@ project:
 
 website:
   title: "Academic Portfolio"
-  favicon: images/ColgateC.png
+  favicon: colgateC.png
   sidebar:
-    logo: images/ColgateSeal.png
+    logo: ColgateSeal.png
     style: "docked" 
     collapse-level: 1
     search: false 

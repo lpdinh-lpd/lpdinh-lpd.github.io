@@ -26,7 +26,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -36,7 +55,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./images/ColgateC.png" rel="icon" type="image/png">
+<link href="./colgateC.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -99,8 +118,8 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
       <a href="./index.html" class="sidebar-logo-link">
-      <img src="./images/ColgateSeal.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
-      <img src="./images/ColgateSeal.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      <img src="./ColgateSeal.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="./ColgateSeal.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
       </div>
     <div class="sidebar-menu-container"> 
@@ -242,11 +261,16 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="declaration-of-ai-use" class="level2">
 <h2 data-anchor-id="declaration-of-ai-use">Declaration of AI Use</h2>
-<p>In creating this website, AI was used as a replacement of search tools (e.g., Google), double-checking and identify errors (e.g., Where is the error in this code chunk/logic? My website is not updated even though my repository is–where can the problem be?), trouble-shoot errors (e.g., How can I debug this?), clarifying or providing simpler explanations of conceptual problems (e.g., Why are the bars in the PDF “stacked” on each other in the CDF? In plain language, why do we use effect size in power analysis to identify sample size?), checking clarity and grammar of writing, and criticizing my output <span class="citation" data-cites="cipolli2026">[@cipolli2026]</span>.</p>
+<p>In creating this website, AI was used as a replacement of search tools (e.g., Google), double-checking and identify errors (e.g., Where is the error in this code chunk/logic? My website is not updated even though my repository is–where can the problem be?), trouble-shoot errors (e.g., How can I debug this?), clarifying or providing simpler explanations of conceptual problems (e.g., Why are the bars in the PDF “stacked” on each other in the CDF? In plain language, why do we use effect size in power analysis to identify sample size?), checking clarity and grammar of writing, and criticizing my output <span class="citation" data-cites="cipolli2026">(<a href="#ref-cipolli2026" role="doc-biblioref">Cipolli 2026</a>)</span>.</p>
+
 
 
 </section>
-</main></div>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-cipolli2026" class="csl-entry" role="listitem">
+Cipolli, William. 2026. <em>AI Statement</em>.
+</div>
+</div></section></div></main></div>
     </div>
   </div>
 </div>
