@@ -4,7 +4,9 @@ project:
 
 website:
   title: "Academic Portfolio"
+  favicon: images/ColgateC.png
   sidebar:
+    logo: images/ColgateSeal.png
     style: "docked" 
     collapse-level: 1
     search: false 
@@ -15,9 +17,6 @@ website:
     - href: about.qmd 
       text: " About" 
       icon: person
-    - href: aiuse.qmd 
-      text: " Declaration on AI use" 
-      icon: robot
 
     # MATH 240
     - section: "Computational Statistics" 
