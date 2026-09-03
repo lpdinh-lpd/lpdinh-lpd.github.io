@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
+
+/* css styles */
+/* ==========================================================================
+   Colgate University Visual Identity Variables
+   ========================================================================== */
+:root {
+  /* Primary Color */
+  --colgate-maroon: #821019;       /* Main dominant color */
+
+  /* Secondary Colors */
+  --colgate-maple-red: #E10028;     /* Accent / Highlight color */
+  --colgate-dark-maroon: #411217;
+  --colgate-shadow-gray: #5A646E;
+  --colgate-mid-gray: #A0A5AA;
+  --colgate-winter-gray: #D2D4D6;   /* Subtle background gray */
+  --colgate-black: #000000;
+
+  /* Tertiary Colors (Use sparingly) */
+  --colgate-summer-green: #64A50A;
+  --colgate-shaded-green: #005F46;
+  --colgate-sky-blue: #0096C8;
+  --colgate-lake-blue: #004682;
+}
+
+/* ==========================================================================
+   Typography (Clean All-Sans Hierarchy)
+   ========================================================================== */
+body {
+  font-family: "EB Garamond", Georgia, "Times New Roman", serif;
+  color: #222222;
+}
+
+/* Make all page titles and headings uniform */
+h1, h2, h3, h4, h5, h6, .title {
+  font-family: "EB Garamond", Georgia, "Times New Roman", serif;
+  color: var(--colgate-maroon);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Differentiate the main page title with size and spacing, not font family */
+.title {
+  font-size: 2.4rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ==========================================================================
+   Links & Buttons
+   ========================================================================== */
+a {
+  color: var(--colgate-maroon);
+  text-decoration: none;
+}
+
+/* Hover effect transitions to Maple Red */
+a:hover {
+  color: var(--colgate-maple-red);
+  text-decoration: underline;
+}
+
+/* Styling buttons with Colgate Maroon */
+.btn-primary, .quarto-title-block .btn {
+  background-color: var(--colgate-maroon);
+  border-color: var(--colgate-maroon);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background-color: var(--colgate-maple-red);
+  border-color: var(--colgate-maple-red);
+}
+
+/* ==========================================================================
+   Sidebar Customizations
+   ========================================================================== */
+/* Active link in sidebar navigation */
+.sidebar nav[role=doc-toc] ul li a.active,
+.sidebar-item-text.active {
+  color: var(--colgate-maroon) !important;
+  font-weight: bold;
+}
+
+/* Sidebar border accent line */
+.sidebar {
+  border-right: 2px solid var(--colgate-winter-gray);
+}
+
+/* ==========================================================================
+   Custom Utility Classes for Quarto
+   ========================================================================== */
+/* Custom highlight box */
+.colgate-callout {
+  background-color: rgba(130, 16, 25, 0.04);
+  border-left: 4px solid var(--colgate-maroon);
+  padding: 1rem;
+  margin: 1.5rem 0;
+  border-radius: 0 4px 4px 0;
+}
