@@ -26,13 +26,13 @@ website:
       - text: "Lab 3: Objects in R 2"
         href: MATH240/03-Lab-ObjectsInR2/Lab3WriteUp.qmd
       - text: "Lab 4: Programming"
-        href: MATH240/04-Lab-Programming/Lab4WriteUp.gmd
+        href: MATH240/04-Lab-Programming/Lab4WriteUp.qmd
       - text: "Lab 5: Data Wrangling"
-        href: MATH240/05-Lab-DataWrangling/Lab5WriteUp.gmd
+        href: MATH240/05-Lab-DataWrangling/Lab5WriteUp.qmd
       - text: "Lab 8: Probability"
-        href: MATH240/08-Lab-probability/Lab8WriteUp.qmd
+        href: MATH240/08-Lab-Probability/Lab8WriteUp.qmd
       - text: "Lab 10: Point Estimation"
-        href: MATH240/10-Lab-pointestimation/Lab10WriteUp.qmd
+        href: MATH240/10-Lab-PointEstimation/Lab10WriteUp.qmd
       - text: "Lab 11: Point Estimation and Resampling"
         href: MATH240/11-Lab-Estimation/Lab11WriteUp.qmd
       - finalreview.qmd
