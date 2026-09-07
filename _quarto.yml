@@ -41,6 +41,7 @@ website:
     - section: "Data Analysis I"
       contents:
       - text: "Homework 1: One Sample Inference"
+        href: MATH354/HW1_files/HW1.qmd
   
   page-footer:
     left: "© 2026 Colgate University Student Portfolio"
