@@ -245,7 +245,8 @@ for (i in 1:10000){
 }
 
 # two-sided p-value
-# We take absolute values because we're looking at values that are equal to or larger than our observed mean in both directions. # Proportion = Mean(logical vector) because T is treated as 1 and F as 0.
+# We take absolute values because we're looking at values that are equal to or larger than our observed mean in both directions. 
+# Proportion = Mean(logical vector) because T is treated as 1 and F as 0.
 
 p_value = mean(abs(null) >= abs(mean(pdiff)))
 print(p_value)
