@@ -257,7 +257,7 @@ print(p_value)
 
 ## Part a
 
-One condition of the use of Binomial Distribution is that samples have to be independent from each other. If researchers pool two observations from each dog, across 10 dogs, together, then the observations are not independent.
+One condition of the use of Binomial Distribution is that the observations in our sample are independent. If researchers pool two observations from each dog (which are dependent on each other), across 10 dogs, together, then the observations are not independent.
 
 In addition, since the dogs went through repeated trials, the probability of success may be impacted by fatigue or learning effects, differing from 0.5.
 
