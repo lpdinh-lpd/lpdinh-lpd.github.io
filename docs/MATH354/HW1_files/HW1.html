@@ -567,12 +567,12 @@ Figure&nbsp;2: Difference in the Proportion of Correct Retrieval of New Toys bet
 <section id="research-question-1" class="level3" data-number="1.2.1">
 <h3 data-number="1.2.1" class="anchored" data-anchor-id="research-question-1"><span class="header-section-number">1.2.1</span> Research Question 1</h3>
 <p>We want to see if the dogs could correctly retrieve the new toys above chance level when they only overheard their owners label these toys while talking to someone else. To do this, we treat each dog as a Bernoulli trial: if its proportion of correct retrieval across 12 trials is higher than 0.5, then it’s a “success”. In our sample of 10 dogs, we observed 9 successes.</p>
-<p>Using the Exact Binomial Test, we can see if this observed count of success, which follows a Binomial Distribution, is unusual in a world where the dogs are equally likely to succeed or fail, i.e., perform at chance level.</p>
+<p>Using the one-sample exact binomial test, we can decide if this observed count of success, which follows a Binomial Distribution, is unusual in a world where the dogs are equally likely to succeed or fail, i.e., perform at chance level.</p>
 <ul>
 <li><p><span class="math inline">\(H_0\)</span>: <span class="math inline">\(p = 0.5\)</span></p></li>
 <li><p><span class="math inline">\(H_a\)</span>: <span class="math inline">\(p \neq 0.5\)</span></p></li>
 </ul>
-<p>The Exact Binomial Test indicates that the probability of observing 9 successes out of 10 under the null hypothesis is <span class="math inline">\(p=0.0215 &lt; 0.05\)</span>. There is statistically discernible support for the alternative hypothesis, that is, the dogs performed significantly above chance with the new toys in the Overhearing Condition.</p>
+<p>Of the 10 dogs tested, 9 (90%) performed above chance across 12 trials. This proportion was statistically discernible from the chance level of .50, <span class="math inline">\(p = .021, 95% CI [.555, .997]\)</span>. The effect size was large, Cohen’s <span class="math inline">\(h=0.927\)</span>. There is statistically discernible support for the alternative hypothesis, that is, the dogs performed significantly above chance with the new toys in the Overhearing Condition. This indicates that the dogs are able to map the labels onto the objects just by overhearing their caregivers referring to the new toys.</p>
 <p></p>
 <div class="cell">
 <details class="code-fold">
@@ -633,12 +633,38 @@ Table&nbsp;3: Number of Dogs that Retrieved the Correct New Toys Above Chance Le
 <span id="cb9-4"><a href="#cb9-4" aria-label="4"></a>                         <span class="at">n =</span> <span class="dv">10</span>,    <span class="co"># number of trials</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-label="5"></a>                         <span class="at">p =</span> <span class="fl">0.5</span>,   <span class="co"># probability of success in each trial</span></span>
 <span id="cb9-6"><a href="#cb9-6" aria-label="6"></a>                         <span class="at">alternative =</span> <span class="st">"two.sided"</span>,</span>
-<span id="cb9-7"><a href="#cb9-7" aria-label="7"></a>                         <span class="at">conf.level =</span> <span class="fl">0.95</span>)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-label="8"></a></span>
-<span id="cb9-9"><a href="#cb9-9" aria-label="9"></a>test.result<span class="sc">$</span>p.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-7"><a href="#cb9-7" aria-label="7"></a>                         <span class="at">conf.level =</span> <span class="fl">0.95</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-label="1"></a>test.result<span class="sc">$</span>p.value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.02148438</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-label="1"></a>test.result<span class="sc">$</span>conf.int</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5549839 0.9974714
+attr(,"conf.level")
+[1] 0.95</code></pre>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-label="1"></a>(<span class="at">cohens_h =</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">asin</span>(<span class="fu">sqrt</span>(<span class="dv">9</span><span class="sc">/</span><span class="dv">10</span>)) <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">asin</span>(<span class="fu">sqrt</span>(<span class="fl">0.5</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9272952</code></pre>
 </div>
 </div>
 <p></p>
@@ -652,33 +678,54 @@ Table&nbsp;3: Number of Dogs that Retrieved the Correct New Toys Above Chance Le
 </ul>
 <p>Under the null hypothesis, that is the hypothesis of no difference, group assignments do not matter. In a randomization test, we combine the data and randomly reassign group labels to them for many times to create a null distribution, then calculate the probability of observing what we observed or something that provides more support for the alternative hypothesis under the assumption that the null is true.</p>
 <p>In this case, for each dog, we can swap the proportion of correct retrieval in the Direct Address condition with that in the Overhearing condition, or keep each of the two observations in their original condition. This swap is decided randomly for each of the 10 dogs. The difference between the two conditions are calcuated for each dog. We then calculate the mean of the difference scores of all 10 dogs. We repeat this process many times and build a distribution under <span class="math inline">\(H_0\)</span>.</p>
-<p>I performed the randomization for 10,000 times. The probability of observing our observed mean (<span class="math inline">\(M=-0.00833\)</span>) if the null hypothesis is true is <span class="math inline">\(p=0.9847 &gt; 0.05\)</span>. We do not have statisically discernible support for the alternative hypothesis, suggesting that there likely is not a difference between two conditions in the proportion of correct retrieval of the new toys.</p>
+<p>I performed the randomization for 10,000 times, and used bootstrapping to find the confidence interval. The mean of the paired difference observed in our sample was not significantly different from 0 (<span class="math inline">\(M=-0.008, SD = 0.265, p=0.984, 95% CI[-0.150, 0.158]\)</span>). We do not have statisically discernible support for the alternative hypothesis, suggesting that there is not a significant difference in performance of the dogs between the Overhearing and Direct Address Condition.</p>
 <p></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">7272</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-label="2"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-label="3"></a>null <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">10000</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-label="4"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-label="5"></a><span class="co"># for each randomization: randomly relabel each dog's difference score (i.e., flipping its sign)</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-label="6"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-label="7"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>){</span>
-<span id="cb11-8"><a href="#cb11-8" aria-label="8"></a>  signs <span class="ot">=</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), </span>
-<span id="cb11-9"><a href="#cb11-9" aria-label="9"></a>          <span class="at">size =</span> <span class="fu">length</span>(pdiff), </span>
-<span id="cb11-10"><a href="#cb11-10" aria-label="10"></a>          <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb11-11"><a href="#cb11-11" aria-label="11"></a>  null[i] <span class="ot">=</span> <span class="fu">mean</span>(signs <span class="sc">*</span> pdiff)</span>
-<span id="cb11-12"><a href="#cb11-12" aria-label="12"></a>}</span>
-<span id="cb11-13"><a href="#cb11-13" aria-label="13"></a></span>
-<span id="cb11-14"><a href="#cb11-14" aria-label="14"></a><span class="co"># two-sided p-value</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-label="15"></a><span class="co"># We take absolute values because we're looking at values that are equal to or larger than our observed mean in both directions. </span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-label="16"></a><span class="co"># Proportion = Mean(logical vector) because T is treated as 1 and F as 0.</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-label="17"></a></span>
-<span id="cb11-18"><a href="#cb11-18" aria-label="18"></a>p_value <span class="ot">=</span> <span class="fu">mean</span>(<span class="fu">abs</span>(null) <span class="sc">&gt;=</span> <span class="fu">abs</span>(<span class="fu">mean</span>(pdiff)))</span>
-<span id="cb11-19"><a href="#cb11-19" aria-label="19"></a><span class="fu">print</span>(p_value)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">7272</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-label="2"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-label="3"></a>null <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">10000</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-label="4"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-label="5"></a><span class="co"># for each randomization: randomly relabel each dog's difference score (i.e., flipping its sign)</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-label="6"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-label="7"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>){</span>
+<span id="cb16-8"><a href="#cb16-8" aria-label="8"></a>  signs <span class="ot">=</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), </span>
+<span id="cb16-9"><a href="#cb16-9" aria-label="9"></a>          <span class="at">size =</span> <span class="fu">length</span>(pdiff), </span>
+<span id="cb16-10"><a href="#cb16-10" aria-label="10"></a>          <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-label="11"></a>  null[i] <span class="ot">=</span> <span class="fu">mean</span>(signs <span class="sc">*</span> pdiff)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-label="12"></a>}</span>
+<span id="cb16-13"><a href="#cb16-13" aria-label="13"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-label="14"></a><span class="co"># two-sided p-value</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-label="15"></a><span class="co"># We take absolute values because we're looking at values that are equal to or larger than our observed mean in both directions. </span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-label="16"></a><span class="co"># Proportion = Mean(logical vector) because T is treated as 1 and F as 0.</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-label="17"></a></span>
+<span id="cb16-18"><a href="#cb16-18" aria-label="18"></a>p_value <span class="ot">=</span> <span class="fu">mean</span>(<span class="fu">abs</span>(null) <span class="sc">&gt;=</span> <span class="fu">abs</span>(<span class="fu">mean</span>(pdiff)))</span>
+<span id="cb16-19"><a href="#cb16-19" aria-label="19"></a><span class="fu">print</span>(p_value)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.9847</code></pre>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-label="1"></a>xbar <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">10000</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-label="2"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-label="3"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10000</span>){</span>
+<span id="cb18-4"><a href="#cb18-4" aria-label="4"></a>  curr.sample <span class="ot">=</span> <span class="fu">sample</span>(pdiff, </span>
+<span id="cb18-5"><a href="#cb18-5" aria-label="5"></a>                       <span class="at">size =</span> <span class="fu">length</span>(pdiff), </span>
+<span id="cb18-6"><a href="#cb18-6" aria-label="6"></a>                       <span class="at">replace =</span> T)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-label="7"></a>  xbar[i] <span class="ot">=</span> <span class="fu">mean</span>(curr.sample)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-label="8"></a>}</span>
+<span id="cb18-9"><a href="#cb18-9" aria-label="9"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-label="10"></a>(<span class="fu">quantile</span>(xbar, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>    2.5%    97.5% 
+-0.15000  0.15833 </code></pre>
 </div>
 </div>
 <p></p>
@@ -690,7 +737,7 @@ Table&nbsp;3: Number of Dogs that Retrieved the Correct New Toys Above Chance Le
 <section id="part-a-1" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="part-a-1"><span class="header-section-number">2.1</span> Part a</h2>
 <p>One condition of the use of Binomial Distribution is that the observations in our sample are independent. If researchers pool two observations from each dog (which are dependent on each other), across 10 dogs, together, then the observations are not independent.</p>
-<p>In addition, since the dogs went through repeated trials, the probability of success may be impacted by fatigue or learning effects, differing from 0.5.</p>
+<p>In addition, since the dogs went through repeated trials, the probability of success may be impacted by fatigue or learning effects, thus differing from 0.5.</p>
 </section>
 <section id="part-b-1" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="part-b-1"><span class="header-section-number">2.2</span> Part b</h2>
@@ -699,16 +746,16 @@ Table&nbsp;3: Number of Dogs that Retrieved the Correct New Toys Above Chance Le
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a>(<span class="fu">dbinom</span>(<span class="at">x   =</span> <span class="dv">10</span>, </span>
-<span id="cb13-2"><a href="#cb13-2" aria-label="2"></a>       <span class="at">size =</span> <span class="dv">10</span>, </span>
-<span id="cb13-3"><a href="#cb13-3" aria-label="3"></a>       <span class="at">p    =</span> <span class="fl">0.5</span><span class="sc">^</span><span class="dv">2</span>))    </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-label="1"></a>(<span class="fu">dbinom</span>(<span class="at">x   =</span> <span class="dv">10</span>, </span>
+<span id="cb20-2"><a href="#cb20-2" aria-label="2"></a>       <span class="at">size =</span> <span class="dv">10</span>, </span>
+<span id="cb20-3"><a href="#cb20-3" aria-label="3"></a>       <span class="at">p    =</span> <span class="fl">0.5</span><span class="sc">^</span><span class="dv">2</span>))    </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 9.536743e-07</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-label="1"></a><span class="co"># probability of selecting the correct new toy out of 2 new toys in 1 trial is 0.5, so will be 0.25 across 2 trials</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-label="1"></a><span class="co"># probability of selecting the correct new toy out of 2 new toys in 1 trial is 0.5, so will be 0.25 across 2 trials</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
@@ -721,19 +768,19 @@ Table&nbsp;3: Number of Dogs that Retrieved the Correct New Toys Above Chance Le
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-label="1"></a>n <span class="ot">=</span> <span class="dv">10</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-label="2"></a>p <span class="ot">=</span> <span class="fl">0.25</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-label="3"></a>mu <span class="ot">=</span> n <span class="sc">*</span> p</span>
-<span id="cb16-4"><a href="#cb16-4" aria-label="4"></a>sigma <span class="ot">=</span> <span class="fu">sqrt</span>(n <span class="sc">*</span> p <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> p))</span>
-<span id="cb16-5"><a href="#cb16-5" aria-label="5"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-label="6"></a>((<span class="fu">pnorm</span>(<span class="fl">10.5</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma) <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="fl">9.5</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-label="1"></a>n <span class="ot">=</span> <span class="dv">10</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-label="2"></a>p <span class="ot">=</span> <span class="fl">0.25</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-label="3"></a>mu <span class="ot">=</span> n <span class="sc">*</span> p</span>
+<span id="cb23-4"><a href="#cb23-4" aria-label="4"></a>sigma <span class="ot">=</span> <span class="fu">sqrt</span>(n <span class="sc">*</span> p <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> p))</span>
+<span id="cb23-5"><a href="#cb23-5" aria-label="5"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-label="6"></a>((<span class="fu">pnorm</span>(<span class="fl">10.5</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma) <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="fl">9.5</span>, <span class="at">mean =</span> mu, <span class="at">sd =</span> sigma)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.567447e-07</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-label="1"></a><span class="co"># this is density, not probability (area under the curve) (dnorm(10, mean = 10 * 0.25, sd=sqrt(10 * 0.25 * (1 - 0.25))))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-label="1"></a><span class="co"># this is density, not probability (area under the curve) (dnorm(10, mean = 10 * 0.25, sd=sqrt(10 * 0.25 * (1 - 0.25))))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>
