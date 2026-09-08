@@ -235,7 +235,7 @@ Under the null hypothesis, that is the hypothesis of no difference, group assign
 
 In this case, for each dog, we can swap the proportion of correct retrieval in the Direct Address condition with that in the Overhearing condition, or keep each of the two observations in their original condition. This swap is decided randomly for each of the 10 dogs. The difference between the two conditions are calcuated for each dog. We then calculate the mean of the difference scores of all 10 dogs. We repeat this process many times and build a distribution under $H_0$.
 
-I performed the randomization for 10,000 times, and used bootstrapping to find the confidence interval. The mean of the paired difference observed in our sample was not significantly different from 0 ($M=-0.008, SD = 0.265, p=0.984, 95% CI[-0.150, 0.158]$). We do not have statisically discernible support for the alternative hypothesis, suggesting that there is not a significant difference in performance of the dogs between the Overhearing and Direct Address Condition.
+I performed the randomization for 10,000 times, and used bootstrapping to find the confidence interval. The mean of the paired difference observed in our sample was not significantly different from 0 ($M=-0.008, SD = 0.265, p=0.984, 95% CI[-0.150, 0.158]$). We do not have statisically discernible support for the alternative hypothesis, suggesting that there is not a significant difference in performance of the dogs between the Overhearing and the Direct Address condition.
 
 ```{r}
 set.seed(7272)
