@@ -1154,7 +1154,7 @@
     "href": "MATH354/HW1_files/HW1.html#part-a-1",
     "title": "Homework 1: One Sample Inferences",
     "section": "2.1 Part a",
-    "text": "2.1 Part a\nOne condition of the use of Binomial Distribution is that the observations in our sample are independent. If researchers pool two observations from each dog (which are dependent on each other), across 10 dogs, together, then the observations are not independent.\nIn addition, since the dogs went through repeated trials, the probability of success may be impacted by fatigue or learning effects, thus differing from 0.5.",
+    "text": "2.1 Part a\nOne condition of the use of Binomial Distribution is that the observations in our sample are independent. If researchers pool two observations from each dog (which are dependent on each other), across 10 dogs, together, then the observations are not independent.",
     "crumbs": [
       "Data Analysis I",
       "Homework 1: One Sample Inference"

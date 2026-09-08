@@ -279,8 +279,6 @@ for(i in 1:10000){
 
 One condition of the use of Binomial Distribution is that the observations in our sample are independent. If researchers pool two observations from each dog (which are dependent on each other), across 10 dogs, together, then the observations are not independent.
 
-In addition, since the dogs went through repeated trials, the probability of success may be impacted by fatigue or learning effects, thus differing from 0.5.
-
 ## Part b
 
 This probability is incredibly small.
