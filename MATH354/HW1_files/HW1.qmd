@@ -171,7 +171,7 @@ The second data set seems to have an underlying Gaussian distribution that is le
 
 The exact Wilcoxon test cannot be used here because there are ties within the data. We can argue for the use of the $t$-test even when the sample size is small if we know that the underlying population distribution is Gaussian. However, given the small sample size, I wouldn't trust that our data gives us a good guess about the underlying population distribution.
 
-I also wouldn't use the Exact Binomial Test because the question we're trying to is better addressed with continuous data---since we're more interested in the magnitude of the difference from 0 than merely whether it is different from 0 at all (e.g., in Bernoulli data, a difference of 0.0833 and 0.5833 are both encoded as 1). We will use a use randomization test to make statistical inferences from this data set.
+I also wouldn't use the Exact Binomial Test because the question we're trying to is better addressed with continuous data---we're more interested in the magnitude of the difference from 0 than merely whether it is different from 0 at all (e.g., in Bernoulli data, a difference of 0.0833 and 0.5833 are both encoded as 1). We will use a use randomization test to make statistical inferences from this data set.
 
 ## Part b
 ### Research Question 1
@@ -184,7 +184,7 @@ Using the one-sample exact binomial test, we can decide if this observed count o
 
 * $H_a$: $p \neq 0.5$
 
-Of the 10 dogs tested, 9 (90%) performed above chance across 12 trials. This proportion was statistically discernible from the chance level of .50, $p = .021, 95% CI [.555, .997]$. The effect size was large, Cohen's $h=0.927$. There is statistically discernible support for the alternative hypothesis, that is, the dogs performed significantly above chance with the new toys in the Overhearing Condition. This indicates that the dogs are able to map the labels onto the objects just by overhearing their caregivers referring to the new toys.
+Of the 10 dogs tested, 9 (90%) performed above chance across 12 trials. This proportion was statistically discernible from the chance level of .50, $p = .021, 95\% CI [.555, .997]$. The effect size was large, Cohen's $h=0.927$. There is statistically discernible support for the alternative hypothesis, that is, the dogs performed significantly above chance with the new toys in the Overhearing Condition. This indicates that the dogs are able to map the labels onto the objects just by overhearing their caregivers referring to the new toys.
 
 ```{r}
 overhear_b = c(1, 1, 1, 1, 0, 1, 1, 1, 1, 1)
@@ -231,11 +231,11 @@ We want to know if there is a difference in performance of the dogs between two 
 
 * $H_a$: $\mu_X \neq 0$
 
-Under the null hypothesis, that is the hypothesis of no difference, group assignments do not matter. In a randomization test, we combine the data and randomly reassign group labels to them for many times to create a null distribution, then calculate the probability of observing what we observed or something that provides more support for the alternative hypothesis under the assumption that the null is true.
+Under the null hypothesis, that is the hypothesis of no difference, group assignments do not matter. In a randomization test, we combine the data and randomly reassign group labels to them for many times to create a null distribution, then calculate the probability of observing what we observed or something that provides more support for $H_a$ under the assumption that the null is true.
 
-In this case, for each dog, we can swap the proportion of correct retrieval in the Direct Address condition with that in the Overhearing condition, or keep each of the two observations in their original condition. This swap is decided randomly for each of the 10 dogs. The difference between the two conditions are calcuated for each dog. We then calculate the mean of the difference scores of all 10 dogs. We repeat this process many times and build a distribution under $H_0$.
+In this case, for each dog, we can swap the proportion of correct retrieval in the Direct Address condition with that in the Overhearing condition, or keep in their original conditions. This swap is decided randomly for each of the 10 dogs. The mean of the difference in the proportions of correct retrieval between two conditions is calculated. We repeat this process many times and build a distribution under $H_0$.
 
-I performed the randomization for 10,000 times, and used bootstrapping to find the confidence interval. The mean of the paired difference observed in our sample was not significantly different from 0 ($M=-0.008, SD = 0.265, p=0.984, 95% CI[-0.150, 0.158]$). We do not have statisically discernible support for the alternative hypothesis, suggesting that there is not a significant difference in performance of the dogs between the Overhearing and the Direct Address condition.
+I performed the randomization for 10,000 times, and used bootstrapping to find the confidence interval. The mean of the paired difference observed in our sample was not significantly different from 0 ($M=-0.008, SD = 0.265, p=0.984, 95\% CI [-0.150, 0.158]$). We do not have statisically discernible support for the alternative hypothesis, suggesting that there is not a significant difference in performance of the dogs between the Overhearing and the Direct Address condition.
 
 ```{r}
 set.seed(7272)
