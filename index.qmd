@@ -1,5 +1,5 @@
 ---
-title: "Le's Academic Portfolio"
+title: "Lê's Academic Portfolio"
 ---
 
 Welcome to my portfolio website! Here you will find write-ups and analysis projects completed across my courses:

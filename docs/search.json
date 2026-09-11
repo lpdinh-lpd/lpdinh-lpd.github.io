@@ -1176,7 +1176,7 @@
     "href": "MATH354/HW1_files/HW1.html#part-c",
     "title": "Homework 1: One Sample Inferences",
     "section": "2.3 Part c",
-    "text": "2.3 Part c\nThe approximation for the probability computed in Part B is not close, underestimating by approximately 8 times. This is because the sample size is not large enough for us to invoke Central Limit Theorem and appropriately fit a \\(z\\)-distribution over the Binomial Distribution.\n\\(P(X=10) = P(10 \\le 10+0.5) - P(10 \\le 10-0.5) = 1.567447e-07\\)\n\n\n\nCode\nn = 10\np = 0.25\nmu = n * p\nsigma = sqrt(n * p * (1 - p))\n\n((pnorm(10.5, mean = mu, sd = sigma) - pnorm(9.5, mean = mu, sd = sigma)))\n\n\n[1] 1.567447e-07\n\n\nCode\n# this is density, not probability (area under the curve) (dnorm(10, mean = 10 * 0.25, sd=sqrt(10 * 0.25 * (1 - 0.25))))",
+    "text": "2.3 Part c\nThe approximation for the probability computed in Part B is not close, underestimating by approximately 6 times. This is because the sample size is not large enough for us to invoke Central Limit Theorem and appropriately fit a \\(z\\)-distribution over the Binomial Distribution.\n\\(P(X=10) = P(10 \\le 10+0.5) - P(10 \\le 10-0.5) = 1.567447e-07\\)\n\n\n\nCode\nn = 10\np = 0.25\nmu = n * p\nsigma = sqrt(n * p * (1 - p))\n\n((pnorm(10.5, mean = mu, sd = sigma) - pnorm(9.5, mean = mu, sd = sigma)))\n\n\n[1] 1.567447e-07\n\n\nCode\n# this is density, not probability (area under the curve) (dnorm(10, mean = 10 * 0.25, sd=sqrt(10 * 0.25 * (1 - 0.25))))",
     "crumbs": [
       "Data Analysis I",
       "Homework 1: One Sample Inference"
