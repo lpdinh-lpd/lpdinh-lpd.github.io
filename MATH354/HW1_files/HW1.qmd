@@ -294,7 +294,7 @@ This probability is incredibly small.
 
 ## Part c
 
-The approximation for the probability computed in Part B is not close, underestimating by approximately 8 times. This is because the sample size is not large enough for us to invoke Central Limit Theorem and appropriately fit a $z$-distribution over the Binomial Distribution.
+The approximation for the probability computed in Part B is not close, underestimating by approximately 6 times. This is because the sample size is not large enough for us to invoke Central Limit Theorem and appropriately fit a $z$-distribution over the Binomial Distribution.
 
 $P(X=10) = P(10 \le 10+0.5) - P(10 \le 10-0.5) = 1.567447e-07$ 
 
