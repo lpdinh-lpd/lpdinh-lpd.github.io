@@ -184,7 +184,7 @@ Using the one-sample exact binomial test, we can decide if this observed count o
 
 * $H_a$: $p \neq 0.5$
 
-Of the 10 dogs tested, 9 (90%) performed above chance across 12 trials. This proportion was statistically discernible from the chance level of .50, $p = .021, 95\% CI [.555, .997]$. The effect size was large, Cohen's $h=0.927$. There is statistically discernible support for the alternative hypothesis, that is, the dogs performed significantly above chance with the new toys in the Overhearing Condition. This indicates that the dogs are able to map the labels onto the objects just by overhearing their caregivers referring to the new toys.
+Of the 10 dogs tested, 9 (90%) performed above chance across 12 trials. This proportion was statistically discernible from the chance level of .5, $p = .021, 95\% CI [.555, .997]$. The effect size was large, Cohen's $h=.927$. There is statistically discernible support for the alternative hypothesis, that is, the dogs performed significantly above chance with the new toys in the Overhearing Condition. This indicates that the dogs are able to map the labels onto the objects just by overhearing their caregivers referring to the new toys.
 
 ```{r}
 overhear_b = c(1, 1, 1, 1, 0, 1, 1, 1, 1, 1)
@@ -233,9 +233,9 @@ We want to know if there is a difference in performance of the dogs between two 
 
 Under the null hypothesis, that is the hypothesis of no difference, group assignments do not matter. In a randomization test, we combine the data and randomly reassign group labels to them for many times to create a null distribution, then calculate the probability of observing what we observed or something that provides more support for $H_a$ under the assumption that the null is true.
 
-In this case, for each dog, we can swap the proportion of correct retrieval in the Direct Address condition with that in the Overhearing condition, or keep in their original conditions. This swap is decided randomly for each of the 10 dogs. The mean of the difference in the proportions of correct retrieval between two conditions is calculated. We repeat this process many times and build a distribution under $H_0$.
+In this case, for each dog, we can swap the proportion of correct retrieval in the Direct Address condition with that in the Overhearing condition, or keep in their original conditions. This swap is decided randomly for each of the 10 dogs. The mean of the paired difference in the proportions of correct retrieval between two conditions is calculated. We repeat this process many times and build a distribution under $H_0$.
 
-I performed the randomization for 10,000 times, and used bootstrapping to find the confidence interval. The mean of the paired difference observed in our sample was not significantly different from 0 ($M=-0.008, SD = 0.265, p=0.984, 95\% CI [-0.150, 0.158]$). We do not have statisically discernible support for the alternative hypothesis, suggesting that there is not a significant difference in performance of the dogs between the Overhearing and the Direct Address condition.
+I performed the randomization for 10,000 times, and used bootstrapping to find the confidence interval. The mean of the paired difference observed in our sample was not significantly different from 0 ($M=-0.008, SD =.265, p=.984, 95\% CI [-0.150, 0.158]$). We do not have statisically discernible support for the alternative hypothesis, suggesting that there is not a significant difference in performance of the dogs between the Overhearing and the Direct Address condition. The dogs were able to learn the labels for the new toys when they were directly addressed by their owners just as well as when they overheard their owners talking about the toys to someone else.
 
 ```{r}
 set.seed(7272)
@@ -277,7 +277,9 @@ for(i in 1:10000){
 
 ## Part a
 
-One condition of the use of Binomial Distribution is that the observations in our sample are independent. If researchers pool two observations from each dog (which are dependent on each other), across 10 dogs, together, then the observations are not independent.
+One condition of use of the Binomial Distribution is that the observations in our sample are independent. If researchers pool two observations from each dog (which are dependent on each other, since it's a within-subject design), across 10 dogs, together, then the observations are not independent.
+
+In addition, the probability of success in each trial seems to be different from 0.5 because after every time they retrieved a toy, there was one toy less. However, the researchers did mitigate this by putting the toys back after every 2 trial, and they also observed that most of the times the dogs only chose between the 2 new toys in the trials for the new toys. We might as well calculate the probability of success across these trials and provide a confidence interval rather than setting a chance level to compare to.
 
 ## Part b
 
@@ -292,7 +294,7 @@ This probability is incredibly small.
 
 ## Part c
 
-The approximation for the probability computed in Part B is not close. The sample size is not large enough for us to invoke Central Limit Theorem to fit a $z$-distribution over the Binomial Distribution.
+The approximation for the probability computed in Part B is not close, underestimating by approximately 8 times. This is because the sample size is not large enough for us to invoke Central Limit Theorem and appropriately fit a $z$-distribution over the Binomial Distribution.
 
 $P(X=10) = P(10 \le 10+0.5) - P(10 \le 10-0.5) = 1.567447e-07$ 
 
@@ -309,4 +311,4 @@ sigma = sqrt(n * p * (1 - p))
 
 ## Part d
 
-When all trials are successes, it does not make sense to make inference because there is no variablity to take into consideration. Their may be variablity in the population that our sample doesn't reflect, but we don't have any information provided by our data to give us a clue as to that.
+When all trials are successes, it does not make sense to make inference because there is no variablity to take into consideration. There may be variablity in the population that our sample doesn't reflect, but we don't have any information in our data to give us a clue as to that.
