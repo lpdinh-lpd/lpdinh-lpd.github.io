@@ -190,7 +190,7 @@ F_crit <- qf(1 - alpha, df1, df2)
 
 ```{r}
 #| label: fig-pwr1
-#| fig-cap: " (f = 0.25, k = 5); n per group = 40 (N = 200)"
+#| fig-cap: "Moderate (f = 0.25, k = 5); n per group = 40 (N = 200)"
 #| fig-width: 5
 #| fig-height: 3
 #| scale: "80%"
