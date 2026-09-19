@@ -43,7 +43,7 @@ website:
       - text: "Homework 1: One Sample Inference"
         href: MATH354/HW1_files/HW1.qmd
       - text: "Homework 1: One Sample Inference"
-        href: MATH354/HW2_files/HW2.qmd.qmd
+        href: MATH354/HW2_files/HW2.qmd.
   
   page-footer:
     left: "© 2026 Colgate University Student Portfolio"
