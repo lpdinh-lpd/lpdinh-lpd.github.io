@@ -474,16 +474,16 @@ df = data.frame(
   m16 = c(7.30182, 7.12416, 8.28764),
   m16t = c(4.69304, 2.51326, 2.38019))
 
-df1 = df |>
+df = df |>
   pivot_longer(cols = c(m2, m6, m16, m16t),
                names_to = "Group",
                values_to = "Value")
 
-y_limits <- range(df1$Value)
+y_limits = range(df$Value)
 ```
 
 ```{r}
-summary = df1 |>
+summary = df |>
   mutate(Group = factor(Group, levels = c("m2", "m6", "m16", "m16t"))) |>
   group_by(Group) |>
   summarize(
@@ -514,7 +514,7 @@ summary |> knitr::kable(digits = 2)
 #| fig-align: "center"
 #| size: scriptsize
 
-ggplot(df1, aes(x = Group, y = Value, fill = Group)) +
+ggplot(df, aes(x = Group, y = Value, fill = Group)) +
   geom_boxplot(alpha = 0.7, show.legend = FALSE) +
   geom_jitter(width = 0.1, size = 2) +
   theme_bw() +
@@ -531,7 +531,7 @@ The variable of interest is quantitative; the sample is presumed to be represent
 There is a significant difference between groups regarding glucose level ($F_{3,3.55}=98.46, p<0.001, omega^2=0.97$). The small sample size technically increases Type II error (the probability of failing to reject $H_0$ when $H_a$ is true), but in this case, we were still able to find statistically discernible support for $H_a$.
 
 ```{r}
-(welch_result = oneway.test(Value ~ Group, data = df1, var.equal = FALSE))
+(welch_result = oneway.test(Value ~ Group, data = df, var.equal = FALSE))
 (omega_squared(welch_result))
 ```
 
@@ -539,7 +539,7 @@ There is a significant difference between groups regarding glucose level ($F_{3,
 Conduct post-hoc pairwise comparisons to determine if age-induced inflammatory glucose hypermetabolism increase with age and whether low-dose nicotine reduces age-induced inflammatory glucose hypermetabolism. 
 
 ```{r}
-games_howell_result = df1 |>
+games_howell_result = df |>
   games_howell_test(Value ~ Group)
 # the estimate is calculated by group 2 - group 1
 ```
@@ -587,32 +587,33 @@ ggdat = tibble(
     paste(label_map["m2"], "-", label_map["m6"])
   ),
   estimate = c(
-    -games_howell_result$estimate[games_howell_result$group1 == "m16t" & games_howell_result$group2 == "m2"],
-    -games_howell_result$estimate[games_howell_result$group1 == "m16t" & games_howell_result$group2 == "m6"],
+    games_howell_result$estimate[games_howell_result$group1 == "m16t" & games_howell_result$group2 == "m2"],
+    games_howell_result$estimate[games_howell_result$group1 == "m16t" & games_howell_result$group2 == "m6"],
     -games_howell_result$estimate[games_howell_result$group1 == "m16"  & games_howell_result$group2 == "m16t"],
     -games_howell_result$estimate[games_howell_result$group1 == "m16"  & games_howell_result$group2 == "m6"],
     -games_howell_result$estimate[games_howell_result$group1 == "m16"  & games_howell_result$group2 == "m2"],
-     games_howell_result$estimate[games_howell_result$group1 == "m2"   & games_howell_result$group2 == "m6"]
+    games_howell_result$estimate[games_howell_result$group1 == "m2"   & games_howell_result$group2 == "m6"]
   ),
   conf.low = c(
-    -games_howell_result$conf.high[games_howell_result$group1 == "m16t" & games_howell_result$group2 == "m2"],
-    -games_howell_result$conf.high[games_howell_result$group1 == "m16t" & games_howell_result$group2 == "m6"],
+    games_howell_result$conf.high[games_howell_result$group1 == "m16t" & games_howell_result$group2 == "m2"],
+    games_howell_result$conf.high[games_howell_result$group1 == "m16t" & games_howell_result$group2 == "m6"],
     -games_howell_result$conf.high[games_howell_result$group1 == "m16"  & games_howell_result$group2 == "m16t"],
     -games_howell_result$conf.high[games_howell_result$group1 == "m16"  & games_howell_result$group2 == "m6"],
     -games_howell_result$conf.high[games_howell_result$group1 == "m16"  & games_howell_result$group2 == "m2"],
-     games_howell_result$conf.low[games_howell_result$group1 == "m2"   & games_howell_result$group2 == "m6"]
+    games_howell_result$conf.low[games_howell_result$group1 == "m2"   & games_howell_result$group2 == "m6"]
   ),
   conf.high = c(
-    -games_howell_result$conf.low[games_howell_result$group1 == "m16t" & games_howell_result$group2 == "m2"],
-    -games_howell_result$conf.low[games_howell_result$group1 == "m16t" & games_howell_result$group2 == "m6"],
+    games_howell_result$conf.low[games_howell_result$group1 == "m16t" & games_howell_result$group2 == "m2"],
+    games_howell_result$conf.low[games_howell_result$group1 == "m16t" & games_howell_result$group2 == "m6"],
     -games_howell_result$conf.low[games_howell_result$group1 == "m16"  & games_howell_result$group2 == "m16t"],
     -games_howell_result$conf.low[games_howell_result$group1 == "m16"  & games_howell_result$group2 == "m6"],
     -games_howell_result$conf.low[games_howell_result$group1 == "m16"  & games_howell_result$group2 == "m2"],
-     games_howell_result$conf.high[games_howell_result$group1 == "m2"  & games_howell_result$group2 == "m6"]
+    games_howell_result$conf.high[games_howell_result$group1 == "m2"  & games_howell_result$group2 == "m6"]
   )
 )
 
 ggdat$comparison = factor(ggdat$comparison, levels = ggdat$comparison)
+
 ```
 
 ```{r}
