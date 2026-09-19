@@ -100,7 +100,7 @@ pdiff = c(-0.0833, 0.0000, -0.0833, -0.0833, 0.5833, 0.0833, -0.2500, 0.1667, 0.
 
 summary_pdiff = data.frame(
   Statistics = c("Mean", "SD", "Median", "IQR", "Skewness", "Excess_Kurtosis", "Min", "Max"),
-  Value      = c(mean(pdiff), sd(pdiff), median(pdiff), IQR(pdiff),
+  Value = c(mean(pdiff), sd(pdiff), median(pdiff), IQR(pdiff),
                  e1071::skewness(pdiff), e1071::kurtosis(pdiff), min(pdiff), max(pdiff))
 )
 ```
