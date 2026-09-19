@@ -42,8 +42,8 @@ website:
       contents:
       - text: "Homework 1: One Sample Inference"
         href: MATH354/HW1_files/HW1.qmd
-      - text: "Homework 1: One Sample Inference"
-        href: MATH354/HW2_files/HW2.qmd.
+      - text: "Homework 2: k Sample Inference"
+        href: MATH354/HW2_files/HW2.qmd
   
   page-footer:
     left: "© 2026 Colgate University Student Portfolio"
