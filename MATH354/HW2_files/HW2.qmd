@@ -91,7 +91,13 @@ In the end, describe the Type I error rates.
 
 Because data for all groups are drawn from the same distribution, there's no mean difference between 5 groups (the null hypothesis is true).
 
-The Type I error rate is 5 times higher in the unadjusted $t$-tests ($0.286$) than in the Tukey's HSD adjusted pairwise tests ($0.054$). This means that, if we don't correct for the multiple comparison problem, we're much more likely to make Type I error when performing the same statistical test on the same dataset. Noted that even after correction, our Type I error rate is slightly above $\alpha = 0.05$.
+If the 10 pairwise comparisons were independent, we would expect the probability of making at least 1 Type I error (FWER) to be approximately $0.4$.
+
+$$ P(\text{at least 1}) = 1 - P(\text{none}) = 1 - (1 - \alpha)^{10} $$
+
+The Type I error rate is $0.286$ in the unadjusted $t$-tests, still lower than $0.4$. This is because the pairwise comparisons are not independent (e.g., comparison between group 1 and 2 and comparison between group 1 and 3 both use data from group 1)
+
+The unadjusted $t$-tests also yield a Type I error rate 5 times higher than in the Tukey's HSD adjusted pairwise tests ($0.054$). This means that, if we don't correct for the multiple comparison problem, we're much more likely to make Type I error when performing the same statistical test on the same dataset. 
 
 ```{r}
 set.seed(7272)
@@ -164,7 +170,7 @@ What is the required sample size per group ($n$) and the overall total sample si
 
 **Solution**
 
-In order to detect a moderate effect size of $f=0.25$ with 80% power, we need 40 observations per group and a total of 200 observations for 5 groups. The study was adequately powered.
+In order to detect a moderate effect size of $f=0.25$ with 80% power, we need 40 observations per group and a total of 200 observations for 5 groups. The study was adequately powered because its sample was 97 + 176 + 135 + 67 + 67 = 542, well above 200.
 
 ```{r}
 pwr_analysis = pwr.anova.test(k = 5,
@@ -226,7 +232,10 @@ and use the non-central $F$ distribution to compute the power under $H_a$ for Co
 
 **Solution** 
 
-The total sample size is not enough for the sample to be adequately powered. Each group has a sample size of 30. The statistical power achieved under this budget constraint is $0.67$.
+The total sample size is not enough for the sample to be adequately powered at 80%. Each group has a sample size of 30. The statistical power achieved under this budget constraint is $0.67$.
+
+The non-centrality parameter is $\lambda=9.375$ and is used to construct the $F$-distribution under $H_a$.
+
 
 ```{r}
 (pwr_analysis = pwr.anova.test(k = 5,
@@ -248,7 +257,6 @@ df2 = N - k
 lambda = f^2 * N
 
 F_crit = qf(1 - alpha, df1, df2)
-
 ```
 
 ```{r}
@@ -304,13 +312,17 @@ Suppose the researcher wanted to perform a follow-up test where they want to ens
 
 **Solution**
 
-The sample size computed in Part a is not sufficient to detect a difference between group 1 and 2 specifically, because the power analysis for omnibus ANOVA provides us with the number of observations within each group that enables us to detect **any pairwise difference** 80% of the time when there is **any pairwise difference** ($H_a$ is true). The probability of detecting 1 true pairwise difference among 5 groups is much higher than detecting the pairwise difference when there's information about 2 groups only (intuitive example: if you have 5 dices, the probability of at least one of them rolling 6 is much higher than the probability of rolling 6 when you have 1 dice).
+The sample size computed in Part a is not sufficient to detect a difference between stage 1 and 2 specifically, because:
 
-The sample size calculated in Part a only allows us to detect difference between stage 1 and 2 with $0.07$ power. I use `PMCMRplus::power.tukey.test()` and `repeat` loop to compute a sample size that attains adequate power. We need 315 observations for each group to attain power of $0.80$.
+* The computation in Part a uses Cohen's $f$, which reflects the spread of group means around within-group variability. So the power calculation using this effect size doesn't account for any particular pair's difference.
+
+* The power analysis for omnibus ANOVA uses data from 5 groups, but the pairwise power analysis only uses information from 2 groups.
+
+The sample size calculated in Part a only allows us to detect difference between stage 1 and 2 with $0.24$ power. I use `PMCMRplus::power.tukey.test()` and `repeat` loop to compute a sample size that attains adequate power. We need 150 observations for each group to attain power of $0.80$.
 
 ```{r}
 pwr12 = PMCMRplus::power.tukey.test(n = 40,
-                                    groups = 5,
+                                    groups = 2,
                                     delta = 0.25, #assumed mean population difference between stage 1 and 2
                                     within.var = 0.77,
                                     sig.level = 0.05)
@@ -321,9 +333,10 @@ pwr12 = PMCMRplus::power.tukey.test(n = 40,
 x = 40
 repeat{
   pwr12 = PMCMRplus::power.tukey.test(n = x,
-                                      groups = 5,
+                                      groups = 2,
                                       delta = 0.25, 
-                                      within.var = 0.77,
+                                      within.var = 0.77^2,
+  # square the SD
                                       sig.level = 0.05)
   if(pwr12$power >= 0.80) {
     # using == 0.80 will likely never be true, because power is continuous
@@ -358,7 +371,7 @@ The researcher's design in Part a yields 100% power to detect **at least a mean 
 
 Even when sample size for each group is doubled, the powers for all pairwise comparison are not altogether beyond 80% (e.g., the power to detect difference between stage 1 and 2 is 26%).
 
-The researchers need 331 observations per group in order to have adequate power for all pairwise comparisons.
+The researchers need about 330 observations per group in order to have adequate power for all pairwise comparisons.
 
 ```{r}
 #| cache: true
@@ -417,10 +430,11 @@ repeat{
                       alpha_level = 0.05,
                       nsims = 1000,
                       seed = 7272)
-  x = x+1
+
   if (all(power$pc_results$power >= 80)) {
     break
   }
+  x = x+1
 }
 print(c(x, power$pc_results))
 ```
@@ -466,6 +480,10 @@ $H_a$: at least 1 mean is different
 ## Part b
 Perform some exploratory data analysis to provide empirical information about the researchers question.
 
+**Solution**
+
+SUV~max~ seems to increase with age, and the nicotine treatments reduce SUV~max~ in the treated 16-month-old group. Variability differs across groups (e.g., there's a huge outlier in the treated 16-month-old group).
+
 ```{r}
 df = data.frame(
   ID = c(1, 2, 3),
@@ -491,8 +509,6 @@ summary = df |>
     SD = sd(Value),
     Median = median(Value),
     IQR = IQR(Value),
-    Skewness = e1071::skewness(Value),
-    Excess_Kurtosis = e1071::kurtosis(Value),
     Min = min(Value),
     Max = max(Value)
   )
@@ -500,25 +516,45 @@ summary = df |>
 
 ```{r}
 #| label: tbl-summary
-#| tbl-cap: "Descriptive Statistics for Glucose Level Across Age and Treatment Group"
+#| tbl-cap: "Descriptive Statistics for SUVmax Across Age and Treatment Group"
 #| tbl-align: "center"
 #| size: scriptsize
 summary |> knitr::kable(digits = 2)
 ```
 
 ```{r}
-#| label: fig-group-boxplots
-#| fig-cap: "Distribution of Glucose Level Across Age and Treatment Groups"
-#| fig-width: 10
-#| fig-height: 8
-#| fig-align: "center"
-#| size: scriptsize
+```{r}
+df = data.frame(
+  ID = c(1, 2, 3),
+  m2 = c(1.48969, 1.30168, 1.30620),
+  m6 = c(4.36000, 4.28807, 3.64184),
+  m16 = c(7.30182, 7.12416, 8.28764),
+  m16t = c(4.69304, 2.51326, 2.38019))
 
-ggplot(df, aes(x = Group, y = Value, fill = Group)) +
-  geom_boxplot(alpha = 0.7, show.legend = FALSE) +
-  geom_jitter(width = 0.1, size = 2) +
+df = df |>
+  pivot_longer(cols = c(m2, m6, m16, m16t),
+               names_to = "Group",
+               values_to = "Value")
+
+y_limits = range(df$Value)
+```
+
+```{r}
+#| label: fig-summary
+#| fig-cap: "SUVmax Across Age and Treatment Groups"
+#| fig-width: 8
+#| fig-height: 5
+#| fig-align: "center"
+
+ggplot(summary) +
+  geom_bar(aes(x = Group, y = Mean), stat = "identity", alpha = 0.6) +
+  geom_errorbar(aes(x = Group, ymin = Mean - SD, ymax = Mean + SD), width = 0.15) +
+  geom_point(data = df,
+             aes(x = factor(Group, levels = c("m2", "m6", "m16", "m16t")), y = Value),
+             position = position_jitter(width = 0.08, height = 0)) +
+  geom_hline(yintercept = 0) +
   theme_bw() +
-  labs(x = "Group", y = "SUV max")
+  labs(x = "Group", y = "SUVmax")
 ```
 
 ## Part c
@@ -526,9 +562,9 @@ Perform and report the results of the omnibus test. Make sure to evaluate the co
 
 **Solution**
 
-The variable of interest is quantitative; the sample is presumed to be representative of the population; the sample observations are presumed to be independent; and sample size is equal across groups. From the numerical summary, we observe that groups don't have equal variances, so we cannot perform ANOVA and will have to use Welch's ANOVA. There's no reason to assume normality, but this test is generally robust to normality, as long as we fulfill other conditions of use. 
+The variable of interest is quantitative; the sample is presumed to be representative of the population; the sample observations are presumed to be independent. From the numerical summary, we observe that groups don't have equal variances, so we cannot perform ANOVA and will have to use Welch's ANOVA. There's no reason to assume normality, but this test is generally robust to normality, as long as we fulfill other conditions of use. 
 
-There is a significant difference between groups regarding glucose level ($F_{3,3.55}=98.46, p<0.001, omega^2=0.97$). The small sample size technically increases Type II error (the probability of failing to reject $H_0$ when $H_a$ is true), but in this case, we were still able to find statistically discernible support for $H_a$ because the effect size is so large.
+There is a significant difference between groups regarding SUV~max~ ($F_{3,3.55}=98.46, p<0.001, \omega^2=0.97$). The small sample size technically increases Type II error (the probability of failing to reject $H_0$ when $H_a$ is true), but in this case, we were still able to find statistically discernible support for $H_a$ because the effect size is so large.
 
 ```{r}
 (welch_result = oneway.test(Value ~ Group, data = df, var.equal = FALSE))
@@ -553,14 +589,14 @@ age = games_howell_result |>
 
 ```{r}
 #| label: tbl-age
-#| tbl-cap: "Difference in Glucose Level Between Age Groups"
+#| tbl-cap: "Difference in SUVmax Between Age Groups"
 #| tbl-align: "center"
 #| size: scriptsize
 age |> knitr::kable(digits = 2)
 ```
 
 ```{r}
-# Does low-dose nicotine reduce glucose hypermetabolism at 16 months? (m16 vs m16t)
+# Does low-dose nicotine reduce SUV max at 16 months? (m16 vs m16t)
 nicotine = games_howell_result |>
   filter(group1 == "m16" & group2 == "m16t") |>
   select(group1, group2, estimate, conf.low, conf.high, p.adj) 
@@ -568,7 +604,7 @@ nicotine = games_howell_result |>
 
 ```{r}
 #| label: tbl-nicotine
-#| tbl-cap: "Difference in Glucose Level Between Treatment and Control Groups"
+#| tbl-cap: "Difference in SUVmax Between Treatment and Control Groups"
 #| tbl-align: "center"
 #| size: scriptsize
 nicotine |> knitr::kable(digits = 2)
@@ -641,6 +677,6 @@ Write a short paragraph directly addressing the researcher’s hypothesis using 
 
 **Solution**
 
-Games-Howell Pairwise comparisons among the untreated age groups demonstrated a statistically discernible increase in glucose hypermetabolism with age. Glucose levels were significantly higher at 16 months compared to 2 months ($M_{diff} = 6.21, p = .007$, 95% CI [3.81, 8.60]), at 16 months compared to 6 months ($M_{diff} = 3.47, p = .008$, 95% CI [1.56, 5.39]), and at at 6 months compared to 2 months ($M_{diff} = 2.73, p = .012$, 95% CI [1.31, 4.15]).
+Games-Howell Pairwise comparisons among the untreated age groups demonstrated a statistically discernible increase in glucose hypermetabolism with age. SUV~max~ were significantly higher at 16 months compared to 2 months ($M_{diff} = 6.21, p = .007$, 95% CI [3.81, 8.60]), at 16 months compared to 6 months ($M_{diff} = 3.47, p = .008$, 95% CI [1.56, 5.39]), and at 6 months compared to 2 months ($M_{diff} = 2.73, p = .012$, 95% CI [1.31, 4.15]).
 
-Low-dose nicotine treatment at 16 months significantly reduced glucose hypermetabolism, compared to the 16-month-old control group ($M_{diff} = 4.38, p = .043$, 95% CI [0.24, 8.51]). Notably, glucose levels in the treatment group did not differ significantly from those of the younger, untreated 2-month group ($M_{diff} = 1.83, p = .308$, 95% CI [-3.30, 6.96]) or the 6-month group ($M_{diff} = -0.90, p = .698$, 95% CI [-5.47, 3.67]).
+Low-dose nicotine treatment at 16 months significantly reduced glucose hypermetabolism, compared to the 16-month-old control group ($M_{diff} = 4.38, p = .043$, 95% CI [0.24, 8.51]). Notably, SUV~max~ in the treatment group did not differ significantly from those of the younger, untreated 2-month group ($M_{diff} = 1.83, p = .308$, 95% CI [-3.30, 6.96]) or the 6-month group ($M_{diff} = -0.90, p = .698$, 95% CI [-5.47, 3.67]).
