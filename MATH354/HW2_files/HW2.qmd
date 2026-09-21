@@ -93,9 +93,9 @@ Because data for all groups are drawn from the same distribution, there's no mea
 
 If the 10 pairwise comparisons were independent, we would expect the probability of making at least 1 Type I error (FWER) to be approximately $0.4$.
 
-$$ P(\text{at least 1}) = 1 - P(\text{none}) = 1 - (1 - \alpha)^{10} $$
+$$ P(\text{at least 1}) = 1 - P(\text{none}) = 1 - (1 - \alpha)^{10} = 1 - (1 - 0.05)^{10} = 0.40 $$
 
-The Type I error rate is $0.286$ in the unadjusted $t$-tests, still lower than $0.4$. This is because the pairwise comparisons are not independent (e.g., comparison between group 1 and 2 and comparison between group 1 and 3 both use data from group 1)
+The Type I error rate in the unadjusted $t$-tests is $0.286$, still lower than $0.4$. This is because the pairwise comparisons are not independent (e.g., comparison between group 1 and 2 and comparison between group 1 and 3 both use data from group 1).
 
 The unadjusted $t$-tests also yield a Type I error rate 5 times higher than in the Tukey's HSD adjusted pairwise tests ($0.054$). This means that, if we don't correct for the multiple comparison problem, we're much more likely to make Type I error when performing the same statistical test on the same dataset. 
 
@@ -335,8 +335,7 @@ repeat{
   pwr12 = PMCMRplus::power.tukey.test(n = x,
                                       groups = 2,
                                       delta = 0.25, 
-                                      within.var = 0.77^2,
-  # square the SD
+                                      within.var = 0.77^2, # square the SD
                                       sig.level = 0.05)
   if(pwr12$power >= 0.80) {
     # using == 0.80 will likely never be true, because power is continuous
@@ -363,9 +362,7 @@ Compute the power of the researcher's design (part a) using `Superpower::ANOVA_p
 
 **Solution**
 
-`Superpower::ANOVA_power()`estimates power via Monte Carlo simulation. It simulates a random dataset that has the same number of groups, sample size per group, means and SDs as the researchers assumed/expected (noted that power analysis is often conducted a priori). 
-
-It runs the ANOVA and pairwise tests on this dataset. Then, it calculates how many out of the total number of simulations (which we specify) a mean difference (between any group --- $H_a$: at least 1 mean is different) is detected. Thus, if the differences that the researchers expect does exist, the test can detect them that proportion of the times.
+`Superpower::ANOVA_power()`estimates power via Monte Carlo simulation. It simulates a random dataset that has the same number of groups, sample size per group, means and SDs as the researchers assumed/expected (noted that power analysis is often conducted a priori). It runs the ANOVA and pairwise tests on this dataset. Then, it calculates how many out of the total number of simulations (which we specify) a mean difference (between any group --- $H_a$: at least 1 mean is different) is detected. Thus, if the differences that the researchers expect does exist, the test can detect them that proportion of the times.
 
 The researcher's design in Part a yields 100% power to detect **at least a mean difference** among 5 groups, but the power to detect some pairwise comparisons are extremely low, namely the difference between stage 1 and 2 ($16.5\%$), stage 2 and 3 ($22.7\%$), and stage 4 and 5 ($35.3\%$). Difference between stage 1 and 3 can only be detected with approximately 60% power.
 
@@ -392,10 +389,10 @@ design_40 = ANOVA_design(design = "5b",
 # each level/group
 )
 # omnibus ANOVA
-(power_40 = ANOVA_power(design_40, 
+power_40 = ANOVA_power(design_40, 
                         alpha_level = 0.05, 
                         nsims = 1000, 
-                        seed = 7272))
+                        seed = 7272)
 ```
 
 ```{r}
@@ -408,10 +405,10 @@ design_80 = ANOVA_design(design = "5b",
                          sd = sd_pooled,
                          labelnames = c("Group", "g1", "g2", "g3", "g4", "g5")
 )
-(power_80 = ANOVA_power(design_80, 
+power_80 = ANOVA_power(design_80, 
                         alpha_level = 0.05, 
                         nsims = 1000, 
-                        seed = 7272))
+                        seed = 7272)
 ```
 
 ```{r}
@@ -535,8 +532,6 @@ df = df |>
   pivot_longer(cols = c(m2, m6, m16, m16t),
                names_to = "Group",
                values_to = "Value")
-
-y_limits = range(df$Value)
 ```
 
 ```{r}
@@ -562,7 +557,7 @@ Perform and report the results of the omnibus test. Make sure to evaluate the co
 
 **Solution**
 
-The variable of interest is quantitative; the sample is presumed to be representative of the population; the sample observations are presumed to be independent. From the numerical summary, we observe that groups don't have equal variances, so we cannot perform ANOVA and will have to use Welch's ANOVA. There's no reason to assume normality, but this test is generally robust to normality, as long as we fulfill other conditions of use. 
+The variable of interest is quantitative; the sample is presumed to be representative of the population; the sample observations are presumed to be independent. From @fig-summary and @tbl-summary, we observe that groups don't have equal variances, so we cannot perform ANOVA and have to use Welch's ANOVA. There's no reason to assume normality, but this test is generally robust to normality, as long as we fulfill other conditions of use. 
 
 There is a significant difference between groups regarding SUV~max~ ($F_{3,3.55}=98.46, p<0.001, \omega^2=0.97$). The small sample size technically increases Type II error (the probability of failing to reject $H_0$ when $H_a$ is true), but in this case, we were still able to find statistically discernible support for $H_a$ because the effect size is so large.
 
