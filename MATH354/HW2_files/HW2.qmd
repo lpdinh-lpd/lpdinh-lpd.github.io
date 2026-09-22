@@ -470,7 +470,7 @@ State the null ($H_0$) and alternative ($H_a$) hypotheses for the omnibus test.
 
 For the omnibus test,
 
-$H_0$: all 4 groups have the same $$\text{SUV}_{\max}$ measurements ($\mu_{2M}=\mu_{6M}=\mu_{16M}=\mu_{16MT}$)
+$H_0$: all 4 groups have the same SUV~max~ measurements ($\mu_{2M}=\mu_{6M}=\mu_{16M}=\mu_{16MT}$)
 
 $H_a$: at least 1 mean is different
 

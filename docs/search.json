@@ -136,7 +136,7 @@
     "href": "MATH354/HW2_files/HW2.html#part-a-2",
     "title": "Homework 2 – k Sample Inference",
     "section": "3.1 Part a",
-    "text": "3.1 Part a\nState the null (\\(H_0\\)) and alternative (\\(H_a\\)) hypotheses for the omnibus test.\nSolution\nFor the omnibus test,\n\\(H_0\\): all 4 groups have the same $\\(\\text{SUV}_{\\max}\\) measurements (\\(\\mu_{2M}=\\mu_{6M}=\\mu_{16M}=\\mu_{16MT}\\))\n\\(H_a\\): at least 1 mean is different",
+    "text": "3.1 Part a\nState the null (\\(H_0\\)) and alternative (\\(H_a\\)) hypotheses for the omnibus test.\nSolution\nFor the omnibus test,\n\\(H_0\\): all 4 groups have the same SUVmax measurements (\\(\\mu_{2M}=\\mu_{6M}=\\mu_{16M}=\\mu_{16MT}\\))\n\\(H_a\\): at least 1 mean is different",
     "crumbs": [
       "Data Analysis I",
       "Homework 2: k Sample Inference"
