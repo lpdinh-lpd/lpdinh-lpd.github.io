@@ -366,7 +366,7 @@ window.Quarto = {
 <p>If the 10 pairwise comparisons were independent, we would expect the probability of making at least 1 Type I error (FWER) to be approximately <span class="math inline">\(0.4\)</span>.</p>
 <p><span class="math display">\[ P(\text{at least 1}) = 1 - P(\text{none}) = 1 - (1 - \alpha)^{10} = 1 - (1 - 0.05)^{10} = 0.40 \]</span></p>
 <p>The Type I error rate in the unadjusted <span class="math inline">\(t\)</span>-tests is <span class="math inline">\(0.286\)</span>, still lower than <span class="math inline">\(0.4\)</span>. This is because the pairwise comparisons are not independent (e.g., comparison between group 1 and 2 and comparison between group 1 and 3 both use data from group 1).</p>
-<p>The unadjusted <span class="math inline">\(t\)</span>-tests also yield a Type I error rate 5 times higher than in the Tukey’s HSD adjusted pairwise tests (<span class="math inline">\(0.054\)</span>). This means that, if we don’t correct for the multiple comparison problem, we’re much more likely to make Type I error when performing the same statistical test on the same dataset.</p>
+<p>The unadjusted <span class="math inline">\(t\)</span>-tests also yield a Type I error rate 5 times higher than in the Tukey’s HSD adjusted pairwise tests (<span class="math inline">\(0.054\)</span>). This means that, if we don’t correct for the multiple comparison problem, we’re much more likely to make Type I error when performing the same statistical test on the same dataset many times.</p>
 <p></p>
 <div class="cell">
 <details class="code-fold">
@@ -447,7 +447,7 @@ window.Quarto = {
 </section>
 <section id="question-2-power-analyses" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Question 2: Power Analyses</h1>
-<p>Revisit the MFAP4 study from class.</p>
+<p>Revisit the MFAP4 study from class <span class="citation" data-cites="Bracht2016">(<a href="#ref-Bracht2016" role="doc-biblioref">Bracht et al. 2016</a>)</span>.</p>
 <section id="part-a-1" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="part-a-1"><span class="header-section-number">2.1</span> Part a</h2>
 <p>Assume the researchers were targeting a moderate effect size of Cohen’s <span class="math inline">\(f = 0.25\)</span>, setting significance level <span class="math inline">\(\alpha = 0.05\)</span> and desired power <span class="math inline">\(1 - \beta = 0.80\)</span>. Were they adequately powered?</p>
@@ -1316,6 +1316,9 @@ Figure&nbsp;4: Pairwise Games-Howell CIs
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-Bracht2016" class="csl-entry" role="listitem">
+Bracht, Thilo, Cornelia Mölleken, Maike Ahrens, et al. 2016. <span>“Evaluation of the Biomarker Candidate <span>MFAP4</span> for Non-Invasive Assessment of Hepatic Fibrosis in Hepatitis <span>C</span> Patients.”</span> <em>Journal of Translational Medicine</em> 14 (1): 201. <a href="https://doi.org/10.1186/s12967-016-0952-3">https://doi.org/10.1186/s12967-016-0952-3</a>.
+</div>
 <div id="ref-Yang23" class="csl-entry" role="listitem">
 <span class="nocase">Yang, Liang, Junfeng Shen, Chunhua Liu, et al.</span> 2023. <span>“Nicotine Rebalances NAD+ Homeostasis and Improves Aging-Related Symptoms in Male Mice by Enhancing NAMPT Activity.”</span> <em>Nature Communications</em> 14 (1): 900.
 </div>
