@@ -1081,7 +1081,7 @@ Table&nbsp;6: Estimated marginal trends for the model in Question 1 when quantit
 </div>
 </div>
 <p></p>
-<p>After transformation,transformation</p>
+<p>After transformation,</p>
 <ul>
 <li><p><span class="math inline">\(\beta_7\)</span> is the effect of a 1-SD change in <span class="math inline">\(x_7\)</span> when <span class="math inline">\(x_8\)</span> is at its mean.</p></li>
 <li><p><span class="math inline">\(\beta_7\)</span> is the effect of a 1-SD change in <span class="math inline">\(x_7\)</span> when <span class="math inline">\(x_8\)</span> is at its mean.</p></li>
@@ -1135,14 +1135,135 @@ Table&nbsp;6: Estimated marginal trends for the model in Question 1 when quantit
 \widehat{\beta}_0 &amp;= \bar{y} - \widehat{\beta}_1 \bar{x}_1 \\
 \widehat{\beta}_1 &amp;= \frac{\sum_{i=1}^n (x_{1i} - \bar{x}_1)(y_i-\bar{y})}{\sum_{i=1}^n (x_{1i}-\bar{x}_1)^2}.
 \end{align*}\]</span></p>
+<p><strong>Solution:</strong> <span class="math inline">\(\beta_0=80.755\)</span>, <span class="math inline">\(\beta_1=0.3654\)</span></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-label="1"></a><span class="co"># create dataframe</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-label="2"></a>df <span class="ot">=</span> <span class="fu">data.frame</span>(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-label="3"></a>  <span class="at">temp =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="sc">-</span><span class="dv">25</span>, <span class="sc">-</span><span class="dv">75</span>, <span class="sc">-</span><span class="dv">125</span>, <span class="sc">-</span><span class="dv">175</span>),</span>
+<span id="cb20-4"><a href="#cb20-4" aria-label="4"></a>  <span class="at">strength =</span> <span class="fu">c</span>(<span class="fl">81.93</span>, <span class="fl">76.63</span>, <span class="fl">63.23</span>, <span class="fl">32.13</span>, <span class="fl">12.83</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-label="5"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-label="1"></a><span class="co"># create function</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-label="2"></a>func <span class="ot">=</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb21-3"><a href="#cb21-3" aria-label="3"></a>  x_bar <span class="ot">=</span> <span class="fu">mean</span>(x)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-label="4"></a>  y_bar <span class="ot">=</span> <span class="fu">mean</span>(y)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-label="5"></a>  numerator <span class="ot">=</span> <span class="fu">sum</span>((x <span class="sc">-</span> x_bar) <span class="sc">*</span> (y <span class="sc">-</span> y_bar))</span>
+<span id="cb21-6"><a href="#cb21-6" aria-label="6"></a>  denominator <span class="ot">=</span> <span class="fu">sum</span>((x <span class="sc">-</span> x_bar)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-label="7"></a>  numerator <span class="sc">/</span> denominator</span>
+<span id="cb21-8"><a href="#cb21-8" aria-label="8"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-label="1"></a><span class="co"># input dataframe into function</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-label="2"></a>(<span class="at">b1 =</span> <span class="fu">func</span>(df<span class="sc">$</span>temp, df<span class="sc">$</span>strength))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3654</code></pre>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-label="1"></a><span class="co"># calculate b0</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-label="2"></a>(<span class="at">b0 =</span> <span class="fu">mean</span>(df<span class="sc">$</span>strength) <span class="sc">-</span> b1 <span class="sc">*</span> <span class="fu">mean</span>(df<span class="sc">$</span>temp))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 80.755</code></pre>
+</div>
+</div>
+<p></p>
 </section>
 <section id="part-b-1" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="part-b-1"><span class="header-section-number">2.2</span> Part b</h2>
 <p>Compute the estimates we derived using linear algebra in lecture 16: <span class="math display">\[\widehat{\boldsymbol{\beta}} = \left(\mathbf{X}'\mathbf{X}\right)^{-1} \mathbf{X}'\mathbf{Y}.\]</span> <strong>Hint:</strong> Run <code>?matrix()</code> in <code>R</code> for a quick reminder about how to create a matrix.</p>
+<p><strong>Solution:</strong></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-label="1"></a><span class="co"># create matrices</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-label="2"></a>x <span class="ot">=</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">25</span>, <span class="sc">-</span><span class="dv">25</span>, <span class="sc">-</span><span class="dv">75</span>, <span class="sc">-</span><span class="dv">125</span>, <span class="sc">-</span><span class="dv">175</span>),</span>
+<span id="cb26-3"><a href="#cb26-3" aria-label="3"></a>          <span class="at">nrow =</span> <span class="dv">5</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-label="4"></a>          <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-label="5"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-label="6"></a>y <span class="ot">=</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="fu">c</span>(<span class="fl">81.93</span>, <span class="fl">76.63</span>, <span class="fl">63.23</span>, <span class="fl">32.13</span>, <span class="fl">12.83</span>),</span>
+<span id="cb26-7"><a href="#cb26-7" aria-label="7"></a>          <span class="at">nrow =</span> <span class="dv">5</span>,</span>
+<span id="cb26-8"><a href="#cb26-8" aria-label="8"></a>          <span class="at">ncol =</span> <span class="dv">1</span>)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-label="9"></a><span class="co"># compute beta hat</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-label="10"></a>(<span class="at">bh =</span> <span class="fu">solve</span>(<span class="fu">t</span>(x) <span class="sc">%*%</span> x) <span class="sc">%*%</span> <span class="fu">t</span>(x) <span class="sc">%*%</span> y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>        [,1]
+[1,] 80.7550
+[2,]  0.3654</code></pre>
+</div>
+</div>
+<p></p>
 </section>
 <section id="part-c-1" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="part-c-1"><span class="header-section-number">2.3</span> Part c</h2>
-<p>Compute the maximum likelihood estimates using <code>optim()</code> in <code>R</code> as described in lecture 16: <span class="math display">\[\max_{\beta_0, \beta_1, \sigma} \mathcal{L}(\boldsymbol{\theta}=\{\beta_0, \beta_1, \sigma\}).\]</span></p>
+<p>Compute the maximum likelihood estimates using <code>optim()</code> in <code>R</code> as described in lecture 16: <span class="math display">\[\max_{\beta_0, \beta_1, \sigma} \mathcal{L}(\boldsymbol{\theta}=\{\beta_0, \beta_1, \sigma\}).\]</span> <strong>Solution:</strong></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-label="1"></a><span class="co"># create function (optim can only adjust 1 object, so we have to put all 3 parameters into 1 vector)</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-label="2"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-label="3"></a>neg_log <span class="ot">=</span> <span class="cf">function</span>(par, data) {</span>
+<span id="cb28-4"><a href="#cb28-4" aria-label="4"></a>  b0 <span class="ot">=</span> par[<span class="dv">1</span>]</span>
+<span id="cb28-5"><a href="#cb28-5" aria-label="5"></a>  b1 <span class="ot">=</span> par[<span class="dv">2</span>]</span>
+<span id="cb28-6"><a href="#cb28-6" aria-label="6"></a>  sigma <span class="ot">=</span> par[<span class="dv">3</span>]</span>
+<span id="cb28-7"><a href="#cb28-7" aria-label="7"></a>  </span>
+<span id="cb28-8"><a href="#cb28-8" aria-label="8"></a>  x <span class="ot">=</span> data<span class="sc">$</span>temp</span>
+<span id="cb28-9"><a href="#cb28-9" aria-label="9"></a>  y <span class="ot">=</span> data<span class="sc">$</span>strength</span>
+<span id="cb28-10"><a href="#cb28-10" aria-label="10"></a>  n <span class="ot">=</span> <span class="fu">nrow</span>(data)</span>
+<span id="cb28-11"><a href="#cb28-11" aria-label="11"></a>  </span>
+<span id="cb28-12"><a href="#cb28-12" aria-label="12"></a>  ll <span class="ot">=</span> <span class="sc">-</span>n<span class="sc">/</span><span class="dv">2</span> <span class="sc">*</span> <span class="fu">log</span>(<span class="dv">2</span> <span class="sc">*</span> pi) <span class="sc">-</span> n<span class="sc">/</span><span class="dv">2</span> <span class="sc">*</span> <span class="fu">log</span>(sigma<span class="sc">^</span><span class="dv">2</span>) <span class="sc">-</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-label="13"></a>    <span class="fu">sum</span>((y <span class="sc">-</span> (b0 <span class="sc">+</span> b1 <span class="sc">*</span> x))<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> sigma<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-label="14"></a>  </span>
+<span id="cb28-15"><a href="#cb28-15" aria-label="15"></a>  <span class="sc">-</span>ll</span>
+<span id="cb28-16"><a href="#cb28-16" aria-label="16"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-label="1"></a>mle <span class="ot">=</span> <span class="fu">optim</span>(<span class="at">par =</span> <span class="fu">c</span>(<span class="fu">mean</span>(df<span class="sc">$</span>strength), <span class="dv">0</span>, <span class="fu">sd</span>(df<span class="sc">$</span>strength)),</span>
+<span id="cb29-2"><a href="#cb29-2" aria-label="2"></a>            <span class="at">fn =</span> neg_log,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-label="3"></a>            <span class="at">data =</span> df,</span>
+<span id="cb29-4"><a href="#cb29-4" aria-label="4"></a>            <span class="at">method =</span> <span class="st">"L-BFGS-B"</span>,</span>
+<span id="cb29-5"><a href="#cb29-5" aria-label="5"></a>            <span class="at">lower =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="sc">-</span><span class="cn">Inf</span>, <span class="fl">1e-6</span>))</span>
+<span id="cb29-6"><a href="#cb29-6" aria-label="6"></a>(mle<span class="sc">$</span>par[<span class="dv">1</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 80.75499</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-label="1"></a>(mle<span class="sc">$</span>par[<span class="dv">2</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3654002</code></pre>
+</div>
+</div>
+<p></p>
 </section>
 <section id="part-d-1" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="part-d-1"><span class="header-section-number">2.4</span> Part d</h2>
@@ -1156,7 +1277,7 @@ Table&nbsp;6: Estimated marginal trends for the model in Question 1 when quantit
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-label="1"></a>dat.mfap4 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"Bracht2016.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-label="1"></a>dat.mfap4 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"Bracht2016.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p></p>

@@ -439,7 +439,7 @@ emm.q1g.z8 |>
           knitr::kable(digits = 2, row.names = F)
 ```
 
-After transformation,transformation
+After transformation,
 
 * $\beta_7$ is the effect of a 1-SD change in $x_7$ when $x_8$ is at its mean.
 
@@ -476,16 +476,92 @@ Compute the estimates we derived using calculus in lecture 16:
 \widehat{\beta}_1 &= \frac{\sum_{i=1}^n (x_{1i} - \bar{x}_1)(y_i-\bar{y})}{\sum_{i=1}^n (x_{1i}-\bar{x}_1)^2}.
 \end{align*}
 
+**Solution:**
+$\beta_0=80.755$, $\beta_1=0.3654$
+
+```{r}
+# create dataframe
+df = data.frame(
+  temp = c(25, -25, -75, -125, -175),
+  strength = c(81.93, 76.63, 63.23, 32.13, 12.83)
+)
+```
+
+```{r}
+# create function
+func = function(x, y) {
+  x_bar = mean(x)
+  y_bar = mean(y)
+  numerator = sum((x - x_bar) * (y - y_bar))
+  denominator = sum((x - x_bar)^2)
+  numerator / denominator
+}
+```
+
+```{r}
+# input dataframe into function
+(b1 = func(df$temp, df$strength))
+```
+
+```{r}
+# calculate b0
+(b0 = mean(df$strength) - b1 * mean(df$temp))
+```
+
+
 ## Part b
 Compute the estimates we derived using linear algebra in lecture 16: 
 $$\widehat{\boldsymbol{\beta}} = \left(\mathbf{X}'\mathbf{X}\right)^{-1} \mathbf{X}'\mathbf{Y}.$$
 **Hint:** Run `?matrix()` in `R` for a quick reminder about how to create a matrix. 
 
+**Solution:**
 
+```{r}
+# create matrices
+x = matrix(data = c(1, 1, 1, 1, 1, 25, -25, -75, -125, -175),
+          nrow = 5,
+          ncol = 2)
+
+y = matrix(data = c(81.93, 76.63, 63.23, 32.13, 12.83),
+          nrow = 5,
+          ncol = 1)
+# compute beta hat
+(bh = solve(t(x) %*% x) %*% t(x) %*% y)
+```
 
 ## Part c
 Compute the maximum likelihood estimates using `optim()` in `R` as described in lecture 16:
 $$\max_{\beta_0, \beta_1, \sigma} \mathcal{L}(\boldsymbol{\theta}=\{\beta_0, \beta_1, \sigma\}).$$
+**Solution:**
+
+```{r}
+# create function (optim can only adjust 1 object, so we have to put all 3 parameters into 1 vector)
+
+neg_log = function(par, data) {
+  b0 = par[1]
+  b1 = par[2]
+  sigma = par[3]
+  
+  x = data$temp
+  y = data$strength
+  n = nrow(data)
+  
+  ll = -n/2 * log(2 * pi) - n/2 * log(sigma^2) -
+    sum((y - (b0 + b1 * x))^2) / (2 * sigma^2)
+  
+  -ll
+}
+```
+
+```{r}
+mle = optim(par = c(mean(df$strength), 0, sd(df$strength)),
+            fn = neg_log,
+            data = df,
+            method = "L-BFGS-B",
+            lower = c(-Inf, -Inf, 1e-6))
+(mle$par[1])
+(mle$par[2])
+```
 
 ## Part d
 Fit the model using `lm()` and plot the resulting model. Compare to the results from parts (a) through (c). 
