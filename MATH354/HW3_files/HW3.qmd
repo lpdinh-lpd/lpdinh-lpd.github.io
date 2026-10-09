@@ -307,7 +307,7 @@ simultaneous linear change in $x_8$.
 * $\beta_8 + \beta_{11}x_{7i}$ is the change in $Y$ for a unit change in $x_8$ after adjusting for the
 simultaneous linear change in $x_7$.
 
-* $\beta_11$ is the change in the **slope of $x_7$** when $x_8$ increases by 1 unit, and is also the change in the slope of $x_8$ when $x_7$ increases by 1 unit. From the tables, we can see that increases in $x_8$ is associated with increases in the slope of $x_7$, and vice versa.
+* $\beta_{11}$ is the change in the **slope of $x_7$** when $x_8$ increases by 1 unit, and is also the change in the slope of $x_8$ when $x_7$ increases by 1 unit. From the tables, we can see that increases in $x_8$ is associated with increases in the slope of $x_7$, and vice versa.
 
 * When $x_8=0$, $\beta_7$ is the change in the expected value of $Y$ when $x_7$ increases by 1 unit.
 
@@ -439,7 +439,7 @@ After transformation,
 
 * $\beta_7$ is the effect of a 1-SD change in $x_7$ when $x_8$ is at its mean.
 
-* $\beta_11$ now becomes the change in the slope of 1 standardized predictor when the other predictor shifts by 1 standard deviation. For example, looking at the effect of $x_7$:
+* $\beta_{11}$ now becomes the change in the slope of 1 standardized predictor when the other predictor shifts by 1 standard deviation. For example, looking at the effect of $x_7$:
 
 $$Y_i = (\beta_7 + \beta_{11}x_{8i})x_{7i} + \beta_8 x_{8i} + C $$ 
 
