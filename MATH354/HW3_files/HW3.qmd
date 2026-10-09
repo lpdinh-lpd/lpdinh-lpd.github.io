@@ -61,6 +61,7 @@ knitr::opts_chunk$set(size = "scriptsize")
 #| include: false
 library(tidyverse)
 library(patchwork)
+library(ggplot2)
 ```
 
 # Question 1
@@ -122,7 +123,7 @@ Conduct a residual and outlier analysis.
 
 **Solution:**
 
-Looking at @fig-residuals, the histogram of residuals is roughly bell-shaped and the points fit on the line in the qq plot. Therefore, the residuals are normal. The histogram centers at 0, meaning the residuals have a mean of 0. From the scatterplot, we see the residuals spreading equally around 0, suggesting common variance.
+Looking at @fig-residuals-q1, the histogram of residuals is roughly bell-shaped and the points fit on the line in the qq plot. Therefore, the residuals are normal. The histogram centers at 0, meaning the residuals have a mean of 0. From the scatterplot, we see the residuals spreading equally around 0, suggesting common variance.
 
 In @fig-outlier, we can see that the dataset has several observations that have high leverage. All $D_i$ are below 0.50, so we know that these observations are not strongly influential. 
 
@@ -131,19 +132,12 @@ The scatterplot for the studentized residual and the DFFITs reveal some outliers
 Overall, the data satisfies the conditions for use of regression regarding residual and outliers.
 
 ```{r}
-#| eval: false
-
-source("MATH 354/HW3_files/plotResiduals.R")
-source("MATH 354/HW3_files/plotInfluence.R")
-```
-
-```{r}
 source("plotResiduals.R")
 source("plotInfluence.R")
 ```
 
 ```{r}
-#| label: fig-residuals
+#| label: fig-residuals-q1
 #| fig-cap: "Residual Analysis"
 #| fig-width: 10
 #| fig-height: 5
@@ -195,7 +189,7 @@ $$ E(Y_i | x_{3i}=\text{Treat}, x_{4i}=\text{High}) = \beta_3 + \beta_4 + \beta_
 
 * $\beta_4$ is the expected difference $Y$ between the Low and High condition in the Control group.
 
-* In the Treatment condition, when condition changes from Low to High, the expected value of $Y$ increases by $\beta_4 + \beta_9$, meaning it increases by both the expected increase when going from Low to High in the Control group, plus the interaction effect only obtained when high condition and treatment goes together.
+* $\beta_4$ is the interaction effect of Group (Treatment vs. Control) and Condition (High vs. Low). When group changes from Control to Treatment and condition changes from Low to High, the expeced value of $Y$ gets by both the effect of each categorical variable and the interaction effect.
 
 ```{r}
 #| size: "scriptsize"
@@ -449,7 +443,9 @@ After transformation,
 
 $$Y_i = (\beta_7 + \beta_{11}x_{8i})x_{7i} + \beta_8 x_{8i} + C $$ 
 
-* When $z_8=-1$, $$Y_i = (\beta_7 - \beta_{11})z_{7i} - \beta_8 + C $$. In other words, when $x_8$ is 1 SD below the means, for every increase in the SD of $x_7$, the expected value of $Y$ increases by $\beta_7 - \beta_{11}$. When $x_7$ is at average, the expected value of $Y$ is $C - \beta_8$.
+* When $z_8=-1$, 
+$$Y_i = (\beta_7 - \beta_{11})z_{7i} - \beta_8 + C $$
+In other words, when $x_8$ is 1 SD below the means, for every increase in the SD of $x_7$, the expected value of $Y$ increases by $\beta_7 - \beta_{11}$. When $x_7$ is at average, the expected value of $Y$ is $C - \beta_8$.
 This transformation makes the untangling process easier. In @tbl-q1-emtrends-z7, in the slope column, the second row is the estimated value for $\beta_7 - \beta_{11}$, the third row is the estimated value for $\beta_7 + \beta_{11}$, and the difference between rows is the estimated value for $\beta_{11}$.
 
 # Question 2
@@ -481,9 +477,9 @@ $\beta_0=80.755$, $\beta_1=0.3654$
 
 ```{r}
 # create dataframe
-df = data.frame(
-  temp = c(25, -25, -75, -125, -175),
-  strength = c(81.93, 76.63, 63.23, 32.13, 12.83)
+df = tibble(
+  x1 = c(25, -25, -75, -125, -175),
+  y1 = c(81.93, 76.63, 63.23, 32.13, 12.83)
 )
 ```
 
@@ -500,14 +496,13 @@ func = function(x, y) {
 
 ```{r}
 # input dataframe into function
-(b1 = func(df$temp, df$strength))
+(b1 = func(df$x1, df$y1))
 ```
 
 ```{r}
 # calculate b0
-(b0 = mean(df$strength) - b1 * mean(df$temp))
+(b0 = mean(df$y1) - b1 * mean(df$x1))
 ```
-
 
 ## Part b
 Compute the estimates we derived using linear algebra in lecture 16: 
@@ -533,38 +528,63 @@ y = matrix(data = c(81.93, 76.63, 63.23, 32.13, 12.83),
 Compute the maximum likelihood estimates using `optim()` in `R` as described in lecture 16:
 $$\max_{\beta_0, \beta_1, \sigma} \mathcal{L}(\boldsymbol{\theta}=\{\beta_0, \beta_1, \sigma\}).$$
 **Solution:**
+We know that $\epsilon_i ~ Gaussian(0, \sigma)$. We want to find the parameters (intercept, slope, and standard error of residual terms) that maximize the likelihood of observing our observed residual terms. 
 
 ```{r}
 # create function (optim can only adjust 1 object, so we have to put all 3 parameters into 1 vector)
 
-neg_log = function(par, data) {
+neg_log = function(par, data, mle = F) {
   b0 = par[1]
   b1 = par[2]
-  sigma = par[3]
+  sigma = par[3] 
+
+  x = data$x1
+  y = data$y1
   
-  x = data$temp
-  y = data$strength
-  n = nrow(data)
-  
-  ll = -n/2 * log(2 * pi) - n/2 * log(sigma^2) -
-    sum((y - (b0 + b1 * x))^2) / (2 * sigma^2)
-  
-  -ll
+  ll = sum(log(dnorm(y-(b0+b1*x), 0, sigma))) #point estimation
+  ifelse(mle, -ll, ll)
 }
 ```
 
 ```{r}
-mle = optim(par = c(mean(df$strength), 0, sd(df$strength)),
-            fn = neg_log,
+mle = optim(fn = neg_log,
+            par = c(mean(df$y1), 0, sd(df$y1)), #if slope is 0, b0 = mean(y)
             data = df,
-            method = "L-BFGS-B",
-            lower = c(-Inf, -Inf, 1e-6))
+            mle=T) #passed in for the function, not optim
 (mle$par[1])
 (mle$par[2])
 ```
 
 ## Part d
-Fit the model using `lm()` and plot the resulting model. Compare to the results from parts (a) through (c). 
+Fit the model using `lm()` and plot the resulting model. Compare to the results from parts (a) through (c).
+
+**Solution:**
+Using `lm`, we obtain the following results for the intercept and the coefficient:
+
+```{r}
+mod.q2 = lm(y1 ~ x1, data = df)
+(coef(mod.q2)["(Intercept)"])
+(coef(mod.q2)["x1"])
+```
+
+The results are roughly similar across from part (a) to (d). 
+
+```{r}
+#| label: fig-q2
+#| fig-cap: "Regression on Conditional Means of Y"
+#| fig-width: 8
+#| fig-height: 5
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+ggplot(df, aes(x = x1, y = y1)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "black", linewidth = 0.5) +
+  labs(x = "Temperature",
+       y = "Mean Tensile Strength")
+
+```
 
 # Question 3
 @Bracht16 evaluate MFAP4 as a biomarker for severity of fibrosis in hepatitic C patients. 
@@ -577,21 +597,124 @@ dat.mfap4 <- read_csv("Bracht2016.csv")
 ## Part a
 Fit the model predicting `MFAP4` using `Fibrosis.Stage`. Write out the resulting estimate model and interpret the coefficients.
 
+**Solution:**
+$$\hat{y}_i = 9.230 + 1.301 \times I(x_{1i} = \text{``Stage 1''}) + 3.154 \times I(x_{1i} = \text{``Stage 2''}) + 11.742 \times I(x_{1i} = \text{``Stage 3''}) + 15.388 \times I(x_{1i} = \text{``Stage 4''})$$
+
+* $\beta_0 = 9.230$: the expected value of $Y$ when the reference category is "Stage 0"
+
+* $\beta_1 = 1.301$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 1"
+
+* $\beta_2 = 3.154$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 2"
+
+* $\beta_3 = 11.742$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 3"
+
+* $\beta_4 = 15.388$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 4"
+
+```{r}
+# transform dataset
+dat = dat.mfap4 |>
+  select(Fibrosis.Stage, MFAP4) 
+
+# fit model
+mod.q3.1 = lm(MFAP4 ~ Fibrosis.Stage, data = dat)
+```
+
 ## Part b
 Conduct a residual analysis on the model in part a to demonstrate how to identify when you need a log transformation.
 
+**Solution:**
+From @fig-residuals-q3-1, we can see that the residual terms are not normal, and a good amount of them are way oft the qq line. The variance follows a megaphone shape. For the last two fitted values, the residuals are much more spread out.
+
+```{r}
+#| label: fig-residuals-q3-1
+#| fig-cap: "Residual Analysis"
+#| fig-width: 10
+#| fig-height: 5
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+plotResiduals(mod.q3.1)
+```
 
 ## Part c
 Fit the model predicting `log(MFAP4)` using `Fibrosis.Stage`. Use the natural log, and not the $\log_2(\cdot)$ recorded in the data file. Write out the resulting estimate model and interpret the coefficients.
 
+**Solution:**
+$$\hat{y}_i = 2.026 + 0.133 \times I(x_{1i} = \text{``Stage 1''}) + 0.304 \times I(x_{1i} = \text{``Stage 2''}) + 0.774 \times I(x_{1i} = \text{``Stage 3''}) + 0.990 \times I(x_{1i} = \text{``Stage 4''})$$
+* $\beta_0 = 2.026$: the expected value of $Y$ when the reference category is "Stage 0"
+
+* $\beta_1 = 0.133$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 1"
+
+* $\beta_2 = 0.304$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 2"
+
+* $\beta_3 = 0.774$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 3"
+
+* $\beta_4 = 0.990$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 4"
+
+```{r}
+dat = dat |>
+  mutate(Log_MFAP4 = log(MFAP4)) |>
+  select(Fibrosis.Stage, Log_MFAP4) 
+```
+
+```{r}
+mod.q3 = lm(Log_MFAP4 ~ Fibrosis.Stage, data = dat)
+```
 
 ## Part d
 Conduct a residual analysis on the model in part c to demonstrate that the conditions for using regression are met.
 
+**Solution:**
+
+The log transformation makes the outliers less extreme. The conditions for using regression are met: the residuals follow a Gaussian distribution, and the variance is roughly the same across the five fitted values.
+
+```{r}
+#| label: fig-residuals-q3-2
+#| fig-cap: "Residual Analysis"
+#| fig-width: 10
+#| fig-height: 5
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+plotResiduals(mod.q3)
+```
+
 ## Part e
 Fit the model predicting `log(MFAP4)` using `Fibrosis.Stage`, `Age`, and `Gender`. Use the natural log, and not the $\log_2(\cdot)$ recorded in the data file. Write out the resulting estimate model and interpret the coefficients.
 
+**Solution:**
+\begin{align*}
+    \hat{y}_i = & 1.519 + 0.127 \times I(x_{1i} = \text{``Stage 1''}) + 0.213 \times I(x_{1i} = \text{``Stage 2''}) \\
+    & + 0.599 \times I(x_{1i} = \text{``Stage 3''}) + 0.829 \times I(x_{1i} = \text{``Stage 4''}) \\
+    & + 0.013x_{2i} \\
+    & - 0.143 \times I(x_{3i} = \text{``Male''})
+\end{align*}
 
+* $\beta_0 = 1.519$: the expected value of $Y$ when the reference category is "Stage 0", age is 0, and gender is "Female"
+
+* $\beta_1 = 0.127$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 1"
+
+* $\beta_2 = 0.213$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 2"
+
+* $\beta_3 = 0.599$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 3"
+
+* $\beta_4 = 0.829$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 4"
+
+* $\beta_5 = 0.013$: the change in $Y$ for every unit increase in age
+
+* $\beta_6 = -0.143$: the change in $Y$ when the reference category changes from "Female" to "Male"
+
+```{r}
+dat2 = dat.mfap4 |>
+  mutate(Log_MFAP4 = log(MFAP4)) |>
+  select(Fibrosis.Stage, Log_MFAP4, Age, Gender)
+```
+
+```{r}
+lm(Log_MFAP4 ~ Fibrosis.Stage + Age + Gender, data = dat2)
+```
 
 # Question 4
 
