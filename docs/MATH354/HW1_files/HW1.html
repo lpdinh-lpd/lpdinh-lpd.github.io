@@ -360,7 +360,7 @@ window.Quarto = {
 <section id="part-a" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="part-a"><span class="header-section-number">1.1</span> Part a</h2>
 <p>The researchers were trying to infer from their data whether (1) the performance in the overhearing condition is above chance (50%), and (2) the difference between two conditions is different from 0.</p>
-<p>In order to know what statistical test is the most appropriate for our data, we need to first summarize our data.</p>
+<p>In order to know what statistical test is the most appropriate for our data, we need to first summarize our data. I used a histogram to visualize data. In a histogram, the range of data is split into intervals of the same width, called binwidth. Each observation is placed into a binwidth. Density is calculated as the proportion of observations divided by the binwidth, meaning the total area of all bars equals 1.</p>
 <p></p>
 <div class="cell">
 <details class="code-fold">
@@ -454,16 +454,15 @@ Table&nbsp;1: Descriptive Statistics for Overhearing Condition
 <div class="cell" data-layout-align="center" data-scale="80%">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a><span class="co"># In a histogram, the range of data is split into consecutive, equal-width intervals. These are called bindwidth. Then it places each observation into a bindwidth.</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-label="2"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-label="3"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(overhear), <span class="fu">aes</span>(<span class="at">x =</span> overhear)) <span class="sc">+</span>          </span>
-<span id="cb4-4"><a href="#cb4-4" aria-label="4"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)),              </span>
-<span id="cb4-5"><a href="#cb4-5" aria-label="5"></a>                  <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.1</span>),               </span>
-<span id="cb4-6"><a href="#cb4-6" aria-label="6"></a>                  <span class="at">color =</span> <span class="st">"gray"</span>) <span class="sc">+</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-label="7"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-label="8"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span>                                              </span>
-<span id="cb4-9"><a href="#cb4-9" aria-label="9"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Proportion of Correct Retrieval of New Toys Out of 12 Trials"</span>,                                       </span>
-<span id="cb4-10"><a href="#cb4-10" aria-label="10"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(overhear)) <span class="sc">+</span>          </span>
+<span id="cb4-2"><a href="#cb4-2" aria-label="2"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> overhear, </span>
+<span id="cb4-3"><a href="#cb4-3" aria-label="3"></a>                    <span class="at">y =</span> <span class="fu">after_stat</span>(density)),              </span>
+<span id="cb4-4"><a href="#cb4-4" aria-label="4"></a>                    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.1</span>),               </span>
+<span id="cb4-5"><a href="#cb4-5" aria-label="5"></a>                    <span class="at">color =</span> <span class="st">"gray"</span>) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-label="6"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-label="7"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span>                                              </span>
+<span id="cb4-8"><a href="#cb4-8" aria-label="8"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Proportion of Correct Retrieval of New Toys Out of 12 Trials"</span>,                                       </span>
+<span id="cb4-9"><a href="#cb4-9" aria-label="9"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-overhear" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
@@ -544,14 +543,15 @@ Table&nbsp;2: Descriptive Statistics for Paired Differences between the Overhear
 <div class="cell" data-layout-align="center" data-scale="80%">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-label="1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(pdiff), <span class="fu">aes</span>(<span class="at">x =</span> pdiff)) <span class="sc">+</span>          </span>
-<span id="cb6-2"><a href="#cb6-2" aria-label="2"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)),              </span>
-<span id="cb6-3"><a href="#cb6-3" aria-label="3"></a>                  <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="fl">0.1</span>),               </span>
-<span id="cb6-4"><a href="#cb6-4" aria-label="4"></a>                  <span class="at">color =</span> <span class="st">"gray"</span>) <span class="sc">+</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-label="5"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-label="6"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span>                                              </span>
-<span id="cb6-7"><a href="#cb6-7" aria-label="7"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Difference in Proportion"</span>,                                       </span>
-<span id="cb6-8"><a href="#cb6-8" aria-label="8"></a>       <span class="at">y =</span> <span class="st">"Density"</span>)                                     </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-label="1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(pdiff)) <span class="sc">+</span>          </span>
+<span id="cb6-2"><a href="#cb6-2" aria-label="2"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> pdiff,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-label="3"></a>                    <span class="at">y =</span> <span class="fu">after_stat</span>(density)),  </span>
+<span id="cb6-4"><a href="#cb6-4" aria-label="4"></a>                    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="fl">0.1</span>),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-label="5"></a>                    <span class="at">color =</span> <span class="st">"gray"</span>) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-label="6"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-label="7"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span>                                              </span>
+<span id="cb6-8"><a href="#cb6-8" aria-label="8"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Difference in Proportion"</span>,                                       </span>
+<span id="cb6-9"><a href="#cb6-9" aria-label="9"></a>       <span class="at">y =</span> <span class="st">"Density"</span>)                                     </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-paired-difference" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">

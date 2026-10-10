@@ -421,9 +421,9 @@ window.Quarto = {
 <h2 data-number="1.2" class="anchored" data-anchor-id="part-b"><span class="header-section-number">1.2</span> Part b</h2>
 <p>Conduct a residual and outlier analysis.</p>
 <p><strong>Solution:</strong></p>
-<p>Looking at <a href="#fig-residuals-q1" class="quarto-xref">Figure&nbsp;1</a>, the histogram of residuals is roughly bell-shaped and the points fit on the line in the qq plot. Therefore, the residuals are normal. The histogram centers at 0, meaning the residuals have a mean of 0. From the scatterplot, we see the residuals spreading equally around 0, suggesting common variance.</p>
+<p><a href="#fig-residuals-q1" class="quarto-xref">Figure&nbsp;1</a> shows that the distribution of residuals is roughly bell-shaped and the points fit on the line in the qq plot. Therefore, the residuals are normal. The histogram centers at 0, meaning the residuals have a mean of 0. From the scatterplot, we see the residuals spreading equally around 0, suggesting common variance.</p>
 <p>In <a href="#fig-outlier" class="quarto-xref">Figure&nbsp;2</a>, we can see that the dataset has several observations that have high leverage. All <span class="math inline">\(D_i\)</span> are below 0.50, so we know that these observations are not strongly influential.</p>
-<p>The scatterplot for the studentized residual and the DFFITs reveal some outliers, however. The residuals for 9 observations fall more than 2 SDs above or below 0. Regarding the DFFITs plot, our model has 10 predictors, so we compare the absolute value of DFFITs to <span class="math inline">\(2*\sqrt{10/250}=0.4\)</span> and <span class="math inline">\(3*\sqrt{10/250}=0.6\)</span>. An observation between the 100th and the 125th observation is strongly influential, consistent with the results from studentized residuals calclation. This observation doesn’t seem to have high leverage, however.</p>
+<p>The scatterplot for the studentized residual and the DFFITs reveal some outliers. Based on the studentized residual plot, the residuals for 9 observations fall more than 2 SDs above or below 0. Regarding the DFFITs plot, our model has 10 predictors, so we compare the absolute value of DFFITs to <span class="math inline">\(2*\sqrt{10/250}=0.4\)</span> and <span class="math inline">\(3*\sqrt{10/250}=0.6\)</span>. An observation between the 100th and the 125th observation is strongly influential, consistent with the results from studentized residuals calclation. This observation doesn’t seem to have high leverage, however, explaining why it doesn’t stick out in the plot—Cook’s Distance takes into consideration both leverage and influence, while DFFITs only looks at influence.</p>
 <p>Overall, the data satisfies the conditions for use of regression regarding residual and outliers.</p>
 <p></p>
 <div class="cell">
@@ -478,7 +478,8 @@ Figure&nbsp;2: Outlider Analysis
 <section id="part-c" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="part-c"><span class="header-section-number">1.3</span> Part c</h2>
 <p>Interpret the intercept, the coefficients on <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span>.</p>
-<p><strong>Solution:</strong> Given the predictors are standardized,</p>
+<p><strong>Solution:</strong></p>
+<p>Given the predictors are standardized,</p>
 <ul>
 <li><p><span class="math inline">\(\beta_0\)</span> is the expected value of Y when every predictor is at their average (reference value).</p></li>
 <li><p><span class="math inline">\(\beta_1\)</span> is the expected increase in the value of Y with every 1 unit increase in <span class="math inline">\(x_1\)</span>, given all other predictors are fixed.</p></li>
@@ -488,7 +489,8 @@ Figure&nbsp;2: Outlider Analysis
 <section id="part-d" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="part-d"><span class="header-section-number">1.4</span> Part d</h2>
 <p>Untangle and interpret the <span class="math inline">\(x_3*x_4\)</span> interaction using algebra. Use <a href="#tbl-q1d-emmeans" class="quarto-xref">Table&nbsp;1</a> and <a href="#fig-q1d-emmeans" class="quarto-xref">Figure&nbsp;3</a> for context.</p>
-<p><strong>Solution:</strong> We hold all parts that do not involve <span class="math inline">\(x_3\)</span> and <span class="math inline">\(x_4\)</span> in the model constant, labeled as <span class="math inline">\(C\)</span>. Our regression model becomes: <span class="math display">\[Y_i = \beta_3 I(x_{3i}=\text{Treat}) + \beta_4 I(x_{4i}=\text{High}) + \beta_9 (I(x_{3i}=\text{Treat}) ~\times~ I(x_{4i}=\text{High})) + C \]</span> Our expected Y, conditioned on <span class="math inline">\(x_3\)</span> and <span class="math inline">\(x_4\)</span>, are as follow: <span class="math display">\[ E(Y_i | x_{3i}=\text{Control}, x_{4i}=\text{Low}) = C \]</span> <span class="math display">\[ E(Y_i | x_{3i}=\text{Control}, x_{4i}=\text{High}) = \beta_4 + C \]</span> <span class="math display">\[ E(Y_i | x_{3i}=\text{Treat}, x_{4i}=\text{Low}) = \beta_3 + C \]</span> <span class="math display">\[ E(Y_i | x_{3i}=\text{Treat}, x_{4i}=\text{High}) = \beta_3 + \beta_4 + \beta_9 + C \]</span></p>
+<p><strong>Solution:</strong></p>
+<p>We hold all parts that do not involve <span class="math inline">\(x_3\)</span> and <span class="math inline">\(x_4\)</span> in the model constant, labeled as <span class="math inline">\(C\)</span>. Our regression model becomes: <span class="math display">\[Y_i = \beta_3 I(x_{3i}=\text{Treat}) + \beta_4 I(x_{4i}=\text{High}) + \beta_9 (I(x_{3i}=\text{Treat}) ~\times~ I(x_{4i}=\text{High})) + C \]</span> Our expected Y, conditioned on <span class="math inline">\(x_3\)</span> and <span class="math inline">\(x_4\)</span>, are as follow: <span class="math display">\[ E(Y_i | x_{3i}=\text{Control}, x_{4i}=\text{Low}) = C \]</span> <span class="math display">\[ E(Y_i | x_{3i}=\text{Control}, x_{4i}=\text{High}) = \beta_4 + C \]</span> <span class="math display">\[ E(Y_i | x_{3i}=\text{Treat}, x_{4i}=\text{Low}) = \beta_3 + C \]</span> <span class="math display">\[ E(Y_i | x_{3i}=\text{Treat}, x_{4i}=\text{High}) = \beta_3 + \beta_4 + \beta_9 + C \]</span></p>
 <ul>
 <li><p><span class="math inline">\(C\)</span> is the expected value of <span class="math inline">\(Y\)</span> in the Control group when condition is Low.</p></li>
 <li><p><span class="math inline">\(\beta_3\)</span> is the expected difference <span class="math inline">\(Y\)</span> between the Control and Treatment group when the condition is Low. In other words, in the Low condition, <span class="math inline">\(\beta_3\)</span> is the expected increase in <span class="math inline">\(Y\)</span> when the reference category changes from Control to Treatment.</p></li>
@@ -607,7 +609,8 @@ Figure&nbsp;3: Estimated marginal means for the model in Question 1.
 <section id="part-e" class="level2" data-number="1.5">
 <h2 data-number="1.5" class="anchored" data-anchor-id="part-e"><span class="header-section-number">1.5</span> Part e</h2>
 <p>Untangle and interpret the <span class="math inline">\(x_5*x_6\)</span> interaction using algebra. Use <a href="#tbl-q1e-emtrends" class="quarto-xref">Table&nbsp;2</a> and <a href="#fig-q1e-emtrends" class="quarto-xref">Figure&nbsp;4</a> for context.</p>
-<p><strong>Solution:</strong> We hold all parts that do not involve <span class="math inline">\(x_5\)</span> and <span class="math inline">\(x_6\)</span> in the model constant, labeled as <span class="math inline">\(C\)</span>. Our regression model becomes: <span class="math display">\[Y_i = \beta_5 x_{5i} + \beta_6 I( x_{6i}=\text{Group2}) + \beta_{10} (x_{5i} ~\times~ I(x_{6i}=\text{Group2})) + C \]</span> Our expected Y, conditioned on <span class="math inline">\(x_5\)</span> and <span class="math inline">\(x_6\)</span>, are as follow:</p>
+<p><strong>Solution:</strong></p>
+<p>We hold all parts that do not involve <span class="math inline">\(x_5\)</span> and <span class="math inline">\(x_6\)</span> in the model constant, labeled as <span class="math inline">\(C\)</span>. Our regression model becomes: <span class="math display">\[Y_i = \beta_5 x_{5i} + \beta_6 I( x_{6i}=\text{Group2}) + \beta_{10} (x_{5i} ~\times~ I(x_{6i}=\text{Group2})) + C \]</span> Our expected Y, conditioned on <span class="math inline">\(x_5\)</span> and <span class="math inline">\(x_6\)</span>, are as follow:</p>
 <ul>
 <li><p>Group 1: <span class="math display">\[Y_i = \beta_5 x_{5i} + C \]</span></p>
 <ul>
@@ -713,7 +716,8 @@ Figure&nbsp;4: Estimated marginal trends for the model in Question 1.
 <section id="part-f" class="level2" data-number="1.6">
 <h2 data-number="1.6" class="anchored" data-anchor-id="part-f"><span class="header-section-number">1.6</span> Part f</h2>
 <p>Untangle and interpret the <span class="math inline">\(x_7*x_8\)</span> interaction using algebra. Use <a href="#tbl-q1f-emtrends-x7" class="quarto-xref">Table&nbsp;3</a> and <a href="#tbl-q1f-emtrends-x8" class="quarto-xref">Table&nbsp;4</a> for context.</p>
-<p><strong>Solution:</strong> We hold all parts that do not involve <span class="math inline">\(x_7\)</span> and <span class="math inline">\(x_8\)</span> in the model constant, labeled as <span class="math inline">\(C\)</span>. Our regression model becomes: <span class="math display">\[Y_i = \beta_7 x_{7i} + \beta_8 x_{8i} + \beta_{11} (x_{7i} ~\times~ x_{8i}) + C \]</span> We can combine like terms to get:</p>
+<p><strong>Solution:</strong></p>
+<p>We hold all parts that do not involve <span class="math inline">\(x_7\)</span> and <span class="math inline">\(x_8\)</span> in the model constant, labeled as <span class="math inline">\(C\)</span>. Our regression model becomes: <span class="math display">\[Y_i = \beta_7 x_{7i} + \beta_8 x_{8i} + \beta_{11} (x_{7i} ~\times~ x_{8i}) + C \]</span> We can combine like terms to get:</p>
 <p><span class="math display">\[Y_i = (\beta_7 + \beta_{11}x_{8i})x_{7i} + \beta_8 x_{8i} + C \]</span> <span class="math display">\[Y_i = (\beta_8 + \beta_{11}x_{7i})x_{8i} + \beta_7 x_{7i} + C \]</span></p>
 <ul>
 <li><p><span class="math inline">\(\beta_7 + \beta_{11}x_{8i}\)</span> is the change in <span class="math inline">\(Y\)</span> for a unit change in <span class="math inline">\(x_7\)</span> after adjusting for the simultaneous linear change in <span class="math inline">\(x_8\)</span>.</p></li>
@@ -1126,7 +1130,8 @@ Table&nbsp;6: Estimated marginal trends for the model in Question 1 when quantit
 \widehat{\beta}_0 &amp;= \bar{y} - \widehat{\beta}_1 \bar{x}_1 \\
 \widehat{\beta}_1 &amp;= \frac{\sum_{i=1}^n (x_{1i} - \bar{x}_1)(y_i-\bar{y})}{\sum_{i=1}^n (x_{1i}-\bar{x}_1)^2}.
 \end{align*}\]</span></p>
-<p><strong>Solution:</strong> <span class="math inline">\(\beta_0=80.755\)</span>, <span class="math inline">\(\beta_1=0.3654\)</span></p>
+<p><strong>Solution:</strong></p>
+<p><span class="math inline">\(\beta_0=80.755\)</span>, <span class="math inline">\(\beta_1=0.3654\)</span></p>
 <p></p>
 <div class="cell">
 <details class="code-fold">
@@ -1208,7 +1213,8 @@ Table&nbsp;6: Estimated marginal trends for the model in Question 1 when quantit
 </section>
 <section id="part-c-1" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="part-c-1"><span class="header-section-number">2.3</span> Part c</h2>
-<p>Compute the maximum likelihood estimates using <code>optim()</code> in <code>R</code> as described in lecture 16: <span class="math display">\[\max_{\beta_0, \beta_1, \sigma} \mathcal{L}(\boldsymbol{\theta}=\{\beta_0, \beta_1, \sigma\}).\]</span> <strong>Solution:</strong> We know that <span class="math inline">\(\epsilon_i ~ Gaussian(0, \sigma)\)</span>. We want to find the parameters (intercept, slope, and standard error of residual terms) that maximize the likelihood of observing our observed residual terms.</p>
+<p>Compute the maximum likelihood estimates using <code>optim()</code> in <code>R</code> as described in lecture 16: <span class="math display">\[\max_{\beta_0, \beta_1, \sigma} \mathcal{L}(\boldsymbol{\theta}=\{\beta_0, \beta_1, \sigma\}).\]</span> <strong>Solution:</strong></p>
+<p>We know that <span class="math inline">\(\epsilon_i \sim Gaussian(0, \sigma)\)</span>. We want to find the parameters (intercept, slope, and standard error of residual terms) that maximize the likelihood of observing our observed residual terms.</p>
 <p></p>
 <div class="cell">
 <details class="code-fold">
@@ -1255,7 +1261,8 @@ Table&nbsp;6: Estimated marginal trends for the model in Question 1 when quantit
 <section id="part-d-1" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="part-d-1"><span class="header-section-number">2.4</span> Part d</h2>
 <p>Fit the model using <code>lm()</code> and plot the resulting model. Compare to the results from parts (a) through (c).</p>
-<p><strong>Solution:</strong> Using <code>lm</code>, we obtain the following results for the intercept and the coefficient:</p>
+<p><strong>Solution:</strong></p>
+<p>Using <code>lm</code>, we obtain the following results for the intercept and the coefficient:</p>
 <p></p>
 <div class="cell">
 <details class="code-fold">
@@ -1283,10 +1290,15 @@ Table&nbsp;6: Estimated marginal trends for the model in Question 1 when quantit
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-label="1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> x1, <span class="at">y =</span> y1)) <span class="sc">+</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-label="2"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-label="3"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb36-4"><a href="#cb36-4" aria-label="4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Temperature"</span>,</span>
-<span id="cb36-5"><a href="#cb36-5" aria-label="5"></a>       <span class="at">y =</span> <span class="st">"Mean Tensile Strength"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb36-2"><a href="#cb36-2" aria-label="2"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> x1, </span>
+<span id="cb36-3"><a href="#cb36-3" aria-label="3"></a>                <span class="at">y =</span> y1)) <span class="sc">+</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-label="4"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> x1, </span>
+<span id="cb36-5"><a href="#cb36-5" aria-label="5"></a>                  <span class="at">y =</span> y1),</span>
+<span id="cb36-6"><a href="#cb36-6" aria-label="6"></a>              <span class="at">method =</span> <span class="st">"lm"</span>, </span>
+<span id="cb36-7"><a href="#cb36-7" aria-label="7"></a>              <span class="at">color =</span> <span class="st">"black"</span>, </span>
+<span id="cb36-8"><a href="#cb36-8" aria-label="8"></a>              <span class="at">linewidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-label="9"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Temperature"</span>,</span>
+<span id="cb36-10"><a href="#cb36-10" aria-label="10"></a>       <span class="at">y =</span> <span class="st">"Mean Tensile Strength"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-q2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
@@ -1343,7 +1355,8 @@ Figure&nbsp;7: Regression on Conditional Means of Y
 <section id="part-b-2" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="part-b-2"><span class="header-section-number">3.2</span> Part b</h2>
 <p>Conduct a residual analysis on the model in part a to demonstrate how to identify when you need a log transformation.</p>
-<p><strong>Solution:</strong> From <a href="#fig-residuals-q3-1" class="quarto-xref">Figure&nbsp;8</a>, we can see that the residual terms are not normal, and a good amount of them are way oft the qq line. The variance follows a megaphone shape. For the last two fitted values, the residuals are much more spread out.</p>
+<p><strong>Solution:</strong></p>
+<p>From <a href="#fig-residuals-q3-1" class="quarto-xref">Figure&nbsp;8</a>, we can see that the residual terms are not normal, and a good amount of them are way oft the qq line. The variance follows a megaphone shape. For the last two fitted values, the residuals are much more spread out.</p>
 <p></p>
 <div class="cell" data-layout-align="center" data-scale="80%">
 <details class="code-fold">
@@ -1481,6 +1494,145 @@ Fibrosis.StageStage 3  Fibrosis.StageStage 4                    Age
     y_i &amp;= 2 + 1.5 x_i + \epsilon_i\\
     n &amp;= 30
 \end{align*}\]</span> In each iteration, fit a regression line to the data and store the coefficient estimates. Plot the resulting estimates. What do you notice?</p>
+<p><strong>Solution:</strong></p>
+<p>When the distribution of the residual terms are normal and has a mean of 0, the estimates of the intercept (<span class="math inline">\(\beta_0\)</span>) and the slope (<span class="math inline">\(\beta_1\)</span>) follow a Gaussian distribution, centering around the specified intercept and slope.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">8279</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-label="2"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-label="3"></a>estimate_a <span class="ot">=</span> <span class="fu">tibble</span>(</span>
+<span id="cb46-4"><a href="#cb46-4" aria-label="4"></a>  <span class="at">b0 =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">1000</span>),</span>
+<span id="cb46-5"><a href="#cb46-5" aria-label="5"></a>  <span class="at">b1 =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">1000</span>)</span>
+<span id="cb46-6"><a href="#cb46-6" aria-label="6"></a>)</span>
+<span id="cb46-7"><a href="#cb46-7" aria-label="7"></a></span>
+<span id="cb46-8"><a href="#cb46-8" aria-label="8"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>) {</span>
+<span id="cb46-9"><a href="#cb46-9" aria-label="9"></a>  x <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">30</span>, <span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb46-10"><a href="#cb46-10" aria-label="10"></a>  epsilon <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb46-11"><a href="#cb46-11" aria-label="11"></a>  y <span class="ot">=</span> <span class="dv">2</span> <span class="sc">+</span> <span class="fl">1.5</span><span class="sc">*</span>x <span class="sc">+</span> epsilon</span>
+<span id="cb46-12"><a href="#cb46-12" aria-label="12"></a></span>
+<span id="cb46-13"><a href="#cb46-13" aria-label="13"></a>  mod <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span>
+<span id="cb46-14"><a href="#cb46-14" aria-label="14"></a></span>
+<span id="cb46-15"><a href="#cb46-15" aria-label="15"></a>  estimate_a<span class="sc">$</span>b0[i] <span class="ot">=</span> <span class="fu">coef</span>(mod)[<span class="st">"(Intercept)"</span>]</span>
+<span id="cb46-16"><a href="#cb46-16" aria-label="16"></a>  estimate_a<span class="sc">$</span>b1[i] <span class="ot">=</span> <span class="fu">coef</span>(mod)[<span class="st">"x"</span>]</span>
+<span id="cb46-17"><a href="#cb46-17" aria-label="17"></a></span>
+<span id="cb46-18"><a href="#cb46-18" aria-label="18"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p></p>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-label="1"></a><span class="fu">ggplot</span>(estimate_a) <span class="sc">+</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-label="2"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> b0, <span class="at">y =</span> <span class="fu">after_stat</span>(density)),</span>
+<span id="cb47-3"><a href="#cb47-3" aria-label="3"></a>                 <span class="at">color =</span> <span class="st">"gray"</span>) <span class="sc">+</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-label="4"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-label="5"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Intercept"</span>,</span>
+<span id="cb47-7"><a href="#cb47-7" aria-label="7"></a>       <span class="at">y =</span> <span class="st">"Density"</span>)</span>
+<span id="cb47-8"><a href="#cb47-8" aria-label="8"></a></span>
+<span id="cb47-9"><a href="#cb47-9" aria-label="9"></a><span class="fu">ggplot</span>(estimate_a) <span class="sc">+</span></span>
+<span id="cb47-10"><a href="#cb47-10" aria-label="10"></a>  <span class="fu">geom_violin</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> b0),</span>
+<span id="cb47-11"><a href="#cb47-11" aria-label="11"></a>              <span class="at">fill =</span> <span class="st">"lightgrey"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb47-12"><a href="#cb47-12" aria-label="12"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> b0),</span>
+<span id="cb47-13"><a href="#cb47-13" aria-label="13"></a>               <span class="at">width =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb47-14"><a href="#cb47-14" aria-label="14"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>,</span>
+<span id="cb47-15"><a href="#cb47-15" aria-label="15"></a>       <span class="at">y =</span> <span class="st">"Intercept"</span>) <span class="sc">+</span></span>
+<span id="cb47-16"><a href="#cb47-16" aria-label="16"></a>  <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="fig-4a-1" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-4a-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Distribution of the intercept estimates
+</figcaption>
+<div aria-describedby="fig-4a-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-4a-1" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-4a-1-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-fig" id="fig-4a-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Histogram
+</figcaption>
+<div aria-describedby="fig-4a-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW3_files/figure-html/fig-4a-1-1.png" class="img-fluid figure-img" data-ref-parent="fig-4a-1" width="480">
+</div>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-4a-1" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-4a-1-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-fig" id="fig-4a-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Violin plot with boxplot
+</figcaption>
+<div aria-describedby="fig-4a-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW3_files/figure-html/fig-4a-1-2.png" class="img-fluid figure-img" data-ref-parent="fig-4a-1" width="480">
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</figure>
+</div>
+<p></p>
+<p></p>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-label="1"></a><span class="fu">ggplot</span>(estimate_a) <span class="sc">+</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-label="2"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> b1, <span class="at">y =</span> <span class="fu">after_stat</span>(density)),</span>
+<span id="cb48-3"><a href="#cb48-3" aria-label="3"></a>                 <span class="at">color =</span> <span class="st">"gray"</span>) <span class="sc">+</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-label="4"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-label="5"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Slope"</span>,</span>
+<span id="cb48-7"><a href="#cb48-7" aria-label="7"></a>       <span class="at">y =</span> <span class="st">"Density"</span>)</span>
+<span id="cb48-8"><a href="#cb48-8" aria-label="8"></a></span>
+<span id="cb48-9"><a href="#cb48-9" aria-label="9"></a><span class="fu">ggplot</span>(estimate_a) <span class="sc">+</span></span>
+<span id="cb48-10"><a href="#cb48-10" aria-label="10"></a>  <span class="fu">geom_violin</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> b1),</span>
+<span id="cb48-11"><a href="#cb48-11" aria-label="11"></a>              <span class="at">fill =</span> <span class="st">"lightgrey"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb48-12"><a href="#cb48-12" aria-label="12"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> b1),</span>
+<span id="cb48-13"><a href="#cb48-13" aria-label="13"></a>               <span class="at">width =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb48-14"><a href="#cb48-14" aria-label="14"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>,</span>
+<span id="cb48-15"><a href="#cb48-15" aria-label="15"></a>       <span class="at">y =</span> <span class="st">"Slope"</span>) <span class="sc">+</span></span>
+<span id="cb48-16"><a href="#cb48-16" aria-label="16"></a>  <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="fig-4a-2" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-4a-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Distribution of the slope estimates
+</figcaption>
+<div aria-describedby="fig-4a-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-4a-2" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-4a-2-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-fig" id="fig-4a-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Histogram
+</figcaption>
+<div aria-describedby="fig-4a-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW3_files/figure-html/fig-4a-2-1.png" class="img-fluid figure-img" data-ref-parent="fig-4a-2" width="480">
+</div>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-4a-2" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-4a-2-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-fig" id="fig-4a-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Violin plot with boxplot
+</figcaption>
+<div aria-describedby="fig-4a-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW3_files/figure-html/fig-4a-2-2.png" class="img-fluid figure-img" data-ref-parent="fig-4a-2" width="480">
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</figure>
+</div>
+<p></p>
 </section>
 <section id="part-b-3" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="part-b-3"><span class="header-section-number">4.2</span> Part b</h2>
@@ -1491,6 +1643,144 @@ Fibrosis.StageStage 3  Fibrosis.StageStage 4                    Age
     n &amp;= 30
 \end{align*}\]</span> In each iteration, fit a regression line to the data and store the coefficient estimates. Plot the resulting estimates. What do you notice?</p>
 <p><strong>Hint:</strong> Use the <code>tolerance::r2exp()</code> function with <code>rate=1</code> and <code>shift=-1</code>.</p>
+<p><strong>Solution:</strong></p>
+<p>When the distribution of the residual terms is not normal but still centers around 0, the <span class="math inline">\(\beta_0\)</span> estimate follows a right-skewed normal distribution, and <span class="math inline">\(\beta_1\)</span> estimate follows a Gaussian distribution.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">8279</span>)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-label="2"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-label="3"></a>estimate_b <span class="ot">=</span> <span class="fu">tibble</span>(</span>
+<span id="cb49-4"><a href="#cb49-4" aria-label="4"></a><span class="at">b0 =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">1000</span>),</span>
+<span id="cb49-5"><a href="#cb49-5" aria-label="5"></a><span class="at">b1 =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">1000</span>)</span>
+<span id="cb49-6"><a href="#cb49-6" aria-label="6"></a>)</span>
+<span id="cb49-7"><a href="#cb49-7" aria-label="7"></a></span>
+<span id="cb49-8"><a href="#cb49-8" aria-label="8"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>) {</span>
+<span id="cb49-9"><a href="#cb49-9" aria-label="9"></a>  x <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">30</span>, <span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb49-10"><a href="#cb49-10" aria-label="10"></a>  epsilon <span class="ot">=</span> tolerance<span class="sc">::</span><span class="fu">r2exp</span>(<span class="dv">30</span>, <span class="at">rate =</span> <span class="dv">1</span>, <span class="at">shift =</span> <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb49-11"><a href="#cb49-11" aria-label="11"></a>  y <span class="ot">=</span> <span class="dv">2</span> <span class="sc">+</span> <span class="fl">1.5</span><span class="sc">*</span>x <span class="sc">+</span> epsilon</span>
+<span id="cb49-12"><a href="#cb49-12" aria-label="12"></a>  </span>
+<span id="cb49-13"><a href="#cb49-13" aria-label="13"></a>  mod <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span>
+<span id="cb49-14"><a href="#cb49-14" aria-label="14"></a>  </span>
+<span id="cb49-15"><a href="#cb49-15" aria-label="15"></a>  estimate_b<span class="sc">$</span>b0[i] <span class="ot">=</span> <span class="fu">coef</span>(mod)[<span class="st">"(Intercept)"</span>]</span>
+<span id="cb49-16"><a href="#cb49-16" aria-label="16"></a>  estimate_b<span class="sc">$</span>b1[i] <span class="ot">=</span> <span class="fu">coef</span>(mod)[<span class="st">"x"</span>]</span>
+<span id="cb49-17"><a href="#cb49-17" aria-label="17"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p></p>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-label="1"></a><span class="fu">ggplot</span>(estimate_b) <span class="sc">+</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-label="2"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> b0, <span class="at">y =</span> <span class="fu">after_stat</span>(density)),</span>
+<span id="cb50-3"><a href="#cb50-3" aria-label="3"></a>                 <span class="at">color =</span> <span class="st">"gray"</span>) <span class="sc">+</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-label="4"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-label="5"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Intercept"</span>,</span>
+<span id="cb50-7"><a href="#cb50-7" aria-label="7"></a>       <span class="at">y =</span> <span class="st">"Density"</span>)</span>
+<span id="cb50-8"><a href="#cb50-8" aria-label="8"></a></span>
+<span id="cb50-9"><a href="#cb50-9" aria-label="9"></a><span class="fu">ggplot</span>(estimate_b) <span class="sc">+</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-label="10"></a>  <span class="fu">geom_violin</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> b0),</span>
+<span id="cb50-11"><a href="#cb50-11" aria-label="11"></a>              <span class="at">fill =</span> <span class="st">"lightgrey"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb50-12"><a href="#cb50-12" aria-label="12"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> b0),</span>
+<span id="cb50-13"><a href="#cb50-13" aria-label="13"></a>               <span class="at">width =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb50-14"><a href="#cb50-14" aria-label="14"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>,</span>
+<span id="cb50-15"><a href="#cb50-15" aria-label="15"></a>       <span class="at">y =</span> <span class="st">"Intercept"</span>) <span class="sc">+</span></span>
+<span id="cb50-16"><a href="#cb50-16" aria-label="16"></a>  <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="fig-4b-1" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-4b-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: Distribution of the intercept estimates
+</figcaption>
+<div aria-describedby="fig-4b-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-4b-1" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-4b-1-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-fig" id="fig-4b-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Histogram
+</figcaption>
+<div aria-describedby="fig-4b-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW3_files/figure-html/fig-4b-1-1.png" class="img-fluid figure-img" data-ref-parent="fig-4b-1" width="480">
+</div>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-4b-1" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-4b-1-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-fig" id="fig-4b-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Violin plot with boxplot
+</figcaption>
+<div aria-describedby="fig-4b-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW3_files/figure-html/fig-4b-1-2.png" class="img-fluid figure-img" data-ref-parent="fig-4b-1" width="480">
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</figure>
+</div>
+<p></p>
+<p></p>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-label="1"></a><span class="fu">ggplot</span>(estimate_b) <span class="sc">+</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-label="2"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> b1, <span class="at">y =</span> <span class="fu">after_stat</span>(density)),</span>
+<span id="cb51-3"><a href="#cb51-3" aria-label="3"></a>                 <span class="at">color =</span> <span class="st">"gray"</span>) <span class="sc">+</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-label="4"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-label="5"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Slope"</span>,</span>
+<span id="cb51-7"><a href="#cb51-7" aria-label="7"></a>       <span class="at">y =</span> <span class="st">"Density"</span>)</span>
+<span id="cb51-8"><a href="#cb51-8" aria-label="8"></a></span>
+<span id="cb51-9"><a href="#cb51-9" aria-label="9"></a><span class="fu">ggplot</span>(estimate_b) <span class="sc">+</span></span>
+<span id="cb51-10"><a href="#cb51-10" aria-label="10"></a>  <span class="fu">geom_violin</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> b1),</span>
+<span id="cb51-11"><a href="#cb51-11" aria-label="11"></a>              <span class="at">fill =</span> <span class="st">"lightgrey"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb51-12"><a href="#cb51-12" aria-label="12"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> b1),</span>
+<span id="cb51-13"><a href="#cb51-13" aria-label="13"></a>               <span class="at">width =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb51-14"><a href="#cb51-14" aria-label="14"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>,</span>
+<span id="cb51-15"><a href="#cb51-15" aria-label="15"></a>       <span class="at">y =</span> <span class="st">"Slope"</span>) <span class="sc">+</span></span>
+<span id="cb51-16"><a href="#cb51-16" aria-label="16"></a>  <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="fig-4b-2" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-4b-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Distribution of the slope estimates
+</figcaption>
+<div aria-describedby="fig-4b-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-4b-2" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-4b-2-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-fig" id="fig-4b-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Histogram
+</figcaption>
+<div aria-describedby="fig-4b-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW3_files/figure-html/fig-4b-2-1.png" class="img-fluid figure-img" data-ref-parent="fig-4b-2" width="480">
+</div>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-4b-2" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-4b-2-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-fig" id="fig-4b-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Violin plot with boxplot
+</figcaption>
+<div aria-describedby="fig-4b-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW3_files/figure-html/fig-4b-2-2.png" class="img-fluid figure-img" data-ref-parent="fig-4b-2" width="480">
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</figure>
+</div>
+<p></p>
 </section>
 <section id="part-c-3" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="part-c-3"><span class="header-section-number">4.3</span> Part c</h2>
@@ -1500,6 +1790,163 @@ Fibrosis.StageStage 3  Fibrosis.StageStage 4                    Age
     y_i &amp;= 2 + 1.5 x_i + \epsilon_i\\
     n &amp;= 30
 \end{align*}\]</span> In each iteration, fit a regression line to the data and store the coefficient estimates. Plot the resulting estimates. What do you notice?</p>
+<p><strong>Solution:</strong></p>
+<p>When the residual terms are drawn from a Cauchy distribution, which has no finite mean or variance and has long tails, they’re more likely to be extreme values.</p>
+<p>Looking at the medians, <span class="math inline">\(\beta_0\)</span> estimate still clusters around 2 and <span class="math inline">\(\beta_1\)</span> estimate clusters around 1.5.Looking at <a href="#fig-4c-1" class="quarto-xref">Figure&nbsp;14</a> and <a href="#fig-4c-2" class="quarto-xref">Figure&nbsp;15</a>, we see some astronomical outliers (below <span class="math inline">\(-20000\)</span> or above <span class="math inline">\(8000\)</span>). The lack of constant variance of the Cauchy distribution causes the estimate to be extremely low in precision.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">8279</span>)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-label="2"></a></span>
+<span id="cb52-3"><a href="#cb52-3" aria-label="3"></a>estimate_c <span class="ot">=</span> <span class="fu">tibble</span>(</span>
+<span id="cb52-4"><a href="#cb52-4" aria-label="4"></a><span class="at">b0 =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">1000</span>),</span>
+<span id="cb52-5"><a href="#cb52-5" aria-label="5"></a><span class="at">b1 =</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">1000</span>)</span>
+<span id="cb52-6"><a href="#cb52-6" aria-label="6"></a>)</span>
+<span id="cb52-7"><a href="#cb52-7" aria-label="7"></a></span>
+<span id="cb52-8"><a href="#cb52-8" aria-label="8"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>) {</span>
+<span id="cb52-9"><a href="#cb52-9" aria-label="9"></a>  x <span class="ot">=</span> <span class="fu">runif</span>(<span class="dv">30</span>, <span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb52-10"><a href="#cb52-10" aria-label="10"></a>  epsilon <span class="ot">=</span> <span class="fu">rcauchy</span>(<span class="dv">30</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb52-11"><a href="#cb52-11" aria-label="11"></a>  y <span class="ot">=</span> <span class="dv">2</span> <span class="sc">+</span> <span class="fl">1.5</span><span class="sc">*</span>x <span class="sc">+</span> epsilon</span>
+<span id="cb52-12"><a href="#cb52-12" aria-label="12"></a>  </span>
+<span id="cb52-13"><a href="#cb52-13" aria-label="13"></a>  mod <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span>
+<span id="cb52-14"><a href="#cb52-14" aria-label="14"></a>  </span>
+<span id="cb52-15"><a href="#cb52-15" aria-label="15"></a>  estimate_c<span class="sc">$</span>b0[i] <span class="ot">=</span> <span class="fu">coef</span>(mod)[<span class="st">"(Intercept)"</span>]</span>
+<span id="cb52-16"><a href="#cb52-16" aria-label="16"></a>  estimate_c<span class="sc">$</span>b1[i] <span class="ot">=</span> <span class="fu">coef</span>(mod)[<span class="st">"x"</span>]</span>
+<span id="cb52-17"><a href="#cb52-17" aria-label="17"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-label="1"></a>(<span class="fu">median</span>(estimate_c<span class="sc">$</span>b0))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.840345</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-label="1"></a>(<span class="fu">median</span>(estimate_c<span class="sc">$</span>b1))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.526023</code></pre>
+</div>
+</div>
+<p></p>
+<p></p>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-label="1"></a><span class="fu">ggplot</span>(estimate_c) <span class="sc">+</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-label="2"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> b0, <span class="at">y =</span> <span class="fu">after_stat</span>(density)),</span>
+<span id="cb57-3"><a href="#cb57-3" aria-label="3"></a>                 <span class="at">color =</span> <span class="st">"gray"</span>) <span class="sc">+</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-label="4"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-label="5"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Intercept"</span>,</span>
+<span id="cb57-7"><a href="#cb57-7" aria-label="7"></a>       <span class="at">y =</span> <span class="st">"Density"</span>)</span>
+<span id="cb57-8"><a href="#cb57-8" aria-label="8"></a></span>
+<span id="cb57-9"><a href="#cb57-9" aria-label="9"></a><span class="fu">ggplot</span>(estimate_c) <span class="sc">+</span></span>
+<span id="cb57-10"><a href="#cb57-10" aria-label="10"></a>  <span class="fu">geom_violin</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> b0),</span>
+<span id="cb57-11"><a href="#cb57-11" aria-label="11"></a>              <span class="at">fill =</span> <span class="st">"lightgrey"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb57-12"><a href="#cb57-12" aria-label="12"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> b0),</span>
+<span id="cb57-13"><a href="#cb57-13" aria-label="13"></a>               <span class="at">width =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb57-14"><a href="#cb57-14" aria-label="14"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>,</span>
+<span id="cb57-15"><a href="#cb57-15" aria-label="15"></a>       <span class="at">y =</span> <span class="st">"Intercept"</span>) <span class="sc">+</span></span>
+<span id="cb57-16"><a href="#cb57-16" aria-label="16"></a>  <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="fig-4c-1" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-4c-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14: Distribution of the intercept estimates
+</figcaption>
+<div aria-describedby="fig-4c-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-4c-1" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-4c-1-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-fig" id="fig-4c-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Histogram
+</figcaption>
+<div aria-describedby="fig-4c-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW3_files/figure-html/fig-4c-1-1.png" class="img-fluid figure-img" data-ref-parent="fig-4c-1" width="480">
+</div>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-4c-1" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-4c-1-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-fig" id="fig-4c-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Violin plot with boxplot
+</figcaption>
+<div aria-describedby="fig-4c-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW3_files/figure-html/fig-4c-1-2.png" class="img-fluid figure-img" data-ref-parent="fig-4c-1" width="480">
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</figure>
+</div>
+<p></p>
+<p></p>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-label="1"></a><span class="fu">ggplot</span>(estimate_c) <span class="sc">+</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-label="2"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> b1, <span class="at">y =</span> <span class="fu">after_stat</span>(density)),</span>
+<span id="cb58-3"><a href="#cb58-3" aria-label="3"></a>                 <span class="at">color =</span> <span class="st">"gray"</span>) <span class="sc">+</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-label="4"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-label="5"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Slope"</span>,</span>
+<span id="cb58-7"><a href="#cb58-7" aria-label="7"></a>       <span class="at">y =</span> <span class="st">"Density"</span>)</span>
+<span id="cb58-8"><a href="#cb58-8" aria-label="8"></a></span>
+<span id="cb58-9"><a href="#cb58-9" aria-label="9"></a><span class="fu">ggplot</span>(estimate_c) <span class="sc">+</span></span>
+<span id="cb58-10"><a href="#cb58-10" aria-label="10"></a>  <span class="fu">geom_violin</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> b1),</span>
+<span id="cb58-11"><a href="#cb58-11" aria-label="11"></a>              <span class="at">fill =</span> <span class="st">"lightgrey"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb58-12"><a href="#cb58-12" aria-label="12"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> b1),</span>
+<span id="cb58-13"><a href="#cb58-13" aria-label="13"></a>               <span class="at">width =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb58-14"><a href="#cb58-14" aria-label="14"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>,</span>
+<span id="cb58-15"><a href="#cb58-15" aria-label="15"></a>       <span class="at">y =</span> <span class="st">"Slope"</span>) <span class="sc">+</span></span>
+<span id="cb58-16"><a href="#cb58-16" aria-label="16"></a>  <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="fig-4c-2" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-4c-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: Distribution of the slope estimates
+</figcaption>
+<div aria-describedby="fig-4c-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-4c-2" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-4c-2-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-fig" id="fig-4c-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Histogram
+</figcaption>
+<div aria-describedby="fig-4c-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW3_files/figure-html/fig-4c-2-1.png" class="img-fluid figure-img" data-ref-parent="fig-4c-2" width="480">
+</div>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-4c-2" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-4c-2-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-fig" id="fig-4c-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Violin plot with boxplot
+</figcaption>
+<div aria-describedby="fig-4c-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW3_files/figure-html/fig-4c-2-2.png" class="img-fluid figure-img" data-ref-parent="fig-4c-2" width="480">
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</figure>
+</div>
+<p></p>
 
 
 

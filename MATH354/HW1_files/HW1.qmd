@@ -82,8 +82,7 @@ On the twelfth day, out of the caretaker’s sight, the two new toys were placed
 
 The researchers were trying to infer from their data whether (1) the performance in the overhearing condition is above chance (50%), and (2) the difference between two conditions is different from 0.
 
-In order to know what statistical test is the most appropriate for our data, we need to first summarize our data. 
-
+In order to know what statistical test is the most appropriate for our data, we need to first summarize our data. I used a histogram to visualize data. In a histogram, the range of data is split into intervals of the same width, called binwidth. Each observation is placed into a binwidth. Density is calculated as the proportion of observations divided by the binwidth, meaning the total area of all bars equals 1.
 
 ```{r}
 overhear = c(1.0000, 1.0000, 0.7500, 1.0000, 0.4167, 0.8333, 0.7500, 0.8333, 0.8333, 1.0000)
@@ -122,12 +121,11 @@ summary_overhear |> knitr::kable(digits = 2)
 #| fig-align: "center"
 #| size: scriptsize
 
-# In a histogram, the range of data is split into consecutive, equal-width intervals. These are called bindwidth. Then it places each observation into a bindwidth.
-
-ggplot(data.frame(overhear), aes(x = overhear)) +          
-  geom_histogram(aes(y = after_stat(density)),              
-                  breaks = seq(0, 1, 0.1),               
-                  color = "gray") +
+ggplot(data.frame(overhear)) +          
+  geom_histogram(aes(x = overhear, 
+                    y = after_stat(density)),              
+                    breaks = seq(0, 1, 0.1),               
+                    color = "gray") +
   geom_hline(yintercept = 0) +
   theme_bw() +                                              
   labs(x = "Proportion of Correct Retrieval of New Toys Out of 12 Trials",                                       
@@ -151,10 +149,11 @@ summary_pdiff |> knitr::kable(digits = 2)
 #| fig-align: "center"
 #| size: scriptsize
 
-ggplot(data.frame(pdiff), aes(x = pdiff)) +          
-  geom_histogram(aes(y = after_stat(density)),              
-                  breaks = seq(-1, 1, 0.1),               
-                  color = "gray") +
+ggplot(data.frame(pdiff)) +          
+  geom_histogram(aes(x = pdiff,
+                    y = after_stat(density)),  
+                    breaks = seq(-1, 1, 0.1),
+                    color = "gray") +
   geom_hline(yintercept = 0) +
   theme_bw() +                                              
   labs(x = "Difference in Proportion",                                       

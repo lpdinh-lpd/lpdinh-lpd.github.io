@@ -123,11 +123,11 @@ Conduct a residual and outlier analysis.
 
 **Solution:**
 
-Looking at @fig-residuals-q1, the histogram of residuals is roughly bell-shaped and the points fit on the line in the qq plot. Therefore, the residuals are normal. The histogram centers at 0, meaning the residuals have a mean of 0. From the scatterplot, we see the residuals spreading equally around 0, suggesting common variance.
+@fig-residuals-q1 shows that the distribution of residuals is roughly bell-shaped and the points fit on the line in the qq plot. Therefore, the residuals are normal. The histogram centers at 0, meaning the residuals have a mean of 0. From the scatterplot, we see the residuals spreading equally around 0, suggesting common variance.
 
 In @fig-outlier, we can see that the dataset has several observations that have high leverage. All $D_i$ are below 0.50, so we know that these observations are not strongly influential. 
 
-The scatterplot for the studentized residual and the DFFITs reveal some outliers, however. The residuals for 9 observations fall more than 2 SDs above or below 0. Regarding the DFFITs plot, our model has 10 predictors, so we compare the absolute value of DFFITs to $2*\sqrt{10/250}=0.4$ and $3*\sqrt{10/250}=0.6$. An observation between the 100th and the 125th observation is strongly influential, consistent with the results from studentized residuals calclation. This observation doesn't seem to have high leverage, however.
+The scatterplot for the studentized residual and the DFFITs reveal some outliers. Based on the studentized residual plot, the residuals for 9 observations fall more than 2 SDs above or below 0. Regarding the DFFITs plot, our model has 10 predictors, so we compare the absolute value of DFFITs to $2*\sqrt{10/250}=0.4$ and $3*\sqrt{10/250}=0.6$. An observation between the 100th and the 125th observation is strongly influential, consistent with the results from studentized residuals calclation. This observation doesn't seem to have high leverage, however, explaining why it doesn't stick out in the plot---Cook's Distance takes into consideration both leverage and influence, while DFFITs only looks at influence. 
 
 Overall, the data satisfies the conditions for use of regression regarding residual and outliers.
 
@@ -163,6 +163,7 @@ plotInfluence(mod.q1)
 Interpret the intercept, the coefficients on $x_1$ and $x_2$.
 
 **Solution:**
+
 Given the predictors are standardized,
 
 * $\beta_0$ is the expected value of Y when every predictor is at their average (reference value).
@@ -175,6 +176,7 @@ Given the predictors are standardized,
 Untangle and interpret the $x_3*x_4$ interaction using algebra. Use @tbl-q1d-emmeans and @fig-q1d-emmeans for context.
 
 **Solution:**
+
 We hold all parts that do not involve $x_3$ and $x_4$ in the model constant, labeled as $C$. Our regression model becomes:
 $$Y_i = \beta_3 I(x_{3i}=\text{Treat}) + \beta_4 I(x_{4i}=\text{High}) + \beta_9 (I(x_{3i}=\text{Treat}) ~\times~ I(x_{4i}=\text{High})) + C $$ 
 Our expected Y, conditioned on $x_3$ and $x_4$, are as follow:
@@ -233,6 +235,7 @@ ggplot(emm.q1d) +
 Untangle and interpret the $x_5*x_6$ interaction using algebra. Use @tbl-q1e-emtrends and @fig-q1e-emtrends for context.
 
 **Solution:**
+
 We hold all parts that do not involve $x_5$ and $x_6$ in the model constant, labeled as $C$. Our regression model becomes:
 $$Y_i = \beta_5 x_{5i} + \beta_6 I( x_{6i}=\text{Group2}) + \beta_{10} (x_{5i} ~\times~ I(x_{6i}=\text{Group2})) + C $$ 
 Our expected Y, conditioned on $x_5$ and $x_6$, are as follow:
@@ -294,6 +297,7 @@ ggplot(emm.q1e) +
 Untangle and interpret the $x_7*x_8$ interaction using algebra. Use @tbl-q1f-emtrends-x7 and @tbl-q1f-emtrends-x8 for context.
 
 **Solution:**
+
 We hold all parts that do not involve $x_7$ and $x_8$ in the model constant, labeled as $C$. Our regression model becomes:
 $$Y_i = \beta_7 x_{7i} + \beta_8 x_{8i} + \beta_{11} (x_{7i} ~\times~ x_{8i}) + C $$ 
 We can combine like terms to get:
@@ -473,6 +477,7 @@ Compute the estimates we derived using calculus in lecture 16:
 \end{align*}
 
 **Solution:**
+
 $\beta_0=80.755$, $\beta_1=0.3654$
 
 ```{r}
@@ -528,7 +533,8 @@ y = matrix(data = c(81.93, 76.63, 63.23, 32.13, 12.83),
 Compute the maximum likelihood estimates using `optim()` in `R` as described in lecture 16:
 $$\max_{\beta_0, \beta_1, \sigma} \mathcal{L}(\boldsymbol{\theta}=\{\beta_0, \beta_1, \sigma\}).$$
 **Solution:**
-We know that $\epsilon_i ~ Gaussian(0, \sigma)$. We want to find the parameters (intercept, slope, and standard error of residual terms) that maximize the likelihood of observing our observed residual terms. 
+
+We know that $\epsilon_i \sim Gaussian(0, \sigma)$. We want to find the parameters (intercept, slope, and standard error of residual terms) that maximize the likelihood of observing our observed residual terms. 
 
 ```{r}
 # create function (optim can only adjust 1 object, so we have to put all 3 parameters into 1 vector)
@@ -559,6 +565,7 @@ mle = optim(fn = neg_log,
 Fit the model using `lm()` and plot the resulting model. Compare to the results from parts (a) through (c).
 
 **Solution:**
+
 Using `lm`, we obtain the following results for the intercept and the coefficient:
 
 ```{r}
@@ -579,8 +586,13 @@ The results are roughly similar across from part (a) to (d).
 #| size: scriptsize
 
 ggplot(df, aes(x = x1, y = y1)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE, color = "black", linewidth = 0.5) +
+  geom_point(aes(x = x1, 
+                y = y1)) +
+  geom_smooth(aes(x = x1, 
+                  y = y1),
+              method = "lm", 
+              color = "black", 
+              linewidth = 0.5) +
   labs(x = "Temperature",
        y = "Mean Tensile Strength")
 
@@ -623,6 +635,7 @@ mod.q3.1 = lm(MFAP4 ~ Fibrosis.Stage, data = dat)
 Conduct a residual analysis on the model in part a to demonstrate how to identify when you need a log transformation.
 
 **Solution:**
+
 From @fig-residuals-q3-1, we can see that the residual terms are not normal, and a good amount of them are way oft the qq line. The variance follows a megaphone shape. For the last two fitted values, the residuals are much more spread out.
 
 ```{r}
@@ -728,6 +741,86 @@ Simulate data to match regression assumptions in a loop that runs $R=1000$ times
 \end{align*}
 In each iteration, fit a regression line to the data and store the coefficient estimates. Plot the resulting estimates. What do you notice?
 
+**Solution:**
+
+When the distribution of the residual terms are normal and has a mean of 0, the estimates of the intercept ($\beta_0$) and the slope ($\beta_1$) follow a Gaussian distribution, centering around the specified intercept and slope.
+```{r}
+set.seed(8279)
+
+estimate_a = tibble(
+  b0 = rep(NA, 1000),
+  b1 = rep(NA, 1000)
+)
+
+for(i in 1:1000) {
+  x = runif(30, 0, 10)
+  epsilon = rnorm(30, 0, 1)
+  y = 2 + 1.5*x + epsilon
+
+  mod = lm(y ~ x)
+
+  estimate_a$b0[i] = coef(mod)["(Intercept)"]
+  estimate_a$b1[i] = coef(mod)["x"]
+
+}
+```
+
+```{r}
+#| label: fig-4a-1
+#| fig-cap: "Distribution of the intercept estimates"
+#| fig-subcap:
+#|   - "Histogram"
+#|   - "Violin plot with boxplot"
+#| layout-ncol: 2
+#| fig-width: 5
+#| fig-height: 3
+
+ggplot(estimate_a) +
+  geom_histogram(aes(x = b0, y = after_stat(density)),
+                 color = "gray") +
+  geom_hline(yintercept = 0) +
+  theme_bw() +
+  labs(x = "Intercept",
+       y = "Density")
+
+ggplot(estimate_a) +
+  geom_violin(aes(x = "", y = b0),
+              fill = "lightgrey", alpha = 0.5) +
+  geom_boxplot(aes(x = "", y = b0),
+               width = 0.1) +
+  labs(x = "",
+       y = "Intercept") +
+  theme(axis.ticks.x = element_blank())
+```
+
+```{r}
+#| label: fig-4a-2
+#| fig-cap: "Distribution of the slope estimates"
+#| fig-subcap:
+#|   - "Histogram"
+#|   - "Violin plot with boxplot"
+#| layout-ncol: 2
+#| fig-width: 5
+#| fig-height: 3
+
+ggplot(estimate_a) +
+  geom_histogram(aes(x = b1, y = after_stat(density)),
+                 color = "gray") +
+  geom_hline(yintercept = 0) +
+  theme_bw() +
+  labs(x = "Slope",
+       y = "Density")
+
+ggplot(estimate_a) +
+  geom_violin(aes(x = "", y = b1),
+              fill = "lightgrey", alpha = 0.5) +
+  geom_boxplot(aes(x = "", y = b1),
+               width = 0.1) +
+  labs(x = "",
+       y = "Slope") +
+  theme(axis.ticks.x = element_blank())
+```
+
 ## Part b
 Simulate data to match regression assumptions in a loop that runs $R=1000$ times.
 \begin{align*}
@@ -740,6 +833,86 @@ In each iteration, fit a regression line to the data and store the coefficient e
 
 **Hint:** Use the `tolerance::r2exp()` function with `rate=1` and `shift=-1`.
 
+**Solution:**
+
+When the distribution of the residual terms is not normal but still centers around 0, the $\beta_0$ estimate follows a right-skewed normal distribution, and $\beta_1$ estimate follows a Gaussian distribution.
+
+```{r}
+set.seed(8279)
+
+estimate_b = tibble(
+b0 = rep(NA, 1000),
+b1 = rep(NA, 1000)
+)
+
+for(i in 1:1000) {
+  x = runif(30, 0, 10)
+  epsilon = tolerance::r2exp(30, rate = 1, shift = -1)
+  y = 2 + 1.5*x + epsilon
+  
+  mod = lm(y ~ x)
+  
+  estimate_b$b0[i] = coef(mod)["(Intercept)"]
+  estimate_b$b1[i] = coef(mod)["x"]
+}
+```
+
+```{r}
+#| label: fig-4b-1
+#| fig-cap: "Distribution of the intercept estimates"
+#| fig-subcap:
+#|   - "Histogram"
+#|   - "Violin plot with boxplot"
+#| layout-ncol: 2
+#| fig-width: 5
+#| fig-height: 3
+
+ggplot(estimate_b) +
+  geom_histogram(aes(x = b0, y = after_stat(density)),
+                 color = "gray") +
+  geom_hline(yintercept = 0) +
+  theme_bw() +
+  labs(x = "Intercept",
+       y = "Density")
+
+ggplot(estimate_b) +
+  geom_violin(aes(x = "", y = b0),
+              fill = "lightgrey", alpha = 0.5) +
+  geom_boxplot(aes(x = "", y = b0),
+               width = 0.1) +
+  labs(x = "",
+       y = "Intercept") +
+  theme(axis.ticks.x = element_blank())
+```
+
+```{r}
+#| label: fig-4b-2
+#| fig-cap: "Distribution of the slope estimates"
+#| fig-subcap:
+#|   - "Histogram"
+#|   - "Violin plot with boxplot"
+#| layout-ncol: 2
+#| fig-width: 5
+#| fig-height: 3
+
+ggplot(estimate_b) +
+  geom_histogram(aes(x = b1, y = after_stat(density)),
+                 color = "gray") +
+  geom_hline(yintercept = 0) +
+  theme_bw() +
+  labs(x = "Slope",
+       y = "Density")
+
+ggplot(estimate_b) +
+  geom_violin(aes(x = "", y = b1),
+              fill = "lightgrey", alpha = 0.5) +
+  geom_boxplot(aes(x = "", y = b1),
+               width = 0.1) +
+  labs(x = "",
+       y = "Slope") +
+  theme(axis.ticks.x = element_blank())
+```
+
 ## Part c
 Simulate data to match regression assumptions in a loop that runs $R=1000$ times.
 \begin{align*}
@@ -750,3 +923,89 @@ Simulate data to match regression assumptions in a loop that runs $R=1000$ times
 \end{align*}
 In each iteration, fit a regression line to the data and store the coefficient estimates. Plot the resulting estimates. What do you notice?
 
+**Solution:**
+
+When the residual terms are drawn from a Cauchy distribution, which has no finite mean or variance and has long tails, they're more likely to be extreme values. 
+
+Looking at the medians, $\beta_0$ estimate still clusters around 2 and $\beta_1$ estimate clusters around 1.5.Looking at @fig-4c-1 and @fig-4c-2, we see some astronomical outliers (below $-20000$ or above $8000$). The lack of constant variance of the Cauchy distribution causes the estimate to be extremely low in precision.
+
+```{r}
+set.seed(8279)
+
+estimate_c = tibble(
+b0 = rep(NA, 1000),
+b1 = rep(NA, 1000)
+)
+
+for(i in 1:1000) {
+  x = runif(30, 0, 10)
+  epsilon = rcauchy(30, 0, 1)
+  y = 2 + 1.5*x + epsilon
+  
+  mod = lm(y ~ x)
+  
+  estimate_c$b0[i] = coef(mod)["(Intercept)"]
+  estimate_c$b1[i] = coef(mod)["x"]
+}
+```
+
+```{r}
+(median(estimate_c$b0))
+(median(estimate_c$b1))
+```
+
+```{r}
+#| label: fig-4c-1
+#| fig-cap: "Distribution of the intercept estimates"
+#| fig-subcap:
+#|   - "Histogram"
+#|   - "Violin plot with boxplot"
+#| layout-ncol: 2
+#| fig-width: 5
+#| fig-height: 3
+
+ggplot(estimate_c) +
+  geom_histogram(aes(x = b0, y = after_stat(density)),
+                 color = "gray") +
+  geom_hline(yintercept = 0) +
+  theme_bw() +
+  labs(x = "Intercept",
+       y = "Density")
+
+ggplot(estimate_c) +
+  geom_violin(aes(x = "", y = b0),
+              fill = "lightgrey", alpha = 0.5) +
+  geom_boxplot(aes(x = "", y = b0),
+               width = 0.1) +
+  labs(x = "",
+       y = "Intercept") +
+  theme(axis.ticks.x = element_blank())
+```
+
+```{r}
+#| label: fig-4c-2
+#| fig-cap: "Distribution of the slope estimates"
+#| fig-subcap:
+#|   - "Histogram"
+#|   - "Violin plot with boxplot"
+#| layout-ncol: 2
+#| fig-width: 5
+#| fig-height: 3
+
+ggplot(estimate_c) +
+  geom_histogram(aes(x = b1, y = after_stat(density)),
+                 color = "gray") +
+  geom_hline(yintercept = 0) +
+  theme_bw() +
+  labs(x = "Slope",
+       y = "Density")
+
+ggplot(estimate_c) +
+  geom_violin(aes(x = "", y = b1),
+              fill = "lightgrey", alpha = 0.5) +
+  geom_boxplot(aes(x = "", y = b1),
+               width = 0.1) +
+  labs(x = "",
+       y = "Slope") +
+  theme(axis.ticks.x = element_blank())
+```
