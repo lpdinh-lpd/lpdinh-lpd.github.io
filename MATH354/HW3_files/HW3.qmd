@@ -545,7 +545,8 @@ neg_log = function(par, data, mle = F) {
   x = data$x1
   y = data$y1
   
-  ll = sum(dnorm(y-(b0+b1*x), 0, sigma, log = T)) #point estimation
+  ll = sum(dnorm(y-(b0+b1*x), 0, sigma, log = T)) #point estimation: change the shape of the distribution to maximize the height of the distribution at your observation (different from probability, which is the area)
+  
   ifelse(mle, -ll, ll)
 }
 ```
