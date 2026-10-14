@@ -127,7 +127,7 @@ Conduct a residual and outlier analysis.
 
 In @fig-outlier, we can see that the dataset has several observations that have high leverage. All $D_i$ are below 0.50, so we know that these observations are not strongly influential. 
 
-The scatterplot for the studentized residual and the DFFITs reveal some outliers. Based on the studentized residual plot, the residuals for 9 observations fall more than 2 SDs above or below 0. Regarding the DFFITs plot, our model has 10 predictors, so we compare the absolute value of DFFITs to $2*\sqrt{10/250}=0.4$ and $3*\sqrt{10/250}=0.6$. An observation between the 100th and the 125th observation is strongly influential, consistent with the results from studentized residuals calclation. This observation doesn't seem to have high leverage, however, explaining why it doesn't stick out in the plot---Cook's Distance takes into consideration both leverage and influence, while DFFITs only looks at influence. 
+The scatterplot for the studentized residual and the DFFITs reveal some outliers. Based on the studentized residual plot, the residuals for 9 observations fall more than 2 SDs above or below 0. Regarding the DFFITs plot, our model has 12 predictors, so we compare the absolute value of DFFITs to $2*\sqrt{12/250}=0.44$ and $3*\sqrt{12/250}=0.66$. An observation between the 100th and the 125th observation is strongly influential, consistent with the results from studentized residuals calclation. 
 
 Overall, the data satisfies the conditions for use of regression regarding residual and outliers.
 
@@ -164,13 +164,11 @@ Interpret the intercept, the coefficients on $x_1$ and $x_2$.
 
 **Solution:**
 
-Given the predictors are standardized,
-
-* $\beta_0$ is the expected value of Y when every predictor is at their average (reference value).
+* $\beta_0$ is the expected value of Y when every other predictor is at their reference value.
 
 * $\beta_1$ is the expected increase in the value of Y with every 1 unit increase in $x_1$, given all other predictors are fixed.
 
-* $\beta_1$ is the expected increase in the value of Y when the reference category for $x_2$ changes from A to B, given all other predictors are fixed.
+* $\beta_2$ is the expected increase in the value of Y when the reference category for $x_2$ changes from A to B, given all other predictors are fixed.
 
 ## Part d
 Untangle and interpret the $x_3*x_4$ interaction using algebra. Use @tbl-q1d-emmeans and @fig-q1d-emmeans for context.
@@ -191,7 +189,7 @@ $$ E(Y_i | x_{3i}=\text{Treat}, x_{4i}=\text{High}) = \beta_3 + \beta_4 + \beta_
 
 * $\beta_4$ is the expected difference $Y$ between the Low and High condition in the Control group.
 
-* $\beta_4$ is the interaction effect of Group (Treatment vs. Control) and Condition (High vs. Low). When group changes from Control to Treatment and condition changes from Low to High, the expeced value of $Y$ gets by both the effect of each categorical variable and the interaction effect.
+* $\beta_9$ is the interaction effect of Group (Treatment vs. Control) and Condition (High vs. Low). When group changes from Control to Treatment and condition changes from Low to High, the expeced value of $Y$ gets both the effect of each categorical variable and the interaction effect.
 
 ```{r}
 #| size: "scriptsize"
@@ -251,7 +249,7 @@ $$Y_i = (\beta_5 + \beta_{10})x_{5i} + (\beta_6 + C) $$
 
     * $\beta_6 + C$ is the expected value of $Y$ when $x_5=0$.
 
-    * $\beta_5 + \beta_10$ is the increase in the expected value of $Y$ when $x_5$ increases by 1 unit.
+    * $\beta_5 + \beta_{10}$ is the increase in the expected value of $Y$ when $x_5$ increases by 1 unit. $\beta_{10}$ is the difference between the slope of Group 1 and Group 2.
 
 ```{r}
 #| size: "scriptsize"
@@ -441,16 +439,16 @@ After transformation,
 
 * $\beta_7$ is the effect of a 1-SD change in $x_7$ when $x_8$ is at its mean.
 
-* $\beta_7$ is the effect of a 1-SD change in $x_7$ when $x_8$ is at its mean.
+* $\beta_8$ is the effect of a 1-SD change in $x_7$ when $x_7$ is at its mean.
 
 * $\beta_{11}$ now becomes the change in the slope of 1 standardized predictor when the other predictor shifts by 1 standard deviation. For example, looking at the effect of $x_7$:
 
-$$Y_i = (\beta_7 + \beta_{11}x_{8i})x_{7i} + \beta_8 x_{8i} + C $$ 
+$$Y_i = (\beta_7 + \beta_{11}z_{8i})z_{7i} + \beta_8 z_{8i} + C $$ 
 
 * When $z_8=-1$, 
 $$Y_i = (\beta_7 - \beta_{11})z_{7i} - \beta_8 + C $$
 In other words, when $x_8$ is 1 SD below the means, for every increase in the SD of $x_7$, the expected value of $Y$ increases by $\beta_7 - \beta_{11}$. When $x_7$ is at average, the expected value of $Y$ is $C - \beta_8$.
-This transformation makes the untangling process easier. In @tbl-q1-emtrends-z7, in the slope column, the second row is the estimated value for $\beta_7 - \beta_{11}$, the third row is the estimated value for $\beta_7 + \beta_{11}$, and the difference between rows is the estimated value for $\beta_{11}$.
+This transformation makes the untangling process easier. In @tbl-q1-emtrends-z7, in the slope column, the first row is the estimated value for $\beta_7 - \beta_{11}$, the second row is $\beta_7$, and third row is the estimated value for $\beta_7 + \beta_{11}$. The difference between rows is the estimated value for $\beta_{11}$.
 
 # Question 2
 @Cui25 investigate how freezing and cryogenic temperatures affect the strength, flexibility, stiffness, and internal breaking behavior of 3D-printed CF/PEEK composites.
@@ -534,7 +532,7 @@ Compute the maximum likelihood estimates using `optim()` in `R` as described in 
 $$\max_{\beta_0, \beta_1, \sigma} \mathcal{L}(\boldsymbol{\theta}=\{\beta_0, \beta_1, \sigma\}).$$
 **Solution:**
 
-We know that $\epsilon_i \sim Gaussian(0, \sigma)$. We want to find the parameters (intercept, slope, and standard error of residual terms) that maximize the likelihood of observing our observed residual terms. 
+We know that $\epsilon_i \sim Gaussian(0, \sigma)$. We want to find the parameters (intercept, slope, and standard deviation of residual terms) that maximize the likelihood of observing our observed residual terms. 
 
 ```{r}
 # create function (optim can only adjust 1 object, so we have to put all 3 parameters into 1 vector)
@@ -547,7 +545,7 @@ neg_log = function(par, data, mle = F) {
   x = data$x1
   y = data$y1
   
-  ll = sum(log(dnorm(y-(b0+b1*x), 0, sigma))) #point estimation
+  ll = sum(dnorm(y-(b0+b1*x), 0, sigma, log = T)) #point estimation
   ifelse(mle, -ll, ll)
 }
 ```
@@ -574,7 +572,7 @@ mod.q2 = lm(y1 ~ x1, data = df)
 (coef(mod.q2)["x1"])
 ```
 
-The results are roughly similar across from part (a) to (d). 
+The results are similar across from part (a) to (d).
 
 ```{r}
 #| label: fig-q2
@@ -655,15 +653,15 @@ Fit the model predicting `log(MFAP4)` using `Fibrosis.Stage`. Use the natural lo
 
 **Solution:**
 $$\hat{y}_i = 2.026 + 0.133 \times I(x_{1i} = \text{``Stage 1''}) + 0.304 \times I(x_{1i} = \text{``Stage 2''}) + 0.774 \times I(x_{1i} = \text{``Stage 3''}) + 0.990 \times I(x_{1i} = \text{``Stage 4''})$$
-* $\beta_0 = 2.026$: the expected value of $Y$ when the reference category is "Stage 0"
+* $\beta_0 = 2.026$: the expected value of $\log(\text{MFAP4})$ when the reference category is "Stage 0"
 
-* $\beta_1 = 0.133$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 1"
+* $\beta_1 = 0.133$: the change in $\log(\text{MFAP4})$ when the reference category changes from "Stage 0" to "Stage 1"
 
-* $\beta_2 = 0.304$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 2"
+* $\beta_2 = 0.304$: the change in $\log(\text{MFAP4})$ when the reference category changes from "Stage 0" to "Stage 2"
 
-* $\beta_3 = 0.774$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 3"
+* $\beta_3 = 0.774$: the change in $\log(\text{MFAP4})$ when the reference category changes from "Stage 0" to "Stage 3"
 
-* $\beta_4 = 0.990$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 4"
+* $\beta_4 = 0.990$: the change in $\log(\text{MFAP4})$ when the reference category changes from "Stage 0" to "Stage 4"
 
 ```{r}
 dat = dat |>
@@ -705,19 +703,23 @@ Fit the model predicting `log(MFAP4)` using `Fibrosis.Stage`, `Age`, and `Gender
     & - 0.143 \times I(x_{3i} = \text{``Male''})
 \end{align*}
 
-* $\beta_0 = 1.519$: the expected value of $Y$ when the reference category is "Stage 0", age is 0, and gender is "Female"
+Holding other variables fixed,
 
-* $\beta_1 = 0.127$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 1"
+* $\beta_0 = 1.519$: the expected value of $\log(\text{MFAP4})$ when the reference category is "Stage 0", age is 0, and gender is "Female". This is not very meaningful because age cannot be 0.
 
-* $\beta_2 = 0.213$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 2"
+* $\beta_1 = 0.127$: the change in $\log(\text{MFAP4})$ when the reference category changes from "Stage 0" to "Stage 1"
 
-* $\beta_3 = 0.599$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 3"
+* $\beta_2 = 0.213$: the change in $\log(\text{MFAP4})$ when the reference category changes from "Stage 0" to "Stage 2"
 
-* $\beta_4 = 0.829$: the change in $Y$ when the reference category changes from "Stage 0" to "Stage 4"
+* $\beta_3 = 0.599$: the change in $\log(\text{MFAP4})$ when the reference category changes from "Stage 0" to "Stage 3"
 
-* $\beta_5 = 0.013$: the change in $Y$ for every unit increase in age
+* $\beta_4 = 0.829$: the change in $\log(\text{MFAP4})$ when the reference category changes from "Stage 0" to "Stage 4"
 
-* $\beta_6 = -0.143$: the change in $Y$ when the reference category changes from "Female" to "Male"
+* $\beta_5 = 0.013$: the change in $\log(\text{MFAP4})$ for every unit increase in age
+
+* $\beta_6 = -0.143$: the change in $\log(\text{MFAP4})$ when the reference category changes from "Female" to "Male"
+
+The coefficients decrease after adjustment for simultaneous changes in other predictors.
 
 ```{r}
 dat2 = dat.mfap4 |>
