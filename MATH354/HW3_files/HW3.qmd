@@ -553,8 +553,8 @@ neg_log = function(par, data, mle = F) {
 ```{r}
 mle = optim(fn = neg_log,
             par = c(mean(df$y1), 0, sd(df$y1)), #if slope is 0, b0 = mean(y)
-            data = df,
-            mle=T) #passed in for the function, not optim
+            data = df ,
+            mle = T) #passed in for the function, not optim
 (mle$par[1])
 (mle$par[2])
 ```

@@ -1240,8 +1240,8 @@ Table&nbsp;6: Estimated marginal trends for the model in Question 1 when quantit
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-label="1"></a>mle <span class="ot">=</span> <span class="fu">optim</span>(<span class="at">fn =</span> neg_log,</span>
 <span id="cb28-2"><a href="#cb28-2" aria-label="2"></a>            <span class="at">par =</span> <span class="fu">c</span>(<span class="fu">mean</span>(df<span class="sc">$</span>y1), <span class="dv">0</span>, <span class="fu">sd</span>(df<span class="sc">$</span>y1)), <span class="co">#if slope is 0, b0 = mean(y)</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-label="3"></a>            <span class="at">data =</span> df,</span>
-<span id="cb28-4"><a href="#cb28-4" aria-label="4"></a>            <span class="at">mle=</span>T) <span class="co">#passed in for the function, not optim</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-label="3"></a>            <span class="at">data =</span> df ,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-label="4"></a>            <span class="at">mle =</span> T) <span class="co">#passed in for the function, not optim</span></span>
 <span id="cb28-5"><a href="#cb28-5" aria-label="5"></a>(mle<span class="sc">$</span>par[<span class="dv">1</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
