@@ -654,6 +654,7 @@ Fit the model predicting `log(MFAP4)` using `Fibrosis.Stage`. Use the natural lo
 
 **Solution:**
 $$\hat{y}_i = 2.026 + 0.133 \times I(x_{1i} = \text{``Stage 1''}) + 0.304 \times I(x_{1i} = \text{``Stage 2''}) + 0.774 \times I(x_{1i} = \text{``Stage 3''}) + 0.990 \times I(x_{1i} = \text{``Stage 4''})$$
+
 * $\beta_0 = 2.026$: the expected value of $\log(\text{MFAP4})$ when the reference category is "Stage 0"
 
 * $\beta_1 = 0.133$: the change in $\log(\text{MFAP4})$ when the reference category changes from "Stage 0" to "Stage 1"
@@ -704,9 +705,9 @@ Fit the model predicting `log(MFAP4)` using `Fibrosis.Stage`, `Age`, and `Gender
     & - 0.143 \times I(x_{3i} = \text{``Male''})
 \end{align*}
 
-Holding other variables fixed,
-
 * $\beta_0 = 1.519$: the expected value of $\log(\text{MFAP4})$ when the reference category is "Stage 0", age is 0, and gender is "Female". This is not very meaningful because age cannot be 0.
+
+Holding other variables fixed,
 
 * $\beta_1 = 0.127$: the change in $\log(\text{MFAP4})$ when the reference category changes from "Stage 0" to "Stage 1"
 
