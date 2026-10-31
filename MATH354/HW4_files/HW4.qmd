@@ -330,7 +330,7 @@ First, we fit the model. A residual analysis, as in @fig-residuals-q2, reveals t
 
 The model discernibly explains the variation in the outcome, $F_{16, 679}=2.86, p<0.001, \omega^2=0.04$. The overall effect size is small. 
 
-Results are for $log$(rating). @tbl-q2-anova shows that the effect of treatment is statistically discernible, $F_{1, 679}=26.71, p<0.001$, but the effect of the interaction between treatment and age is not, $F_{1, 679}=3.32, p=0.070$.
+Results are for $log(rating)$. @tbl-q2-anova shows that the effect of treatment is statistically discernible, $F_{1, 679}=26.71, p<0.001$, but the effect of the interaction between treatment and age is not, $F_{1, 679}=3.32, p=0.070$.
 
 ### Fit the model
 
@@ -635,7 +635,9 @@ jn$plot
 
 # Discussion
 
-In two out of three experiments, particularly attribute framing and goal framing, we did not find a statistically discernible effect of the interaction of age and framing (positive vs. negative framing) on participants' perception of a scenario. 
+There is a statistically discernible effect of framing in all 3 experiments, confirming previous literature.
+
+Regarding the Age $\times$ Framing interaction effect on participants' perception of a scenario, in two out of three experiments, particularly attribute framing and goal framing, we did not find a statistically discernible effect.
 
 In the risky-choice framing, however, the age $\times$ framing interaction effect was statistically discernible, $F_{1, 678} = 4.53, p = .034$, with a slope difference of 0.019 rating points per year of age (SE = 0.009). This effect has been adjusted for simultaneous linear changes in gender, ethnicity, education, and politics.
 
