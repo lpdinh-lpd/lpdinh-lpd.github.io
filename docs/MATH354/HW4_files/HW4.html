@@ -1826,10 +1826,10 @@ Figure&nbsp;12: Participants’ Attitudes Towards the Scenario
 </div>
 </div>
 <p></p>
-<p>We transform the variable <code>treatment 3</code> to a discrete binary variable, <span class="math inline">\(x_1\)</span>. <span class="math inline">\(x_1=0\)</span> when treatment is positive, and <span class="math inline">\(x_1=1\)</span> when treatment is negative. The regression model with the interaction term between age (here termed <span class="math inline">\(x_2\)</span>) can be written as:</p>
+<p>We transform the variable <code>treatment 3</code> to a discrete binary variable (<span class="math inline">\(x_1\)</span>). <span class="math inline">\(x_1=0\)</span> when treatment is positive, and <span class="math inline">\(x_1=1\)</span> when treatment is negative. The regression model with the interaction term between treatment (<span class="math inline">\(x_1\)</span>) and age (<span class="math inline">\(x_2\)</span>) can be written as:</p>
 <p><span class="math display">\[\hat{y} = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_1x_2 +C \]</span></p>
 <p>or, singling out <span class="math inline">\(x_1\)</span>,</p>
-<p><span class="math display">\[\hat{y} = \beta_0 + (\beta_1+\beta_3x_2)x_1 + \beta_2x_2 + C \]</span> ANOVA tests whether <span class="math inline">\(\beta_3\)</span> is different from 0. EMT etimates the age slope within each framing group; <span class="math inline">\(\beta_3\)</span> is their difference.” When <code>treatment3</code> is negative, <span class="math inline">\(x_1=1\)</span>. <span class="math inline">\(\hat{y}\)</span> changes by <span class="math inline">\(\beta_2+\beta_3\)</span> with every unit change in <span class="math inline">\(x_2\)</span>. When <code>treatment3</code> is positive, <span class="math inline">\(x_1=0\)</span>. <span class="math inline">\(\hat{y}\)</span> changes by <span class="math inline">\(\beta_2\)</span> with every unit change in <span class="math inline">\(x_2\)</span>.</p>
+<p><span class="math display">\[\hat{y} = \beta_0 + (\beta_1+\beta_3x_2)x_1 + \beta_2x_2 + C \]</span> ANOVA tests whether <span class="math inline">\(\beta_3\)</span> is discernibly different from 0. EMT etimates the age slope within each framing group and <span class="math inline">\(\beta_3\)</span> is their difference. When <code>treatment3</code> is negative, <span class="math inline">\(x_1=1\)</span>. <span class="math inline">\(\hat{y}\)</span> changes by <span class="math inline">\(\beta_2+\beta_3\)</span> with every unit change in <span class="math inline">\(x_2\)</span>. When <code>treatment3</code> is positive, <span class="math inline">\(x_1=0\)</span>. <span class="math inline">\(\hat{y}\)</span> changes by <span class="math inline">\(\beta_2\)</span> with every unit change in <span class="math inline">\(x_2\)</span>.</p>
 <p>The Johnson-Neyman analysis tests the slope of <span class="math inline">\(x_1\)</span> (<span class="math inline">\(\beta_1+\beta_3x_2\)</span>) at every value of <span class="math inline">\(x_2\)</span>. Specifically, it tests, at each age, whether the difference in predicted ratings between negative and positive framing is discernibly different from 0.</p>
 <p></p>
 <div class="cell">
@@ -1863,13 +1863,13 @@ Figure&nbsp;12: Participants’ Attitudes Towards the Scenario
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-label="1"></a>jn<span class="sc">$</span>plot </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div id="fig-jn" class="quarto-float quarto-figure quarto-figure-center anchored" width="768">
+<div id="fig-jn" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-jn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;13
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-jn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Johnson-Neyman Plot
 </figcaption>
 <div aria-describedby="fig-jn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="HW4_files/figure-html/fig-jn-1.png" id="fig-jn" class="img-fluid figure-img" width="768">
+<img src="HW4_files/figure-html/fig-jn-1.png" class="img-fluid figure-img" width="768">
 </div>
 </figure>
 </div>

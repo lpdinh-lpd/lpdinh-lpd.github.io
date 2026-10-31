@@ -600,14 +600,14 @@ ggplot(plot.q3,
   theme_bw()
 ```
 
-We transform the variable `treatment 3` to a discrete binary variable, $x_1$. $x_1=0$ when treatment is positive, and $x_1=1$ when treatment is negative. The regression model with the interaction term between age (here termed $x_2$) can be written as:
+We transform the variable `treatment 3` to a discrete binary variable ($x_1$). $x_1=0$ when treatment is positive, and $x_1=1$ when treatment is negative. The regression model with the interaction term between treatment ($x_1$) and age ($x_2$) can be written as:
 
 $$\hat{y} = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_1x_2 +C $$
 
 or, singling out $x_1$,
 
 $$\hat{y} = \beta_0 + (\beta_1+\beta_3x_2)x_1 + \beta_2x_2 + C $$
-ANOVA tests whether $\beta_3$ is different from 0. EMT etimates the age slope within each framing group; $\beta_3$ is their difference.” When `treatment3` is negative, $x_1=1$. $\hat{y}$ changes by $\beta_2+\beta_3$ with every unit change in $x_2$. When `treatment3` is positive, $x_1=0$. $\hat{y}$ changes by $\beta_2$ with every unit change in $x_2$. 
+ANOVA tests whether $\beta_3$ is discernibly different from 0. EMT etimates the age slope within each framing group and $\beta_3$ is their difference. When `treatment3` is negative, $x_1=1$. $\hat{y}$ changes by $\beta_2+\beta_3$ with every unit change in $x_2$. When `treatment3` is positive, $x_1=0$. $\hat{y}$ changes by $\beta_2$ with every unit change in $x_2$. 
 
 The Johnson-Neyman analysis tests the slope of $x_1$ ($\beta_1+\beta_3x_2$) at every value of $x_2$. Specifically, it tests, at each age, whether the difference in predicted ratings between negative and positive framing is discernibly different from 0.
 
@@ -626,6 +626,7 @@ jn$bounds
 
 ```{r}
 #| label: fig-jn
+#| fig-cap: "Johnson-Neyman Plot"
 #| fig-width: 8
 #| fig-height: 5
 
