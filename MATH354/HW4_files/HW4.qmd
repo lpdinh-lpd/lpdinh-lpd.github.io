@@ -1,0 +1,642 @@
+---
+title: Homework 4 -- Regression Consult # Title of the document
+
+# Bibliography Details
+bibliography: HW4References.bib  # Name of bib file in the same folder 
+bibliographystyle: apa            # Bibliography style
+
+execute:               # Default settings for code blocks
+  warning: false       # Do not print warnings
+  message: false       # Do not print messages
+  size: "scriptsize"   # Set code size to script size
+
+# Below will do html by default. To render the entire project
+# Use the following code:
+# quarto::quarto_render("HW4.qmd")
+format:
+  pdf:        # Specify .pdf formatting options 
+    documentclass: article     # Document Class
+    number-sections: true      # Number Sections
+    reference-section-title: "References" # Title for reference section
+    code-line-numbers: true    # Line numbers printed in code
+    cap-location: top          # Captions at the top of tables 
+    geometry:
+      - top=0.75in
+      - left=0.75in
+      - bottom=0.75in
+      - right=0.75in
+  html:       # Specify HTML formatting options 
+    number-sections: true      # Number Sections
+    code-fold: true            # Button to show code
+    code-line-numbers: true    # Line numbers printed in code
+    cap-location: top          # Captions at the top of tables and figures
+format-links: [pdf]
+---
+```{r}
+#| echo: false
+
+default_chunk_hook  <- knitr::knit_hooks$get("chunk")
+
+latex_font_size <- c("Huge", "huge", "LARGE", "Large", 
+                     "large", "normalsize", "small", 
+                     "footnotesize", "scriptsize", "tiny")
+
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- default_chunk_hook(x, options)
+  if(options$size %in% latex_font_size) {
+    paste0("\n \\", options$size, "\n\n", 
+      x, 
+      "\n\n \\normalsize"
+    )
+  } else {
+    x
+  }
+})
+
+knitr::opts_chunk$set(size = "scriptsize")
+```
+
+```{r}
+#| label: load-packages
+#| include: false
+library(tidyverse)
+library(patchwork)
+library(ggplot2)
+library(GGally)
+library(effectsize)
+library(emmeans)
+```
+
+When people make decisions, their choices are often swayed by how information is presented. This is often described as "the framing effect." One example of this, is how commercials describe new medications. As an example, Nereus (tradipitant), a new drug for motion-induced vomiting like sea-sickness, is marketed with a **positive frame** as reducing vomiting incidence from 44% to 18% (a reduction of 60%). This marketing makes it seem more effective than a **negative frame** that says just 18% of patients still experienced vomiting, even though both statements are true. 
+
+@Xu24 aimed to evaluate whether older adults are more or less vulnerable to framing than younger adults. They collected a sample of 696 adults aged 18 to 71 and exposed them to three different scenarios
+
+**Scenario 1:** Rate Drug Efficacy (1 = very bad, 6 = very good)
+
+* **Positive Frame:** 70 out of 100 patients felt better
+* **Negative Frame:** 30 out of 100 patients did not feel better
+
+**Scenario 2:** Likelihood to stop drinking cocoa (1 = surely stop, 6 = surely continue)
+
+* **Positive Frame:** Stopping drinking hot cocoa reduces cadmium and cancer risk.
+* **Negative Frame:** Continuing to drink hot cocoa increases cadmium and cancer risk.
+
+**Scenario 3:** Preference for chance choice (1 = surely safe option, 6 = surely risky)
+
+* **Positive Frame:** Choice between 200 saved vs 1/3 chance all 600 are saved.
+* **Negative Frame:** Choice between 400 die vs 2/3 chance all 600 die.
+
+
+In each scenario, participants were randomly assigned a positive or negative frame. They rated their response on a 1-6 scale. The researchers want to build three models, one for each scenario adjusting for simultaneous linear changes in demographic variables (gender, ethnicity, education level, political affiliation).
+ 
+They want to evaluate whether, as adults age, the way choices are worded have more influence on their judgments and ultimate choices. If there is a change, are those changes driven by positive or negative framings? At what age does this effect onset? 
+
+**Your Goals:**
+
+* Determine the correct analysis strategy and conduct the necessary analyses. 
+    * Hint 1: Ensure to assess and communicate results about the model fit. 
+    * Hint 2: Ensure to think about whether or which interactions need to be included.
+    * Hint 3: You will need run various post hoc procedures (e.g., `emmeans`, `emtrends` or `johnson_neyman`).
+    * Hint 4: Looking at the paper may be helpful. They do include `R` code, but I expect you to do a much better job using the techniques we discussed (they do somethings differently)
+* Write a clear, concise, complete, and correct report conveying an answer to their research question.
+
+The data are in `HW4Data.csv` but they will require some manual and `tidyverse` cleaning.
+
+# Loading and Cleaning the Data
+
+**Solution**
+
+@Xu24 stated in the paper that they already removed 153 participants who did not pass the attention check and 1 response with mismatched age, leaving us with 696 respondents (out of 850 that initially responded). I transformed the categorical variable `education` to ordinal, and since "Less than high school" only has 2 responses, I collapsed it with "High school graduate" to become "1". Similarly, I collapse the levels with not a lot of responses in `gender`, `ethnicity` and `politics`. Age is centered.
+
+```{r}
+dat = read.csv("HW4Data.csv")
+```
+
+```{r}
+dat = dat |>
+  select(age, gender, politics, ethnicity, education, 
+        treatment1, treatment2, treatment3, 
+        pick1, pick2, pick3) |>
+  mutate(education = case_when(education == "Less than high school" ~ "1",
+                               education == "High school graduate" ~ "1",
+                               education == "Some college" ~ "2",
+                               education == "2 year degree" ~ "3",
+                               education == "4 year degree" ~ "4",
+                               education == "Professional degree" ~ "5",
+                               education == "Doctorate" ~ "6",
+                               TRUE ~ education)) |>
+  mutate(gender = case_when(gender == "Non-binary / third gender" ~ "Third gender/Prefer not to say",
+                            gender == "Prefer not to say" ~ "Third gender/Prefer not to say",
+                            TRUE ~ gender)) |>
+  mutate(ethnicity = case_when(ethnicity == "American Indian or Alaska Native"  ~ "Other/Prefer not to say",
+                               ethnicity == "Native Hawaiian or Pacific Islander"  ~ "Other/Prefer not to say", 
+                               ethnicity == "Other" ~ "Other/Prefer not to say",
+                               ethnicity == "Prefer not to say" ~ "Other/Prefer not to say",  
+                               TRUE ~ ethnicity)) |>
+  mutate(politics = case_when(politics == "Prefer not to say"  ~ "Other/Prefer not to say",
+                              politics == "Something else"  ~ "Other/Prefer not to say",
+                              TRUE ~ politics)) |>
+  mutate(age_c = age - mean(age, na.rm = TRUE))
+```
+
+# Exploratory Data Analyses
+
+**Solution**
+
+@fig-drug, @fig-cocoa and @fig-chance demonstrate that age is approximately normally distributed. The distribution is right-skewed, peaking around 30, showing that our sample comprises of mostly young and middle-age people. The treatment groups are roughly equal in size in all 3 experiments.
+
+The correlation between average scenario rating (i.e., pick) and age is not significant, but this doesn't rule out the possibility of the effect of the Treatment $\times$ Age interaction.
+
+Looking at @fig-demo, we see that an overwhelming majority of our sample are White. The sample consists of more female than male. A majority have high education level (4-year-degree or more), and identify as democrats or independent. The sample is therefore not quite representative of the general population that the study targets.
+
+```{r}
+#| label: fig-drug
+#| fig-cap: "Pairwise Plots for Attribute Framing"
+#| fig-width: 8
+#| fig-height: 5
+
+ggpairs(dat,
+        columns = c("age", "treatment1", "pick1"),
+        lower = list(combo = "box_no_facet", discrete = "count"),
+        upper = list(combo = "box_no_facet", discrete = "count"),
+        diag  = list(discrete = "barDiag")) +
+  theme_bw(base_size = 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+```
+
+```{r}
+#| label: fig-cocoa
+#| fig-cap: "Pairwise Plots for Goal Framing"
+#| fig-width: 8
+#| fig-height: 5
+
+ggpairs(dat,
+        columns = c("age", "treatment2", "pick2"),
+        lower = list(combo = "box_no_facet", discrete = "count"),
+        upper = list(combo = "box_no_facet", discrete = "count"),
+        diag  = list(discrete = "barDiag")) +
+  theme_bw(base_size = 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+```
+
+```{r}
+#| label: fig-chance
+#| fig-cap: "Pairwise Plots for Risky Choice Framing"
+#| fig-width: 8
+#| fig-height: 5
+
+ggpairs(dat,
+        columns = c("age", "treatment3", "pick3"),
+        lower = list(combo = "box_no_facet", discrete = "count"),
+        upper = list(combo = "box_no_facet", discrete = "count"),
+        diag  = list(discrete = "barDiag")) +
+  theme_bw(base_size = 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+```
+
+```{r}
+#| label: fig-demo
+#| fig-cap: "Pairwise Plots for Age and Demographics"
+#| fig-width: 20
+#| fig-height: 10
+
+ggpairs(dat,
+        columns = c("age", "education", "politics", "gender", "ethnicity"),
+        lower = list(combo = "box_no_facet", discrete = "count"),
+        upper = list(combo = "box_no_facet", discrete = "count"),
+        diag  = list(discrete = "barDiag")) +
+  theme_bw(base_size = 8) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+```
+
+# Regression Analyses
+
+```{r}
+source("plotResiduals.R")
+source("plotInfluence.R")
+```
+
+## Rating Drug Efficacy
+
+**Solution**
+
+First, we fit the regression model, then conduct residual and outlier analysis and multicolinearity check to make sure the conditions for use are met.
+
+According to @fig-residuals-q1, our residuals follow an approximate normal distribution, are centered around 0, and have common variance. The reason why we see multiple peaks in the qq plot and stripes in the fitted values vs residual plot is because the response is from a 6-point Likert scale. For example, one of the stripe can be written as:
+$$Residual = 6 - \hat{Y}$$
+According to @fig-outlier-q1, we have many observations with high leverage, but Cook's $D$ graph shows that they're not all influential. A few outliers can be identified from the Studentized Residuals and DFFITs graphs. @tbl-q1-vif indicates that there's no multicolinearity. Overall, our data meets the conditions for use of regression. 
+
+The model discernibly explains the variation in the outcome, $F_{17, 679}=10.41, p<0.001, \omega^2=0.18$, see @tbl-q1-f-test. This effect size is medium.
+
+@tbl-q1-anova shows that the effect of treatment is statistically discernible, $F_{1, 679}=141.65, p<0.001$, but the effect of the interaction between treatment and age is not, $F_{1, 679}=3.17, p=0.08$.
+
+### Fit the model
+
+```{r}
+#| size: "scriptsize"
+mod.q1 = lm(pick1 ~ treatment1 * age_c + gender + ethnicity 
+                    + education + politics, 
+                    data = dat)
+```
+
+### Residual and outlier analysis
+
+```{r}
+#| label: fig-residuals-q1
+#| fig-cap: "Residual Analysis"
+#| fig-width: 8
+#| fig-height: 5
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+plotResiduals(mod.q1)
+```
+
+```{r}
+#| label: fig-outlier-q1
+#| fig-cap: "Outlider Analysis"
+#| fig-width: 10
+#| fig-height: 8
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+plotInfluence(mod.q1)
+```
+
+### Multicolinearity check
+
+```{r}
+#| label: tbl-q1-vif
+#| tbl-cap: "VIF"
+#| tbl-align: "center"
+#| echo: false
+car::vif(mod.q1) |> 
+  knitr::kable(digits = 4)
+```
+
+```{r}
+#| label: tbl-q1-vif-1
+#| tbl-cap: "VIF"
+#| tbl-align: "center"
+#| echo: false
+car::vif(lm(pick1 ~ treatment1 + age + gender + ethnicity 
+                    + education + politics, 
+                    data = dat)) |> 
+  knitr::kable(digits = 4)
+```
+
+### Overall $F$-test 
+
+```{r}
+sum.q1 = summary(mod.q1)
+```
+
+```{r}
+q1 = as_tibble_row(sum.q1$fstatistic) |>
+  rename(F = value, df1 = numdf, df2 = dendf) |>
+  mutate(p = pf(F, df1, df2, lower.tail = FALSE),
+         omega2 = F_to_omega2(F, df1, df2)$Omega2)
+```
+
+```{r}
+(interpret_omega_squared(0.18, "cohen1992"))
+```
+
+```{r}
+#| label: tbl-q1-f-test
+#| tbl-cap: "Overall F test"
+#| tbl-align: "center"
+#| echo: false
+q1 |> 
+  knitr::kable(digits = 4)
+```
+
+```{r}
+#| label: tbl-q1-anova
+#| tbl-cap: "ANOVA"
+#| tbl-align: "center"
+#| echo: false
+anova(mod.q1) |> 
+  knitr::kable(digits = 4)
+```
+
+## Likelihood to Stop Drinking Cocoa
+
+First, we fit the model. A residual analysis, as in @fig-residuals-q2, reveals that while the residuals are approximately normal, there are more positive than negative residuals. I performed a log transformation to fix this problem, shown in @fig-residuals-q2_log. Here, although the points towards the left tail are still off the qq line and we have more residuals above 0 than below, the data is now more centered around 0.
+
+@fig-outlier-q2-log reveals 2 or 3 observations that both have high leverage and are influential (DFFITs). However, Studentized Residual and Cook's $D$ plots shows that they are only moderate outliers. @tbl-q2-vif shows that there is no significant multicolinearity. The conditions for use of regression are generally met.
+
+The model discernibly explains the variation in the outcome, $F_{16, 679}=2.86, p<0.001, \omega^2=0.04$. The overall effect size is small. 
+
+Results are for $log$(rating). @tbl-q2-anova shows that the effect of treatment is statistically discernible, $F_{1, 679}=26.71, p<0.001$, but the effect of the interaction between treatment and age is not, $F_{1, 679}=3.32, p=0.070$.
+
+### Fit the model
+
+```{r}
+#| size: "scriptsize"
+mod.q2 = lm(pick2 ~ treatment2 * age_c + gender + ethnicity 
+                    + education + politics, 
+                    data = dat)
+```
+
+### Residual and outlier analysis
+
+```{r}
+#| label: fig-residuals-q2
+#| fig-cap: "Residual Analysis"
+#| fig-width: 8
+#| fig-height: 5
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+plotResiduals(mod.q2)
+```
+
+### Log transformation
+```{r}
+#| size: "scriptsize"
+mod.q2.log = lm(log(pick2) ~ treatment2 * age_c + gender + ethnicity 
+                    + education + politics, 
+                    data = dat)
+```
+
+```{r}
+#| label: fig-residuals-q2_log
+#| fig-cap: "Residual Analysis After Log Transformation"
+#| fig-width: 8
+#| fig-height: 5
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+plotResiduals(mod.q2.log)
+```
+
+```{r}
+#| label: fig-outlier-q2-log
+#| fig-cap: "Outlider Analysis"
+#| fig-width: 10
+#| fig-height: 8
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+plotInfluence(mod.q2.log)
+```
+
+### Multicolinearity check
+
+```{r}
+#| label: tbl-q2-vif
+#| tbl-cap: "VIF"
+#| tbl-align: "center"
+#| echo: false
+car::vif(mod.q2.log) |> 
+  knitr::kable(digits = 4)
+```
+
+### Overall $F$-test 
+
+```{r}
+sum.q2 = summary(mod.q2.log)
+```
+
+```{r}
+q2 = as_tibble_row(sum.q2$fstatistic) |>
+  rename(F = value, df1 = numdf, df2 = dendf) |>
+  mutate(p = pf(F, df1, df2, lower.tail = FALSE),
+         omega2 = F_to_omega2(F, df1, df2)$Omega2)
+```
+
+```{r}
+(interpret_omega_squared(0.04, "cohen1992"))
+```
+
+```{r}
+#| label: tbl-q2-f-test
+#| tbl-cap: "Overall F test"
+#| tbl-align: "center"
+#| echo: false
+q2 |> 
+  knitr::kable(digits = 4)
+```
+
+```{r}
+#| label: tbl-q2-anova
+#| tbl-cap: "ANOVA"
+#| tbl-align: "center"
+#| echo: false
+anova(mod.q2.log) |> 
+  knitr::kable(digits = 4)
+```
+
+For a term with 2 level or a continuous predictor, the $t$-test and $F$-test both test $H_0: \beta_j=0$ For `ethnicity`, there are 3 dummy coefficients. $t$-test compare each category to the reference group, whereas $F$-test tests whether at least 1 of the coefficient is different from 0.
+
+## Preference for Chance Choice
+
+**Solution**
+
+First, we fit the model. The residual analysis in @fig-residuals-q3 shows that the residuals follow an approximate Gaussian distribution, are centered around 0, and have roughly common variance. Cook's $D$ and Studentized Residual plots in @fig-outlier-q3 confirm that there are no strongly influential points in our dataset. The multicolinearity check in @tbl-q3-vif demonstrates that there is no significant multicolinearity. The conditions of use for regression are met.
+
+The model discernibly explains the variation in the outcome, $F_{16, 678}=4.07, p<0.001, \omega^2=0.07$. The effect size is small. 
+
+@tbl-q3-anova shows that the effect of treatment is statistically discernible, $F_{1, 678}=37.19, p<0.001$, and the interaction effect of Treatment $\times$ Age is also statistically significant, $F_{1, 678}=4.53, p=0.034$. 
+
+We calculate the estimated marginal trends (EMT) to understand which group drives the interaction effect. @tbl-q3-emt reveals that the slope of age vs. rating is only statistically discernible for the Negative Framing condition, since the confidence interval of the slope of age vs. rating (i.e., how much the rating changes per 1-unit increase in age) in the Positive Framing condition does include 0. 
+
+A Johnson-Neyman analysis shows the effect of treatment at each age and highlights at which age(s) this effect is statistically discernible. Particularly, @fig-jn tells us what the slope of the treatment term is at each age (i.e., how much the rating changes per 1-unit increase in treatment at each age). Since the treatment only has 2 levels, a 1-unit increase means a change in framing (positive to negative). The framing difference (negative - positive) is statistically discernible from about age 27 onward.
+
+### Fit the model
+
+There is 1 `NA` in this column, which `lm()` automatically drops.
+
+```{r}
+#| size: "scriptsize"
+mod.q3 = lm(pick3 ~ treatment3 * age_c + gender + ethnicity 
+                    + education + politics, 
+                    data = dat)
+```
+
+### Residual and outlier analysis
+
+```{r}
+#| label: fig-residuals-q3
+#| fig-cap: "Residual Analysis"
+#| fig-width: 8
+#| fig-height: 5
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+plotResiduals(mod.q3)
+```
+
+```{r}
+#| label: fig-outlier-q3
+#| fig-cap: "Outlider Analysis"
+#| fig-width: 10
+#| fig-height: 8
+#| scale: "80%"
+#| fig-align: "center"
+#| size: scriptsize
+
+plotInfluence(mod.q3)
+```
+
+### Multicolinearity check
+
+```{r}
+#| label: tbl-q3-vif
+#| tbl-cap: "VIF"
+#| tbl-align: "center"
+#| echo: false
+car::vif(mod.q3) |> 
+  knitr::kable(digits = 4)
+```
+
+### Overall $F$-test 
+
+```{r}
+sum.q3 = summary(mod.q3)
+```
+
+```{r}
+q3 = as_tibble_row(sum.q3$fstatistic) |>
+  rename(F = value, df1 = numdf, df2 = dendf) |>
+  mutate(p = pf(F, df1, df2, lower.tail = FALSE),
+         omega2 = F_to_omega2(F, df1, df2)$Omega2)
+```
+
+```{r}
+(interpret_omega_squared(0.07, "cohen1992"))
+```
+
+```{r}
+#| label: tbl-q3-f-test
+#| tbl-cap: "Overall F test"
+#| tbl-align: "center"
+#| echo: false
+q3 |> 
+  knitr::kable(digits = 4)
+```
+
+```{r}
+#| label: tbl-q3-anova
+#| tbl-cap: "ANOVA"
+#| tbl-align: "center"
+#| echo: false
+anova(mod.q3) |> 
+  knitr::kable(digits = 4)
+```
+
+### Inference about coefficients
+
+```{r}
+coefs.q3 = summary(mod.q3)$coefficients
+```
+
+```{r}
+#| label: tbl-q3-coeffs
+#| tbl-cap: "Inferences about Coefficients"
+#| tbl-align: "center"
+#| echo: false
+coefs.q3 |> 
+  knitr::kable(digits = 4)
+```
+
+### Post-hoc testing
+
+```{r}
+emt.q3 = emtrends(mod.q3, ~ age_c * treatment3, var = "age_c")
+# var: the slope of the continuous variable that you want to compare across groups
+```
+
+```{r}
+#| label: tbl-q3-emt
+#| tbl-cap: "Estimated Marginal Trends"
+#| tbl-align: "center"
+#| echo: false
+emt.q3 |> 
+  knitr::kable(digits = 4)
+```
+
+The first column, `age`, is the mean age of the sample (standardized), at which the trends were evaluated.
+
+By default, `emmeans` averages over gender, ethnicity, education, and politics by giving every level equal weight, even levels with few people. Setting `weights = "proportional"` makes sure each level is weighted by how common it is in the dataset. For example, if 80% of our sample is White, then the coefficient for that level the categorical predictor is multiplied by an according weight.
+
+```{r}
+emm.q3 = emmeans(mod.q3, ~ treatment3 | age_c,
+                 at = list(age_c = seq(min(dat$age_c), max(dat$age_c), length.out = 5)),
+                 weights = "proportional")
+
+plot.q3 = as.data.frame(emm.q3)  |>
+  mutate(treatment3 = case_when(treatment3 == "pos3" ~ "Positive",
+                                treatment3 == "neg3" ~ "Negative")) |>
+  mutate(age = age_c + mean(dat$age)) 
+# back to real age for x-axis
+```
+
+```{r}
+#| label: fig-emt
+#| fig-cap: "Participants' Attitudes Towards the Scenario"
+#| fig-width: 8
+#| fig-height: 5
+
+ggplot(plot.q3, 
+  aes(x = age, 
+      y = emmean, 
+      color = treatment3, 
+      fill = treatment3)) +
+  geom_ribbon(aes(ymin = lower.CL, 
+                  ymax = upper.CL), 
+                  alpha = 0.2, 
+                  color = NA) +
+  geom_line(linewidth = 0.6) +
+  labs(x = "Age", 
+       y = "Average Scenario Rating", color = NULL, fill = NULL) +
+  theme_bw()
+```
+
+We transform the variable `treatment 3` to a discrete binary variable, $x_1$. $x_1=0$ when treatment is positive, and $x_1=1$ when treatment is negative. The regression model with the interaction term between age (here termed $x_2$) can be written as:
+
+$$\hat{y} = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_1x_2 +C $$
+
+or, singling out $x_1$,
+
+$$\hat{y} = \beta_0 + (\beta_1+\beta_3x_2)x_1 + \beta_2x_2 + C $$
+ANOVA tests whether $\beta_3$ is different from 0. EMT etimates the age slope within each framing group; $\beta_3$ is their difference.” When `treatment3` is negative, $x_1=1$. $\hat{y}$ changes by $\beta_2+\beta_3$ with every unit change in $x_2$. When `treatment3` is positive, $x_1=0$. $\hat{y}$ changes by $\beta_2$ with every unit change in $x_2$. 
+
+The Johnson-Neyman analysis tests the slope of $x_1$ ($\beta_1+\beta_3x_2$) at every value of $x_2$. Specifically, it tests, at each age, whether the difference in predicted ratings between negative and positive framing is discernibly different from 0.
+
+```{r}
+dat = dat |> mutate(neg3 = as.numeric(treatment3 == "neg3"))  
+
+mod.q3.jn = lm(pick3 ~ neg3 * age + gender + ethnicity + education + politics,
+               data = dat)
+
+jn = interactions::johnson_neyman(mod.q3.jn, pred = neg3, modx = age, alpha = .05)
+```
+
+```{r}
+jn$bounds
+```
+
+```{r}
+#| label: fig-jn
+#| fig-width: 8
+#| fig-height: 5
+
+jn$plot 
+```
+
+# Discussion
+
+In two out of three experiments, particularly attribute framing and goal framing, we did not find a statistically discernible effect of the interaction of age and framing (positive vs. negative framing) on participants' perception of a scenario. 
+
+In the risky-choice framing, however, the age $\times$ framing interaction effect was statistically discernible, $F_{1, 678} = 4.53, p = .034$, with a slope difference of 0.019 rating points per year of age (SE = 0.009). This effect has been adjusted for simultaneous linear changes in gender, ethnicity, education, and politics.
+
+Particularly, under negative framing, ratings of the risky option rose by 0.017 points per 1-year increase in age (95% CI [0.005, 0.029]). As adults get older, they are more likely to take risk when the scenario is framed negatively. Ratings under positive framing did not change with age (−0.002 points per year, 95% CI [−0.015, 0.011]). The Johnson-Neyman analysis shows that negative framing induced higher risk-seeking than positive framing for participants older than about 27.
+

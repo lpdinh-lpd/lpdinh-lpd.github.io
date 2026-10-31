@@ -520,7 +520,6 @@ summary |> knitr::kable(digits = 2)
 ```
 
 ```{r}
-```{r}
 df = data.frame(
   ID = c(1, 2, 3),
   m2 = c(1.48969, 1.30168, 1.30620),
