@@ -276,17 +276,6 @@ car::vif(mod.q1) |>
   knitr::kable(digits = 4)
 ```
 
-```{r}
-#| label: tbl-q1-vif-1
-#| tbl-cap: "VIF"
-#| tbl-align: "center"
-#| echo: false
-car::vif(lm(pick1 ~ treatment1 + age + gender + ethnicity 
-                    + education + politics, 
-                    data = dat)) |> 
-  knitr::kable(digits = 4)
-```
-
 ### Overall $F$-test 
 
 ```{r}
@@ -635,11 +624,11 @@ jn$plot
 
 # Discussion
 
-There is a statistically discernible effect of framing in all 3 experiments, confirming previous literature.
+There is a statistically discernible effect of framing in all three experiments, confirming previous literature.
 
 Regarding the Age $\times$ Framing interaction effect on participants' perception of a scenario, in two out of three experiments, particularly attribute framing and goal framing, we did not find a statistically discernible effect.
 
-In the risky-choice framing, however, the age $\times$ framing interaction effect was statistically discernible, $F_{1, 678} = 4.53, p = .034$, with a slope difference of 0.019 rating points per year of age (SE = 0.009). This effect has been adjusted for simultaneous linear changes in gender, ethnicity, education, and politics.
+In the risky-choice framing, however, the Age $\times$ Framing interaction effect was statistically discernible, $F_{1, 678} = 4.53, p = .034$, with a slope difference of 0.019 rating points per year of age (SE = 0.009). This effect has been adjusted for simultaneous linear changes in gender, ethnicity, education, and politics.
 
 Particularly, under negative framing, ratings of the risky option rose by 0.017 points per 1-year increase in age (95% CI [0.005, 0.029]). As adults get older, they are more likely to take risk when the scenario is framed negatively. Ratings under positive framing did not change with age (−0.002 points per year, 95% CI [−0.015, 0.011]). The Johnson-Neyman analysis shows that negative framing induced higher risk-seeking than positive framing for participants older than about 27.
 

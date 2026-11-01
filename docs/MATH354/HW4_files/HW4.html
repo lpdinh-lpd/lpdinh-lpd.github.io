@@ -566,8 +566,8 @@ Figure&nbsp;4: Pairwise Plots for Age and Demographics
 <p><strong>Solution</strong></p>
 <p>First, we fit the regression model, then conduct residual and outlier analysis and multicolinearity check to make sure the conditions for use are met.</p>
 <p>According to <a href="#fig-residuals-q1" class="quarto-xref">Figure&nbsp;5</a>, our residuals follow an approximate normal distribution, are centered around 0, and have common variance. The reason why we see multiple peaks in the qq plot and stripes in the fitted values vs residual plot is because the response is from a 6-point Likert scale. For example, one of the stripe can be written as: <span class="math display">\[Residual = 6 - \hat{Y}\]</span> According to <a href="#fig-outlier-q1" class="quarto-xref">Figure&nbsp;6</a>, we have many observations with high leverage, but Cook’s <span class="math inline">\(D\)</span> graph shows that they’re not all influential. A few outliers can be identified from the Studentized Residuals and DFFITs graphs. <a href="#tbl-q1-vif" class="quarto-xref">Table&nbsp;1</a> indicates that there’s no multicolinearity. Overall, our data meets the conditions for use of regression.</p>
-<p>The model discernibly explains the variation in the outcome, <span class="math inline">\(F_{17, 679}=10.41, p&lt;0.001, \omega^2=0.18\)</span>, see <a href="#tbl-q1-f-test" class="quarto-xref">Table&nbsp;3</a>. This effect size is medium.</p>
-<p><a href="#tbl-q1-anova" class="quarto-xref">Table&nbsp;4</a> shows that the effect of treatment is statistically discernible, <span class="math inline">\(F_{1, 679}=141.65, p&lt;0.001\)</span>, but the effect of the interaction between treatment and age is not, <span class="math inline">\(F_{1, 679}=3.17, p=0.08\)</span>.</p>
+<p>The model discernibly explains the variation in the outcome, <span class="math inline">\(F_{17, 679}=10.41, p&lt;0.001, \omega^2=0.18\)</span>, see <a href="#tbl-q1-f-test" class="quarto-xref">Table&nbsp;2</a>. This effect size is medium.</p>
+<p><a href="#tbl-q1-anova" class="quarto-xref">Table&nbsp;3</a> shows that the effect of treatment is statistically discernible, <span class="math inline">\(F_{1, 679}=141.65, p&lt;0.001\)</span>, but the effect of the interaction between treatment and age is not, <span class="math inline">\(F_{1, 679}=3.17, p=0.08\)</span>.</p>
 <section id="fit-the-model" class="level3" data-number="3.1.1">
 <h3 data-number="3.1.1" class="anchored" data-anchor-id="fit-the-model"><span class="header-section-number">3.1.1</span> Fit the model</h3>
 <p></p>
@@ -695,69 +695,6 @@ Table&nbsp;1: VIF
 </div>
 </div>
 <p></p>
-<p></p>
-<div class="cell" data-tbl-align="center">
-<div id="tbl-q1-vif-1" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-q1-vif-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: VIF
-</figcaption>
-<div aria-describedby="tbl-q1-vif-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output-display">
-<table class="cell caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: right;">GVIF</th>
-<th style="text-align: right;">Df</th>
-<th style="text-align: right;">GVIF^(1/(2*Df))</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">treatment1</td>
-<td style="text-align: right;">1.0254</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1.0126</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">age</td>
-<td style="text-align: right;">1.0578</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1.0285</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">gender</td>
-<td style="text-align: right;">1.0795</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1.0193</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">ethnicity</td>
-<td style="text-align: right;">1.1211</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">1.0192</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">education</td>
-<td style="text-align: right;">1.1355</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1.0128</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">politics</td>
-<td style="text-align: right;">1.1696</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">1.0265</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</figure>
-</div>
-</div>
-<p></p>
 </section>
 <section id="overall-f-test" class="level3" data-number="3.1.4">
 <h3 data-number="3.1.4" class="anchored" data-anchor-id="overall-f-test"><span class="header-section-number">3.1.4</span> Overall <span class="math inline">\(F\)</span>-test</h3>
@@ -797,7 +734,7 @@ Table&nbsp;2: VIF
 <div id="tbl-q1-f-test" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-q1-f-test-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Overall F test
+Table&nbsp;2: Overall F test
 </figcaption>
 <div aria-describedby="tbl-q1-f-test-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -832,7 +769,7 @@ Table&nbsp;3: Overall F test
 <div id="tbl-q1-anova" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-q1-anova-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4: ANOVA
+Table&nbsp;3: ANOVA
 </figcaption>
 <div aria-describedby="tbl-q1-anova-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -925,9 +862,9 @@ Table&nbsp;4: ANOVA
 <section id="likelihood-to-stop-drinking-cocoa" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="likelihood-to-stop-drinking-cocoa"><span class="header-section-number">3.2</span> Likelihood to Stop Drinking Cocoa</h2>
 <p>First, we fit the model. A residual analysis, as in <a href="#fig-residuals-q2" class="quarto-xref">Figure&nbsp;7</a>, reveals that while the residuals are approximately normal, there are more positive than negative residuals. I performed a log transformation to fix this problem, shown in <a href="#fig-residuals-q2_log" class="quarto-xref">Figure&nbsp;8</a>. Here, although the points towards the left tail are still off the qq line and we have more residuals above 0 than below, the data is now more centered around 0.</p>
-<p><a href="#fig-outlier-q2-log" class="quarto-xref">Figure&nbsp;9</a> reveals 2 or 3 observations that both have high leverage and are influential (DFFITs). However, Studentized Residual and Cook’s <span class="math inline">\(D\)</span> plots shows that they are only moderate outliers. <a href="#tbl-q2-vif" class="quarto-xref">Table&nbsp;5</a> shows that there is no significant multicolinearity. The conditions for use of regression are generally met.</p>
+<p><a href="#fig-outlier-q2-log" class="quarto-xref">Figure&nbsp;9</a> reveals 2 or 3 observations that both have high leverage and are influential (DFFITs). However, Studentized Residual and Cook’s <span class="math inline">\(D\)</span> plots shows that they are only moderate outliers. <a href="#tbl-q2-vif" class="quarto-xref">Table&nbsp;4</a> shows that there is no significant multicolinearity. The conditions for use of regression are generally met.</p>
 <p>The model discernibly explains the variation in the outcome, <span class="math inline">\(F_{16, 679}=2.86, p&lt;0.001, \omega^2=0.04\)</span>. The overall effect size is small.</p>
-<p>Results are for <span class="math inline">\(log(rating)\)</span>. <a href="#tbl-q2-anova" class="quarto-xref">Table&nbsp;7</a> shows that the effect of treatment is statistically discernible, <span class="math inline">\(F_{1, 679}=26.71, p&lt;0.001\)</span>, but the effect of the interaction between treatment and age is not, <span class="math inline">\(F_{1, 679}=3.32, p=0.070\)</span>.</p>
+<p>Results are for <span class="math inline">\(log(rating)\)</span>. <a href="#tbl-q2-anova" class="quarto-xref">Table&nbsp;6</a> shows that the effect of treatment is statistically discernible, <span class="math inline">\(F_{1, 679}=26.71, p&lt;0.001\)</span>, but the effect of the interaction between treatment and age is not, <span class="math inline">\(F_{1, 679}=3.32, p=0.070\)</span>.</p>
 <section id="fit-the-model-1" class="level3" data-number="3.2.1">
 <h3 data-number="3.2.1" class="anchored" data-anchor-id="fit-the-model-1"><span class="header-section-number">3.2.1</span> Fit the model</h3>
 <p></p>
@@ -1024,7 +961,7 @@ Figure&nbsp;9: Outlider Analysis
 <div id="tbl-q2-vif" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-q2-vif-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;5: VIF
+Table&nbsp;4: VIF
 </figcaption>
 <div aria-describedby="tbl-q2-vif-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1127,7 +1064,7 @@ Table&nbsp;5: VIF
 <div id="tbl-q2-f-test" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-q2-f-test-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;6: Overall F test
+Table&nbsp;5: Overall F test
 </figcaption>
 <div aria-describedby="tbl-q2-f-test-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1162,7 +1099,7 @@ Table&nbsp;6: Overall F test
 <div id="tbl-q2-anova" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-q2-anova-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;7: ANOVA
+Table&nbsp;6: ANOVA
 </figcaption>
 <div aria-describedby="tbl-q2-anova-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1256,10 +1193,10 @@ Table&nbsp;7: ANOVA
 <section id="preference-for-chance-choice" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="preference-for-chance-choice"><span class="header-section-number">3.3</span> Preference for Chance Choice</h2>
 <p><strong>Solution</strong></p>
-<p>First, we fit the model. The residual analysis in <a href="#fig-residuals-q3" class="quarto-xref">Figure&nbsp;10</a> shows that the residuals follow an approximate Gaussian distribution, are centered around 0, and have roughly common variance. Cook’s <span class="math inline">\(D\)</span> and Studentized Residual plots in <a href="#fig-outlier-q3" class="quarto-xref">Figure&nbsp;11</a> confirm that there are no strongly influential points in our dataset. The multicolinearity check in <a href="#tbl-q3-vif" class="quarto-xref">Table&nbsp;8</a> demonstrates that there is no significant multicolinearity. The conditions of use for regression are met.</p>
+<p>First, we fit the model. The residual analysis in <a href="#fig-residuals-q3" class="quarto-xref">Figure&nbsp;10</a> shows that the residuals follow an approximate Gaussian distribution, are centered around 0, and have roughly common variance. Cook’s <span class="math inline">\(D\)</span> and Studentized Residual plots in <a href="#fig-outlier-q3" class="quarto-xref">Figure&nbsp;11</a> confirm that there are no strongly influential points in our dataset. The multicolinearity check in <a href="#tbl-q3-vif" class="quarto-xref">Table&nbsp;7</a> demonstrates that there is no significant multicolinearity. The conditions of use for regression are met.</p>
 <p>The model discernibly explains the variation in the outcome, <span class="math inline">\(F_{16, 678}=4.07, p&lt;0.001, \omega^2=0.07\)</span>. The effect size is small.</p>
-<p><a href="#tbl-q3-anova" class="quarto-xref">Table&nbsp;10</a> shows that the effect of treatment is statistically discernible, <span class="math inline">\(F_{1, 678}=37.19, p&lt;0.001\)</span>, and the interaction effect of Treatment <span class="math inline">\(\times\)</span> Age is also statistically significant, <span class="math inline">\(F_{1, 678}=4.53, p=0.034\)</span>.</p>
-<p>We calculate the estimated marginal trends (EMT) to understand which group drives the interaction effect. <a href="#tbl-q3-emt" class="quarto-xref">Table&nbsp;12</a> reveals that the slope of age vs.&nbsp;rating is only statistically discernible for the Negative Framing condition, since the confidence interval of the slope of age vs.&nbsp;rating (i.e., how much the rating changes per 1-unit increase in age) in the Positive Framing condition does include 0.</p>
+<p><a href="#tbl-q3-anova" class="quarto-xref">Table&nbsp;9</a> shows that the effect of treatment is statistically discernible, <span class="math inline">\(F_{1, 678}=37.19, p&lt;0.001\)</span>, and the interaction effect of Treatment <span class="math inline">\(\times\)</span> Age is also statistically significant, <span class="math inline">\(F_{1, 678}=4.53, p=0.034\)</span>.</p>
+<p>We calculate the estimated marginal trends (EMT) to understand which group drives the interaction effect. <a href="#tbl-q3-emt" class="quarto-xref">Table&nbsp;11</a> reveals that the slope of age vs.&nbsp;rating is only statistically discernible for the Negative Framing condition, since the confidence interval of the slope of age vs.&nbsp;rating (i.e., how much the rating changes per 1-unit increase in age) in the Positive Framing condition does include 0.</p>
 <p>A Johnson-Neyman analysis shows the effect of treatment at each age and highlights at which age(s) this effect is statistically discernible. Particularly, <a href="#fig-jn" class="quarto-xref">Figure&nbsp;13</a> tells us what the slope of the treatment term is at each age (i.e., how much the rating changes per 1-unit increase in treatment at each age). Since the treatment only has 2 levels, a 1-unit increase means a change in framing (positive to negative). The framing difference (negative - positive) is statistically discernible from about age 27 onward.</p>
 <section id="fit-the-model-2" class="level3" data-number="3.3.1">
 <h3 data-number="3.3.1" class="anchored" data-anchor-id="fit-the-model-2"><span class="header-section-number">3.3.1</span> Fit the model</h3>
@@ -1325,7 +1262,7 @@ Figure&nbsp;11: Outlider Analysis
 <div id="tbl-q3-vif" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-q3-vif-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;8: VIF
+Table&nbsp;7: VIF
 </figcaption>
 <div aria-describedby="tbl-q3-vif-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1428,7 +1365,7 @@ Table&nbsp;8: VIF
 <div id="tbl-q3-f-test" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-q3-f-test-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;9: Overall F test
+Table&nbsp;8: Overall F test
 </figcaption>
 <div aria-describedby="tbl-q3-f-test-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1463,7 +1400,7 @@ Table&nbsp;9: Overall F test
 <div id="tbl-q3-anova" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-q3-anova-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;10: ANOVA
+Table&nbsp;9: ANOVA
 </figcaption>
 <div aria-describedby="tbl-q3-anova-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1567,7 +1504,7 @@ Table&nbsp;10: ANOVA
 <div id="tbl-q3-coeffs" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-q3-coeffs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;11: Inferences about Coefficients
+Table&nbsp;10: Inferences about Coefficients
 </figcaption>
 <div aria-describedby="tbl-q3-coeffs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1733,7 +1670,7 @@ Table&nbsp;11: Inferences about Coefficients
 <div id="tbl-q3-emt" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-q3-emt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;12: Estimated Marginal Trends
+Table&nbsp;11: Estimated Marginal Trends
 </figcaption>
 <div aria-describedby="tbl-q3-emt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1881,7 +1818,7 @@ Figure&nbsp;13: Johnson-Neyman Plot
 </section>
 <section id="discussion" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Discussion</h1>
-<p>There is a statistically discernible effect of framing in all 3 experiments, confirming previous literature.</p>
+<p>There is a statistically discernible effect of framing in all three experiments, confirming previous literature.</p>
 <p>Regarding the Age <span class="math inline">\(\times\)</span> Framing interaction effect on participants’ perception of a scenario, in two out of three experiments, particularly attribute framing and goal framing, we did not find a statistically discernible effect.</p>
 <p>In the risky-choice framing, however, the age <span class="math inline">\(\times\)</span> framing interaction effect was statistically discernible, <span class="math inline">\(F_{1, 678} = 4.53, p = .034\)</span>, with a slope difference of 0.019 rating points per year of age (SE = 0.009). This effect has been adjusted for simultaneous linear changes in gender, ethnicity, education, and politics.</p>
 <p>Particularly, under negative framing, ratings of the risky option rose by 0.017 points per 1-year increase in age (95% CI [0.005, 0.029]). As adults get older, they are more likely to take risk when the scenario is framed negatively. Ratings under positive framing did not change with age (−0.002 points per year, 95% CI [−0.015, 0.011]). The Johnson-Neyman analysis shows that negative framing induced higher risk-seeking than positive framing for participants older than about 27.</p>
