@@ -226,7 +226,7 @@ According to @fig-residuals-q1, our residuals follow an approximate normal distr
 $$Residual = 6 - \hat{Y}$$
 According to @fig-outlier-q1, we have many observations with high leverage, but Cook's $D$ graph shows that they're not all influential. A few outliers can be identified from the Studentized Residuals and DFFITs graphs. @tbl-q1-vif indicates that there's no multicolinearity. Overall, our data meets the conditions for use of regression. 
 
-The model discernibly explains the variation in the outcome, $F_{17, 679}=10.41, p<0.001, \omega^2=0.18$, see @tbl-q1-f-test. This effect size is medium.
+The model discernibly explains the variation in the outcome, $F_{16, 679}=10.41, p<0.001, \omega^2=0.18$, see @tbl-q1-f-test. This effect size is medium.
 
 @tbl-q1-anova shows that the effect of treatment is statistically discernible, $F_{1, 679}=141.65, p<0.001$, but the effect of the interaction between treatment and age is not, $F_{1, 679}=3.17, p=0.08$.
 
@@ -589,7 +589,7 @@ ggplot(plot.q3,
   theme_bw()
 ```
 
-We transform the variable `treatment 3` to a discrete binary variable ($x_1$). $x_1=0$ when treatment is positive, and $x_1=1$ when treatment is negative. The regression model with the interaction term between treatment ($x_1$) and age ($x_2$) can be written as:
+We transform the variable `treatment 3` to a discrete binary variable. $x_1=0$ when treatment is positive, and $x_1=1$ when treatment is negative. The regression model with the interaction term between treatment ($x_1$) and age ($x_2$) can be written as:
 
 $$\hat{y} = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_1x_2 +C $$
 
