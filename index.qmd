@@ -1,5 +1,5 @@
 ---
-title: "Lê's Academic Portfolio"
+title: "Le Dinh's Academic Portfolio"
 ---
 
 Welcome to my portfolio website! Here you will find write-ups and analysis projects completed across my courses:
