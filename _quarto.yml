@@ -49,6 +49,8 @@ website:
         href: MATH354/HW3_files/HW3.qmd
       - text: "Homework 4: Regression Consult"
         href: MATH354/HW4_files/HW4.qmd
+      - text: "Homework 5: Regression Consult (Cont.)"
+        href: MATH354/HW5_files/HW5.qmd
   
   page-footer:
     left: "© 2026 Colgate University Student Portfolio"

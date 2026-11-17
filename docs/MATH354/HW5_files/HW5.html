@@ -1,0 +1,2455 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Homework 5 – Regression – Academic Portfolio</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../colgateC.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-96dad98a0089f8c82294d0fd6bb53e9a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../MATH354/HW1_files/HW1.html">Data Analysis I</a></li><li class="breadcrumb-item"><a href="../../MATH354/HW5_files/HW5.html">Homework 5: Regression Consult (Cont.)</a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Site">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../ColgateSeal.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../ColgateSeal.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link"><i class="bi bi-house" role="img">
+</i> 
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../about.html" class="sidebar-item-text sidebar-link"><i class="bi bi-person" role="img">
+</i> 
+ <span class="menu-text">About</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Computational Statistics</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../MATH240/02-Lab-ObjectsInR/Lab2WriteUp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab 2: Objects in R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../MATH240/03-Lab-ObjectsInR2/Lab3WriteUp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab 3: Objects in R 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../MATH240/04-Lab-Programming/Lab4WriteUp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab 4: Programming</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../MATH240/05-Lab-DataWrangling/Lab5WriteUp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab 5: Data Wrangling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../MATH240/08-Lab-Probability/Lab8WriteUp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab 8: Probability</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../MATH240/10-Lab-PointEstimation/Lab10WriteUp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab 10: Point Estimation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../MATH240/11-Lab-Estimation/Lab11WriteUp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab 11: Point Estimation and Resampling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../MATH240/finalreview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hypothesis Testing &amp; Confidence Interval</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Data Analysis I</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../MATH354/HW1_files/HW1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 1: One Sample Inference</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../MATH354/HW2_files/HW2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 2: k Sample Inference</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../MATH354/HW3_files/HW3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 3: Regression</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../MATH354/HW4_files/HW4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Homework 4: Regression Consult</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../MATH354/HW5_files/HW5.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Homework 5: Regression Consult (Cont.)</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#question-1-from-the-scrapped-quiz-4" id="toc-question-1-from-the-scrapped-quiz-4" class="nav-link active" data-scroll-target="#question-1-from-the-scrapped-quiz-4"><span class="header-section-number">1</span> Question 1 (From the scrapped Quiz 4)</a>
+  <ul class="collapse">
+  <li><a href="#overview-analytical-strategy" id="toc-overview-analytical-strategy" class="nav-link" data-scroll-target="#overview-analytical-strategy"><span class="header-section-number">1.1</span> Overview &amp; Analytical Strategy</a></li>
+  <li><a href="#data-import-and-cleaning" id="toc-data-import-and-cleaning" class="nav-link" data-scroll-target="#data-import-and-cleaning"><span class="header-section-number">1.2</span> Data Import and Cleaning</a></li>
+  <li><a href="#covariate-adjusted-regression-models" id="toc-covariate-adjusted-regression-models" class="nav-link" data-scroll-target="#covariate-adjusted-regression-models"><span class="header-section-number">1.3</span> Covariate-Adjusted Regression Models</a></li>
+  <li><a href="#simple-slopes-positive-vs.-negative-framing-drivers" id="toc-simple-slopes-positive-vs.-negative-framing-drivers" class="nav-link" data-scroll-target="#simple-slopes-positive-vs.-negative-framing-drivers"><span class="header-section-number">1.4</span> Simple Slopes: Positive vs.&nbsp;Negative Framing Drivers</a></li>
+  <li><a href="#johnson-neyman-analysis-age-of-onset" id="toc-johnson-neyman-analysis-age-of-onset" class="nav-link" data-scroll-target="#johnson-neyman-analysis-age-of-onset"><span class="header-section-number">1.5</span> Johnson-Neyman Analysis: Age of Onset</a></li>
+  <li><a href="#visualization-of-predicted-trajectories" id="toc-visualization-of-predicted-trajectories" class="nav-link" data-scroll-target="#visualization-of-predicted-trajectories"><span class="header-section-number">1.6</span> Visualization of Predicted Trajectories</a></li>
+  <li><a href="#summary-of-empirical-findings-from-hw4data.csv" id="toc-summary-of-empirical-findings-from-hw4data.csv" class="nav-link" data-scroll-target="#summary-of-empirical-findings-from-hw4data.csv"><span class="header-section-number">1.7</span> Summary of Empirical Findings from <code>HW4Data.csv</code></a></li>
+  </ul></li>
+  <li><a href="#question-2-quiz-3" id="toc-question-2-quiz-3" class="nav-link" data-scroll-target="#question-2-quiz-3"><span class="header-section-number">2</span> Question 2 (Quiz 3)</a>
+  <ul class="collapse">
+  <li><a href="#exploratory-data-analyses" id="toc-exploratory-data-analyses" class="nav-link" data-scroll-target="#exploratory-data-analyses"><span class="header-section-number">2.1</span> Exploratory Data Analyses</a></li>
+  <li><a href="#fit-the-model" id="toc-fit-the-model" class="nav-link" data-scroll-target="#fit-the-model"><span class="header-section-number">2.2</span> Fit the model</a></li>
+  <li><a href="#residual-analysis" id="toc-residual-analysis" class="nav-link" data-scroll-target="#residual-analysis"><span class="header-section-number">2.3</span> Residual analysis</a></li>
+  <li><a href="#log-transformation" id="toc-log-transformation" class="nav-link" data-scroll-target="#log-transformation"><span class="header-section-number">2.4</span> Log transformation</a></li>
+  <li><a href="#irwls" id="toc-irwls" class="nav-link" data-scroll-target="#irwls"><span class="header-section-number">2.5</span> IRWLS</a>
+  <ul class="collapse">
+  <li><a href="#residual-analysis-1" id="toc-residual-analysis-1" class="nav-link" data-scroll-target="#residual-analysis-1"><span class="header-section-number">2.5.1</span> Residual analysis</a></li>
+  <li><a href="#outlier-analysis" id="toc-outlier-analysis" class="nav-link" data-scroll-target="#outlier-analysis"><span class="header-section-number">2.5.2</span> Outlier analysis</a></li>
+  <li><a href="#multicollinearity-check" id="toc-multicollinearity-check" class="nav-link" data-scroll-target="#multicollinearity-check"><span class="header-section-number">2.5.3</span> Multicollinearity check</a></li>
+  </ul></li>
+  <li><a href="#anova" id="toc-anova" class="nav-link" data-scroll-target="#anova"><span class="header-section-number">2.6</span> ANOVA</a></li>
+  <li><a href="#effect-size" id="toc-effect-size" class="nav-link" data-scroll-target="#effect-size"><span class="header-section-number">2.7</span> Effect size</a></li>
+  <li><a href="#inference-about-coefficients" id="toc-inference-about-coefficients" class="nav-link" data-scroll-target="#inference-about-coefficients"><span class="header-section-number">2.8</span> Inference about coefficients</a></li>
+  <li><a href="#post-hoc-testing" id="toc-post-hoc-testing" class="nav-link" data-scroll-target="#post-hoc-testing"><span class="header-section-number">2.9</span> Post-hoc testing</a></li>
+  </ul></li>
+  <li><a href="#question-3" id="toc-question-3" class="nav-link" data-scroll-target="#question-3"><span class="header-section-number">3</span> Question 3</a>
+  <ul class="collapse">
+  <li><a href="#part-a" id="toc-part-a" class="nav-link" data-scroll-target="#part-a"><span class="header-section-number">3.1</span> Part a</a></li>
+  <li><a href="#part-b" id="toc-part-b" class="nav-link" data-scroll-target="#part-b"><span class="header-section-number">3.2</span> Part b</a></li>
+  <li><a href="#part-c" id="toc-part-c" class="nav-link" data-scroll-target="#part-c"><span class="header-section-number">3.3</span> Part c</a></li>
+  <li><a href="#part-d" id="toc-part-d" class="nav-link" data-scroll-target="#part-d"><span class="header-section-number">3.4</span> Part d</a></li>
+  </ul></li>
+  <li><a href="#extra-practice" id="toc-extra-practice" class="nav-link" data-scroll-target="#extra-practice"><span class="header-section-number">4</span> Extra Practice</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="HW5.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../MATH354/HW1_files/HW1.html">Data Analysis I</a></li><li class="breadcrumb-item"><a href="../../MATH354/HW5_files/HW5.html">Homework 5: Regression Consult (Cont.)</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Homework 5 – Regression</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p></p>
+<p></p>
+<section id="question-1-from-the-scrapped-quiz-4" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Question 1 (From the scrapped Quiz 4)</h1>
+<p>In Homework 4, we evaluated whether and how positive and negative framings impact adult perception of three unique situations using data from <span class="citation" data-cites="Xu24">Xu (<a href="#ref-Xu24" role="doc-biblioref">2024</a>)</span>.</p>
+<p>Gemini AI Solution below. I had to</p>
+<ol type="1">
+<li>Adjust the data cleaning which did not work.</li>
+<li>Adjust the Johnson Neyman analysis that did not work.</li>
+</ol>
+<p>Read the following subsections where gemini does the analysis. Use to make notes about what you do not like and for notes about what you do like. Of course, anything that is missing should be reported in .</p>
+<section id="overview-analytical-strategy" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="overview-analytical-strategy"><span class="header-section-number">1.1</span> Overview &amp; Analytical Strategy</h2>
+<p>To evaluate whether framing effects strengthen as adults age—and to identify whether age-related divergence is driven by positive or negative wording—we fit three multiple linear regression models (one per scenario):</p>
+<p><span class="math display">\[Y_i = \beta_0 + \beta_1 \text{Age}_i + \beta_2 \text{Frame}_i + \beta_3 (\text{Age}_i \times \text{Frame}_i) + \mathbf{X}_i\boldsymbol{\gamma} + \epsilon_i\]</span></p>
+<p>where <span class="math inline">\(\mathbf{X}_i\)</span> adjusts for simultaneous linear differences across <strong>gender</strong>, <strong>ethnicity</strong>, <strong>education level</strong>, and <strong>political affiliation</strong>.</p>
+<ul>
+<li><strong>Interaction (<span class="math inline">\(\beta_3\)</span>):</strong> Tests whether the gap between Positive and Negative framing widens with age.</li>
+<li><strong>Simple Slopes:</strong> Evaluates the age slope separately within the Positive frame and the Negative frame to determine which framing drives the change.</li>
+<li><strong>Johnson-Neyman (J-N) Analysis:</strong> Identifies the exact age threshold (“onset”) at which the conditional difference between Positive and Negative frames becomes statistically significant (<span class="math inline">\(p &lt; .05\)</span>).</li>
+</ul>
+<hr>
+</section>
+<section id="data-import-and-cleaning" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="data-import-and-cleaning"><span class="header-section-number">1.2</span> Data Import and Cleaning</h2>
+<p>Note that <code>HW4Data.csv</code> contains Qualtrics metadata in Row 1 (short variable names) followed by participant responses, as well as trailing empty rows (<code>N = 696</code> valid respondents out of <code>842</code> non-header rows).</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-label="2"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-label="3"></a><span class="fu">library</span>(emmeans)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-label="4"></a><span class="fu">library</span>(interactions)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-label="5"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-label="6"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-label="7"></a><span class="co"># Read raw file</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-label="8"></a>raw_df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"HW4Data.csv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-label="9"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-label="10"></a><span class="co"># Prof had to remove empty columns to fix an issue with filter() later</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-label="11"></a><span class="co"># currently column names are in the first row. Remove empty columns.</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-label="12"></a>raw_df_sub <span class="ot">&lt;-</span> raw_df[, <span class="fu">c</span>(<span class="sc">!</span><span class="fu">is.na</span>(raw_df[<span class="dv">1</span>,]))] </span>
+<span id="cb1-13"><a href="#cb1-13" aria-label="13"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-label="14"></a><span class="co"># Extract clean variable names and assign to data frame</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-label="15"></a>clean_names <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="fu">unlist</span>(raw_df_sub[<span class="dv">1</span>, ])) <span class="sc">|&gt;</span> <span class="fu">str_trim</span>()</span>
+<span id="cb1-16"><a href="#cb1-16" aria-label="16"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-label="17"></a>df <span class="ot">&lt;-</span> raw_df_sub[<span class="sc">-</span><span class="dv">1</span>, ]</span>
+<span id="cb1-18"><a href="#cb1-18" aria-label="18"></a><span class="fu">names</span>(df) <span class="ot">&lt;-</span> <span class="fu">make.unique</span>(clean_names)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-label="19"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-label="20"></a>df_clean <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-label="21"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(responseID), responseID <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-label="22"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-23"><a href="#cb1-23" aria-label="23"></a>    <span class="at">age =</span> <span class="fu">as.numeric</span>(age),</span>
+<span id="cb1-24"><a href="#cb1-24" aria-label="24"></a>    <span class="at">pick1 =</span> <span class="fu">as.numeric</span>(pick1),</span>
+<span id="cb1-25"><a href="#cb1-25" aria-label="25"></a>    <span class="at">pick2 =</span> <span class="fu">as.numeric</span>(pick2),</span>
+<span id="cb1-26"><a href="#cb1-26" aria-label="26"></a>    <span class="at">pick3 =</span> <span class="fu">as.numeric</span>(pick3),</span>
+<span id="cb1-27"><a href="#cb1-27" aria-label="27"></a>    <span class="co"># Standardize frame labels with Negative as reference level</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-label="28"></a>    <span class="at">frame1 =</span> <span class="fu">factor</span>(<span class="fu">if_else</span>(<span class="fu">str_starts</span>(treatment1, <span class="st">"pos"</span>), <span class="st">"Positive"</span>, <span class="st">"Negative"</span>),</span>
+<span id="cb1-29"><a href="#cb1-29" aria-label="29"></a>                    <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Negative"</span>, <span class="st">"Positive"</span>)),</span>
+<span id="cb1-30"><a href="#cb1-30" aria-label="30"></a>    <span class="at">frame2 =</span> <span class="fu">factor</span>(<span class="fu">if_else</span>(<span class="fu">str_starts</span>(treatment2, <span class="st">"pos"</span>), <span class="st">"Positive"</span>, <span class="st">"Negative"</span>),</span>
+<span id="cb1-31"><a href="#cb1-31" aria-label="31"></a>                    <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Negative"</span>, <span class="st">"Positive"</span>)),</span>
+<span id="cb1-32"><a href="#cb1-32" aria-label="32"></a>    <span class="at">frame3 =</span> <span class="fu">factor</span>(<span class="fu">if_else</span>(<span class="fu">str_starts</span>(treatment3, <span class="st">"pos"</span>), <span class="st">"Positive"</span>, <span class="st">"Negative"</span>),</span>
+<span id="cb1-33"><a href="#cb1-33" aria-label="33"></a>                    <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Negative"</span>, <span class="st">"Positive"</span>)),</span>
+<span id="cb1-34"><a href="#cb1-34" aria-label="34"></a>    <span class="at">gender =</span> <span class="fu">factor</span>(gender),</span>
+<span id="cb1-35"><a href="#cb1-35" aria-label="35"></a>    <span class="at">ethnicity =</span> <span class="fu">factor</span>(ethnicity),</span>
+<span id="cb1-36"><a href="#cb1-36" aria-label="36"></a>    <span class="at">education =</span> <span class="fu">factor</span>(education),</span>
+<span id="cb1-37"><a href="#cb1-37" aria-label="37"></a>    <span class="at">politics =</span> <span class="fu">factor</span>(politics)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-label="38"></a>  )</span>
+<span id="cb1-39"><a href="#cb1-39" aria-label="39"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-label="40"></a><span class="fu">cat</span>(<span class="st">"Total valid respondents:"</span>, <span class="fu">nrow</span>(df_clean), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Total valid respondents: 696 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Age range:"</span>, <span class="fu">min</span>(df_clean<span class="sc">$</span>age, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="st">"to"</span>, <span class="fu">max</span>(df_clean<span class="sc">$</span>age, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Age range: 18 to 71 </code></pre>
+</div>
+</div>
+<p></p>
+</section>
+<section id="covariate-adjusted-regression-models" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="covariate-adjusted-regression-models"><span class="header-section-number">1.3</span> Covariate-Adjusted Regression Models</h2>
+<p></p>
+<p><strong>Solution</strong></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-label="1"></a><span class="co"># Model 1: Drug Efficacy (1 = very bad, 6 = very good)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-label="2"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(pick1 <span class="sc">~</span> age <span class="sc">*</span> frame1 <span class="sc">+</span> gender <span class="sc">+</span> ethnicity <span class="sc">+</span> education <span class="sc">+</span> politics, <span class="at">data =</span> df_clean)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-label="3"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-label="4"></a><span class="co"># Model 2: Hot Cocoa &amp; Cadmium Risk (1 = surely stop, 6 = surely continue)</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-label="5"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(pick2 <span class="sc">~</span> age <span class="sc">*</span> frame2 <span class="sc">+</span> gender <span class="sc">+</span> ethnicity <span class="sc">+</span> education <span class="sc">+</span> politics, <span class="at">data =</span> df_clean)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-label="6"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-label="7"></a><span class="co"># Model 3: Disease Outbreak / Chance Choice (1 = surely safe, 6 = surely risky)</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-label="8"></a>m3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(pick3 <span class="sc">~</span> age <span class="sc">*</span> frame3 <span class="sc">+</span> gender <span class="sc">+</span> ethnicity <span class="sc">+</span> education <span class="sc">+</span> politics, <span class="at">data =</span> df_clean)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-label="9"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-label="10"></a><span class="co"># Helper function to display focal interaction terms</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-label="11"></a>extract_focal <span class="ot">&lt;-</span> <span class="cf">function</span>(model, scenario_label) {</span>
+<span id="cb5-12"><a href="#cb5-12" aria-label="12"></a>  <span class="fu">tidy</span>(model, <span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-label="13"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(term, <span class="st">"^(</span><span class="sc">\\</span><span class="st">(Intercept</span><span class="sc">\\</span><span class="st">)|age|frame)"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-label="14"></a>    <span class="fu">mutate</span>(<span class="at">Scenario =</span> scenario_label) <span class="sc">|&gt;</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-label="15"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(Scenario, term, <span class="fu">any_of</span>(<span class="fu">c</span>(<span class="st">"estimate"</span>, <span class="st">"std.error"</span>, <span class="st">"statistic"</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-label="16"></a>                                           <span class="st">"p.value"</span>, <span class="st">"conf.low"</span>, <span class="st">"conf.high"</span>)))</span>
+<span id="cb5-17"><a href="#cb5-17" aria-label="17"></a>}</span>
+<span id="cb5-18"><a href="#cb5-18" aria-label="18"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-label="19"></a><span class="fu">bind_rows</span>(</span>
+<span id="cb5-20"><a href="#cb5-20" aria-label="20"></a>  <span class="fu">extract_focal</span>(m1, <span class="st">"Scenario 1: Drug Efficacy"</span>),</span>
+<span id="cb5-21"><a href="#cb5-21" aria-label="21"></a>  <span class="fu">extract_focal</span>(m2, <span class="st">"Scenario 2: Hot Cocoa"</span>),</span>
+<span id="cb5-22"><a href="#cb5-22" aria-label="22"></a>  <span class="fu">extract_focal</span>(m3, <span class="st">"Scenario 3: Chance Choice"</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-label="23"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-label="24"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">4</span>, <span class="at">caption =</span> <span class="st">"Focal Regression Estimates (Adjusting for Demographics)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Focal Regression Estimates (Adjusting for Demographics)</caption>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 18%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Scenario</th>
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: right;">p.value</th>
+<th style="text-align: right;">conf.low</th>
+<th style="text-align: right;">conf.high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Scenario 1: Drug Efficacy</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">3.3496</td>
+<td style="text-align: right;">0.3662</td>
+<td style="text-align: right;">9.1461</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">2.6305</td>
+<td style="text-align: right;">4.0687</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Scenario 1: Drug Efficacy</td>
+<td style="text-align: left;">age</td>
+<td style="text-align: right;">-0.0055</td>
+<td style="text-align: right;">0.0030</td>
+<td style="text-align: right;">-1.8061</td>
+<td style="text-align: right;">0.0713</td>
+<td style="text-align: right;">-0.0115</td>
+<td style="text-align: right;">0.0005</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Scenario 1: Drug Efficacy</td>
+<td style="text-align: left;">frame1Positive</td>
+<td style="text-align: right;">0.3429</td>
+<td style="text-align: right;">0.1931</td>
+<td style="text-align: right;">1.7759</td>
+<td style="text-align: right;">0.0762</td>
+<td style="text-align: right;">-0.0362</td>
+<td style="text-align: right;">0.7221</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Scenario 1: Drug Efficacy</td>
+<td style="text-align: left;">age:frame1Positive</td>
+<td style="text-align: right;">0.0078</td>
+<td style="text-align: right;">0.0045</td>
+<td style="text-align: right;">1.7123</td>
+<td style="text-align: right;">0.0873</td>
+<td style="text-align: right;">-0.0011</td>
+<td style="text-align: right;">0.0166</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Scenario 2: Hot Cocoa</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">2.0951</td>
+<td style="text-align: right;">0.6460</td>
+<td style="text-align: right;">3.2431</td>
+<td style="text-align: right;">0.0012</td>
+<td style="text-align: right;">0.8267</td>
+<td style="text-align: right;">3.3636</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Scenario 2: Hot Cocoa</td>
+<td style="text-align: left;">age</td>
+<td style="text-align: right;">-0.0128</td>
+<td style="text-align: right;">0.0056</td>
+<td style="text-align: right;">-2.2929</td>
+<td style="text-align: right;">0.0222</td>
+<td style="text-align: right;">-0.0238</td>
+<td style="text-align: right;">-0.0018</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Scenario 2: Hot Cocoa</td>
+<td style="text-align: left;">frame2Positive</td>
+<td style="text-align: right;">-0.0255</td>
+<td style="text-align: right;">0.3361</td>
+<td style="text-align: right;">-0.0759</td>
+<td style="text-align: right;">0.9396</td>
+<td style="text-align: right;">-0.6854</td>
+<td style="text-align: right;">0.6344</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Scenario 2: Hot Cocoa</td>
+<td style="text-align: left;">age:frame2Positive</td>
+<td style="text-align: right;">0.0126</td>
+<td style="text-align: right;">0.0079</td>
+<td style="text-align: right;">1.5953</td>
+<td style="text-align: right;">0.1111</td>
+<td style="text-align: right;">-0.0029</td>
+<td style="text-align: right;">0.0280</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Scenario 3: Chance Choice</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">1.6526</td>
+<td style="text-align: right;">0.7411</td>
+<td style="text-align: right;">2.2300</td>
+<td style="text-align: right;">0.0261</td>
+<td style="text-align: right;">0.1975</td>
+<td style="text-align: right;">3.1077</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Scenario 3: Chance Choice</td>
+<td style="text-align: left;">age</td>
+<td style="text-align: right;">0.0170</td>
+<td style="text-align: right;">0.0063</td>
+<td style="text-align: right;">2.6920</td>
+<td style="text-align: right;">0.0073</td>
+<td style="text-align: right;">0.0046</td>
+<td style="text-align: right;">0.0293</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Scenario 3: Chance Choice</td>
+<td style="text-align: left;">frame3Positive</td>
+<td style="text-align: right;">0.1933</td>
+<td style="text-align: right;">0.3847</td>
+<td style="text-align: right;">0.5025</td>
+<td style="text-align: right;">0.6155</td>
+<td style="text-align: right;">-0.5621</td>
+<td style="text-align: right;">0.9488</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Scenario 3: Chance Choice</td>
+<td style="text-align: left;">age:frame3Positive</td>
+<td style="text-align: right;">-0.0194</td>
+<td style="text-align: right;">0.0090</td>
+<td style="text-align: right;">-2.1527</td>
+<td style="text-align: right;">0.0317</td>
+<td style="text-align: right;">-0.0371</td>
+<td style="text-align: right;">-0.0017</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p></p>
+</section>
+<section id="simple-slopes-positive-vs.-negative-framing-drivers" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="simple-slopes-positive-vs.-negative-framing-drivers"><span class="header-section-number">1.4</span> Simple Slopes: Positive vs.&nbsp;Negative Framing Drivers</h2>
+<p><strong>Solution</strong></p>
+<p></p>
+<p>To test whether age-related shifts are driven by reactions to the positive or negative frame, we estimate the linear age trend (<span class="math inline">\(\partial Y / \partial \text{Age}\)</span>) separately within each framing condition.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-label="1"></a>slopes_s1 <span class="ot">&lt;-</span> <span class="fu">emtrends</span>(m1, <span class="sc">~</span> frame1, <span class="at">var =</span> <span class="st">"age"</span>) <span class="sc">|&gt;</span> <span class="fu">summary</span>(<span class="at">infer =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Scenario =</span> <span class="st">"Scenario 1: Drug Efficacy"</span>) <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">Frame =</span> frame1)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-label="2"></a>slopes_s2 <span class="ot">&lt;-</span> <span class="fu">emtrends</span>(m2, <span class="sc">~</span> frame2, <span class="at">var =</span> <span class="st">"age"</span>) <span class="sc">|&gt;</span> <span class="fu">summary</span>(<span class="at">infer =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Scenario =</span> <span class="st">"Scenario 2: Hot Cocoa"</span>) <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">Frame =</span> frame2)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-label="3"></a>slopes_s3 <span class="ot">&lt;-</span> <span class="fu">emtrends</span>(m3, <span class="sc">~</span> frame3, <span class="at">var =</span> <span class="st">"age"</span>) <span class="sc">|&gt;</span> <span class="fu">summary</span>(<span class="at">infer =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Scenario =</span> <span class="st">"Scenario 3: Chance Choice"</span>) <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">Frame =</span> frame3)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-label="4"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-label="5"></a><span class="fu">bind_rows</span>(slopes_s1, slopes_s2, slopes_s3) <span class="sc">|&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-label="6"></a>  <span class="fu">select</span>(Scenario, Frame, age.trend, SE, df, lower.CL, upper.CL, t.ratio, p.value) <span class="sc">|&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-label="7"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">4</span>, <span class="at">caption =</span> <span class="st">"Age Slopes Within Positive and Negative Frames"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Age Slopes Within Positive and Negative Frames</caption>
+<colgroup>
+<col style="width: 28%">
+<col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 7%">
+<col style="width: 4%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 8%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Scenario</th>
+<th style="text-align: left;">Frame</th>
+<th style="text-align: right;">age.trend</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">df</th>
+<th style="text-align: right;">lower.CL</th>
+<th style="text-align: right;">upper.CL</th>
+<th style="text-align: right;">t.ratio</th>
+<th style="text-align: right;">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Scenario 1: Drug Efficacy</td>
+<td style="text-align: left;">Negative</td>
+<td style="text-align: right;">-0.0055</td>
+<td style="text-align: right;">0.0030</td>
+<td style="text-align: right;">673</td>
+<td style="text-align: right;">-0.0115</td>
+<td style="text-align: right;">0.0005</td>
+<td style="text-align: right;">-1.8061</td>
+<td style="text-align: right;">0.0713</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Scenario 1: Drug Efficacy</td>
+<td style="text-align: left;">Positive</td>
+<td style="text-align: right;">0.0023</td>
+<td style="text-align: right;">0.0034</td>
+<td style="text-align: right;">673</td>
+<td style="text-align: right;">-0.0044</td>
+<td style="text-align: right;">0.0089</td>
+<td style="text-align: right;">0.6628</td>
+<td style="text-align: right;">0.5077</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Scenario 2: Hot Cocoa</td>
+<td style="text-align: left;">Negative</td>
+<td style="text-align: right;">-0.0128</td>
+<td style="text-align: right;">0.0056</td>
+<td style="text-align: right;">673</td>
+<td style="text-align: right;">-0.0238</td>
+<td style="text-align: right;">-0.0018</td>
+<td style="text-align: right;">-2.2929</td>
+<td style="text-align: right;">0.0222</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Scenario 2: Hot Cocoa</td>
+<td style="text-align: left;">Positive</td>
+<td style="text-align: right;">-0.0003</td>
+<td style="text-align: right;">0.0056</td>
+<td style="text-align: right;">673</td>
+<td style="text-align: right;">-0.0113</td>
+<td style="text-align: right;">0.0108</td>
+<td style="text-align: right;">-0.0482</td>
+<td style="text-align: right;">0.9616</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Scenario 3: Chance Choice</td>
+<td style="text-align: left;">Negative</td>
+<td style="text-align: right;">0.0170</td>
+<td style="text-align: right;">0.0063</td>
+<td style="text-align: right;">672</td>
+<td style="text-align: right;">0.0046</td>
+<td style="text-align: right;">0.0293</td>
+<td style="text-align: right;">2.6920</td>
+<td style="text-align: right;">0.0073</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Scenario 3: Chance Choice</td>
+<td style="text-align: left;">Positive</td>
+<td style="text-align: right;">-0.0025</td>
+<td style="text-align: right;">0.0065</td>
+<td style="text-align: right;">672</td>
+<td style="text-align: right;">-0.0153</td>
+<td style="text-align: right;">0.0104</td>
+<td style="text-align: right;">-0.3747</td>
+<td style="text-align: right;">0.7080</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p></p>
+</section>
+<section id="johnson-neyman-analysis-age-of-onset" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="johnson-neyman-analysis-age-of-onset"><span class="header-section-number">1.5</span> Johnson-Neyman Analysis: Age of Onset</h2>
+<p><strong>Solution</strong></p>
+<p></p>
+<p>Using the Johnson-Neyman technique (interactions::johnson_neyman), we identify the exact age at which the conditional difference between Positive and Negative frames crosses the <span class="math inline">\(\alpha = .05\)</span> significance threshold.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-label="1"></a><span class="co"># Prof had to correct argument order so pred is age (continuous), and modx is the frame (binary)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-label="2"></a><span class="co"># This is technically not "right" but it does "work" for binary predictors as long as it is fit</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-label="3"></a><span class="co"># as a numerical predictor.</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-label="4"></a>df_clean_jn <span class="ot">&lt;-</span> df_clean <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">frame1=</span><span class="fu">as.numeric</span>(frame1)<span class="sc">-</span><span class="dv">1</span>, <span class="co"># Negative = 1-1, # Positive = 2-1</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-label="5"></a>                                  <span class="at">frame2=</span><span class="fu">as.numeric</span>(frame2)<span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-label="6"></a>                                  <span class="at">frame3=</span><span class="fu">as.numeric</span>(frame3)<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-label="7"></a><span class="co"># Model 1: Drug Efficacy (1 = very bad, 6 = very good)</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-label="8"></a>m1_jn <span class="ot">&lt;-</span> <span class="fu">lm</span>(pick1 <span class="sc">~</span> age <span class="sc">*</span> frame1 <span class="sc">+</span> gender <span class="sc">+</span> ethnicity <span class="sc">+</span> education <span class="sc">+</span> politics, <span class="at">data =</span> df_clean_jn)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-label="9"></a><span class="co"># Model 2: Hot Cocoa &amp; Cadmium Risk (1 = surely stop, 6 = surely continue)</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-label="10"></a>m2_jn <span class="ot">&lt;-</span> <span class="fu">lm</span>(pick2 <span class="sc">~</span> age <span class="sc">*</span> frame2 <span class="sc">+</span> gender <span class="sc">+</span> ethnicity <span class="sc">+</span> education <span class="sc">+</span> politics, <span class="at">data =</span> df_clean_jn)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-label="11"></a><span class="co"># Model 3: Disease Outbreak / Chance Choice (1 = surely safe, 6 = surely risky)</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-label="12"></a>m3_jn <span class="ot">&lt;-</span> <span class="fu">lm</span>(pick3 <span class="sc">~</span> age <span class="sc">*</span> frame3 <span class="sc">+</span> gender <span class="sc">+</span> ethnicity <span class="sc">+</span> education <span class="sc">+</span> politics, <span class="at">data =</span> df_clean_jn)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-label="13"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-label="14"></a>jn1 <span class="ot">&lt;-</span> <span class="fu">johnson_neyman</span>(m1_jn, <span class="at">pred =</span> <span class="st">"age"</span>, <span class="at">modx =</span> <span class="st">"frame1"</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-label="15"></a>jn2 <span class="ot">&lt;-</span> <span class="fu">johnson_neyman</span>(m2_jn, <span class="at">pred =</span> <span class="st">"age"</span>, <span class="at">modx =</span> <span class="st">"frame2"</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-label="16"></a>jn3 <span class="ot">&lt;-</span> <span class="fu">johnson_neyman</span>(m3_jn, <span class="at">pred =</span> <span class="st">"age"</span>, <span class="at">modx =</span> <span class="st">"frame3"</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-label="17"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-label="18"></a><span class="fu">print</span>(jn1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>JOHNSON-NEYMAN INTERVAL
+
+The Johnson-Neyman interval could not be found. Is the p value for your
+interaction term below the specified alpha?</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW5_files/figure-html/johnson-neyman-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-label="1"></a><span class="fu">print</span>(jn2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>JOHNSON-NEYMAN INTERVAL
+
+When frame2 is INSIDE the interval [-1.42, 0.38], the slope of age is p &lt;
+.05.
+
+Note: The range of observed values of frame2 is [0.00, 1.00]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW5_files/figure-html/johnson-neyman-2.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-label="1"></a><span class="fu">print</span>(jn3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>JOHNSON-NEYMAN INTERVAL
+
+When frame3 is OUTSIDE the interval [0.41, 5.23], the slope of age is p &lt;
+.05.
+
+Note: The range of observed values of frame3 is [0.00, 1.00]</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW5_files/figure-html/johnson-neyman-3.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a>jn1<span class="sc">$</span>plot <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Scenario 1: Drug Efficacy (Framing Effect Across Age)"</span>, <span class="at">x =</span> <span class="st">"Age (Years)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW5_files/figure-html/johnson-neyman-4.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-label="1"></a>jn2<span class="sc">$</span>plot <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Scenario 2: Hot Cocoa (Framing Effect Across Age)"</span>, <span class="at">x =</span> <span class="st">"Age (Years)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW5_files/figure-html/johnson-neyman-5.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-label="1"></a>jn3<span class="sc">$</span>plot <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Scenario 3: Chance Choice (Framing Effect Across Age)"</span>, <span class="at">x =</span> <span class="st">"Age (Years)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW5_files/figure-html/johnson-neyman-6.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+</section>
+<section id="visualization-of-predicted-trajectories" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="visualization-of-predicted-trajectories"><span class="header-section-number">1.6</span> Visualization of Predicted Trajectories</h2>
+<p><strong>Solution</strong></p>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-label="1"></a><span class="co"># Generate adjusted marginal predictions across age (18 to 71), increasing rg.limit past 105,840</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-label="2"></a>age_grid <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">18</span>, <span class="dv">71</span>, <span class="at">by =</span> <span class="dv">1</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-label="3"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-label="4"></a>p1 <span class="ot">&lt;-</span> <span class="fu">emmip</span>(m1, frame1 <span class="sc">~</span> age, <span class="at">at =</span> <span class="fu">list</span>(<span class="at">age =</span> age_grid), <span class="at">rg.limit =</span> <span class="dv">150000</span>, <span class="at">CIs =</span> <span class="cn">TRUE</span>, <span class="at">plotit =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-label="5"></a>  <span class="fu">mutate</span>(<span class="at">Scenario =</span> <span class="st">"1. Drug Efficacy</span><span class="sc">\n</span><span class="st">(1 = Very Bad, 6 = Very Good)"</span>) <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">Frame =</span> frame1)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-label="6"></a>p2 <span class="ot">&lt;-</span> <span class="fu">emmip</span>(m2, frame2 <span class="sc">~</span> age, <span class="at">at =</span> <span class="fu">list</span>(<span class="at">age =</span> age_grid), <span class="at">rg.limit =</span> <span class="dv">150000</span>, <span class="at">CIs =</span> <span class="cn">TRUE</span>, <span class="at">plotit =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-label="7"></a>  <span class="fu">mutate</span>(<span class="at">Scenario =</span> <span class="st">"2. Hot Cocoa Continuation</span><span class="sc">\n</span><span class="st">(1 = Surely Stop, 6 = Surely Continue)"</span>) <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">Frame =</span> frame2)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-label="8"></a>p3 <span class="ot">&lt;-</span> <span class="fu">emmip</span>(m3, frame3 <span class="sc">~</span> age, <span class="at">at =</span> <span class="fu">list</span>(<span class="at">age =</span> age_grid), <span class="at">rg.limit =</span> <span class="dv">150000</span>, <span class="at">CIs =</span> <span class="cn">TRUE</span>, <span class="at">plotit =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-label="9"></a>  <span class="fu">mutate</span>(<span class="at">Scenario =</span> <span class="st">"3. Chance Choice</span><span class="sc">\n</span><span class="st">(1 = Surely Safe, 6 = Surely Risky)"</span>) <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">Frame =</span> frame3)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-label="10"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-label="11"></a><span class="fu">bind_rows</span>(p1, p2, p3) <span class="sc">|&gt;</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-label="12"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> yvar, <span class="at">color =</span> Frame, <span class="at">fill =</span> Frame)) <span class="sc">+</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-label="13"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> LCL, <span class="at">ymax =</span> UCL), <span class="at">alpha =</span> <span class="fl">0.15</span>, <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-label="14"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.1</span>) <span class="sc">+</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-label="15"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Scenario, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-label="16"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Negative"</span> <span class="ot">=</span> <span class="st">"#D55E00"</span>, <span class="st">"Positive"</span> <span class="ot">=</span> <span class="st">"#0072B2"</span>)) <span class="sc">+</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-label="17"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Negative"</span> <span class="ot">=</span> <span class="st">"#D55E00"</span>, <span class="st">"Positive"</span> <span class="ot">=</span> <span class="st">"#0072B2"</span>)) <span class="sc">+</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-label="18"></a>  <span class="fu">labs</span>(</span>
+<span id="cb16-19"><a href="#cb16-19" aria-label="19"></a>    <span class="at">x =</span> <span class="st">"Age (Years)"</span>,</span>
+<span id="cb16-20"><a href="#cb16-20" aria-label="20"></a>    <span class="at">y =</span> <span class="st">"Adjusted Mean Rating (1–6 Scale)"</span>,</span>
+<span id="cb16-21"><a href="#cb16-21" aria-label="21"></a>    <span class="at">title =</span> <span class="st">"Framing Effects Across the Adult Lifespan"</span>,</span>
+<span id="cb16-22"><a href="#cb16-22" aria-label="22"></a>    <span class="at">subtitle =</span> <span class="st">"Adjusted for gender, ethnicity, education level, and political affiliation (95% CIs)"</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-label="23"></a>  ) <span class="sc">+</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-label="24"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-label="25"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="HW5_files/figure-html/trajectory-plots-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+</section>
+<section id="summary-of-empirical-findings-from-hw4data.csv" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="summary-of-empirical-findings-from-hw4data.csv"><span class="header-section-number">1.7</span> Summary of Empirical Findings from <code>HW4Data.csv</code></h2>
+<p><strong>Solution</strong></p>
+<p></p>
+<p>When rendered on <code>HW4Data.csv</code>, the code produces the following results across the three scenarios:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Scenario</th>
+<th style="text-align: left;"><span class="math inline">\(\text{Age} \times \text{Frame}\)</span> Interaction (<span class="math inline">\(\beta_3\)</span>)</th>
+<th style="text-align: left;">Age Slope: Negative Frame</th>
+<th style="text-align: left;">Age Slope: Positive Frame</th>
+<th style="text-align: left;">Age of Onset (J-N Threshold, <span class="math inline">\(p &lt; .05\)</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>1. Drug Efficacy</strong> (<span class="math inline">\(n = 696\)</span>)</td>
+<td style="text-align: left;"><span class="math inline">\(b = +0.0078, p = 0.087\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(b = -0.0055, p = 0.071\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(b = +0.0023, p = 0.508\)</span></td>
+<td style="text-align: left;"><strong>All adult ages (<span class="math inline">\(\ge 18\)</span>)</strong> (J-N lower bound <span class="math inline">\(= 2.2\)</span> yrs)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>2. Hot Cocoa</strong> (<span class="math inline">\(n = 696\)</span>)</td>
+<td style="text-align: left;"><span class="math inline">\(b = +0.0126, p = 0.111\)</span></td>
+<td style="text-align: left;"><strong><span class="math inline">\(b = -0.0128, p = 0.022\)</span></strong></td>
+<td style="text-align: left;"><span class="math inline">\(b = -0.0003, p = 0.962\)</span></td>
+<td style="text-align: left;"><strong>Age 25.9 years</strong> (significant for ages <span class="math inline">\(\ge 25.9\)</span>)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>3. Chance Choice</strong> (<span class="math inline">\(n = 695\)</span>)</td>
+<td style="text-align: left;"><strong><span class="math inline">\(b = -0.0194, p = 0.032\)</span></strong></td>
+<td style="text-align: left;"><strong><span class="math inline">\(b = +0.0170, p = 0.007\)</span></strong></td>
+<td style="text-align: left;"><span class="math inline">\(b = -0.0025, p = 0.708\)</span></td>
+<td style="text-align: left;"><strong>Age 26.9 years</strong> (significant for ages <span class="math inline">\(\ge 26.9\)</span>)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Does framing influence grow with age?</strong> Yes—the framing gap widens with age in all three scenarios, reaching statistical significance in <strong>Scenario 3 (Chance Choice)</strong> (<span class="math inline">\(p = 0.032\)</span>) and showing a marginal trend in the same direction in <strong>Scenario 1</strong> (<span class="math inline">\(p = 0.087\)</span>) and <strong>Scenario 2</strong> (<span class="math inline">\(p = 0.111\)</span>).</li>
+<li><strong>Positive vs.&nbsp;Negative driver:</strong> Across every scenario, <strong>changes are driven entirely by the negative framing</strong>. Ratings in the positive frame remain flat across age (<span class="math inline">\(p &gt; 0.50\)</span> in all three models), whereas older adults respond significantly more strongly to negative framings (becoming more likely to stop drinking cocoa when warned of increased cancer risk, <span class="math inline">\(p = 0.022\)</span>, and more risk-seeking when outcomes are framed as lives lost, <span class="math inline">\(p = 0.007\)</span>).</li>
+<li><strong>Age of onset:</strong> In <strong>Scenario 1</strong>, the framing effect is already significant at the youngest observed age (<span class="math inline">\(18\)</span>). In <strong>Scenarios 2 and 3</strong>, younger adults (ages <span class="math inline">\(18\text{–}25\)</span>) show no statistically significant framing bias, with the framing effect emerging at <strong>age 25.9</strong> (Scenario 2) and <strong>age 26.9</strong> (Scenario 3).</li>
+</ul>
+</section>
+</section>
+<section id="question-2-quiz-3" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Question 2 (Quiz 3)</h1>
+<p>The root biomass of a plant is the total mass of all of its roots. These roots help provide nutrients to the plant and also play a role in soil development. Interestingly, for most species of plants, the root biomass is approximately the same as the above-ground weight.</p>
+<p>Root biomass is highly relevant to research into plant responses to climate change. For example, changes in temperature, precipitation, CO2 levels, and soil properties can lead to changes in root biomass, which affects the roots that provide support for the plants above, help prevent erosion, and provide habitats for various plants and animals. Unfortunately, to observe the root biomass directly, researchers would need to sacrifice and excavate the entire plant, including the whole root system. Because of this, finding ways to estimate or predict root biomass is important.</p>
+<p><span class="citation" data-cites="Lai13">Lai et al. (<a href="#ref-Lai13" role="doc-biblioref">2013</a>)</span> explored using different models to assess the association between the diameter of a plant at breast height (cm) and the root biomass (kg).</p>
+<p><strong>Research Question:</strong> Can we predict root biomass using the tree diameters at breast height for <em>Castanopsis eyrei</em>, <em>Pinus massoniana</em>, and <em>Schima superba</em> trees? Ensure to identify whether there are unique relationships by species.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-label="1"></a>dat.trees <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"LaiTreeData.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-label="1"></a><span class="fu">source</span>(<span class="st">"plotResiduals.R"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-label="2"></a><span class="fu">source</span>(<span class="st">"plotInfluence.R"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p><strong>Solution</strong></p>
+<p>Exploratory data analysis (<a href="#fig-trees" class="quarto-xref">Figure&nbsp;1</a>) shows that there’s a strong positive, non-linear relationship between root biomass and tree diameters at breast height. We have less observations for <em>Castanopsis eyrei</em> than two other species of tree.</p>
+<p>A residual analysis, as shown in <a href="#fig-residuals-q2" class="quarto-xref">Figure&nbsp;2</a>, reveals heteroskedasticity. Since root biomass cannot be negative, we have a cluster of positive residuals for fitted values that are negative. For example, if the fitted value is -40, the residual has to be at least +40. Beyond <span class="math inline">\(\hat{y}=0\)</span>, the residual follows a megaphone shape. We can also see a few outliers.</p>
+<p>I performed a log transformation of the root biomass to attempt to resolve this problem. As shown in <a href="#fig-residuals-q2-log-y" class="quarto-xref">Figure&nbsp;3</a>, the residuals are left-skewed and follow a quadratic-function shape. I log-transformed the predictor, tree diameters at breast height. Finally, as seen in <a href="#fig-residuals-q2-log" class="quarto-xref">Figure&nbsp;4</a>, our residuals meet the condition for use for residual: the residuals are approximately normally distributed, centered around 0, and have common variance.</p>
+<p>However, looking at Cook’s <span class="math inline">\(D\)</span> plot in <a href="#fig-outlier-q2-log" class="quarto-xref">Figure&nbsp;5</a>, there is at least one highly influential point. A few observations have high DFFITs. I used Iteratively Reweighted Least Squares (IRWLS), iteratively reweighting observations based on how “well-behaved” their residuals are, to mitigate the effect of influential points on our model. We fit the regression model. Looking at <a href="#fig-outlier-q2-irwls" class="quarto-xref">Figure&nbsp;7</a>, Cook’s <span class="math inline">\(D\)</span> for all observations are much better than not fitting the IRWLS model.</p>
+<p>A multicollinearity analysis, particularly the adjusted GVIFs, confirms that there was no strong colinearity between the two predictors. Conditions for use of regression are met.</p>
+<p>An ANOVA test, <a href="#tbl-2-ANOVA" class="quarto-xref">Table&nbsp;2</a>, shows that both predictors and their interaction term explain a statistically discernible proportion of variability in the outcome. The effect size is large, <span class="math inline">\(\omega^2=0.97\)</span>, indicating that our regression model explains a large proportion of the total variability in our dataset.</p>
+<p>Looking more closely at the coefficients in <a href="#tbl-q2-coeffs-irwls" class="quarto-xref">Table&nbsp;3</a>, we notice that the coefficient for when the reference category changes from <em>Castanopsis eyrei</em> to <em>Schima superba</em> is not statistically discernible. We can write the regression model as follow:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\log(y_i) &amp;= -2.90 -1.82 I(x_{1i}=\text{Pinus massoniana}) \\
+&amp;\quad -0.25 I(x_{1i}=\text{Schima superba}) \\
+&amp;\quad + 2.20 \log(x_{2i}) \\
+&amp;\quad + 0.5 I(x_{1i}=\text{Pinus massoniana})\log(x_{2i}) \\
+&amp;\quad + 0.17 I(x_{1i}=\text{Schima superba})\log(x_{2i}) + \epsilon_i
+\end{aligned}
+\]</span></p>
+<ul>
+<li><p><span class="math inline">\(\beta_0 = -2.90\)</span>: the expected value of <span class="math inline">\(log(y_i)\)</span> when tree type is <em>Castanopsis eyrei</em> and the diameter at breast height is 1 cm.</p></li>
+<li><p><span class="math inline">\(\beta_1 = -1.82\)</span>: When the diameter at breast height is 1 cm, the expected <span class="math inline">\(log(\text{root biomass})\)</span> decreases by 1.82 units when the reference category changes from <em>Castanopsis eyrei</em> to <em>Pinus massoniana</em>.</p></li>
+<li><p><span class="math inline">\(\beta_2 = -0.25\)</span>: When the diameter at breast height is 1 cm, the expected <span class="math inline">\(log(\text{root biomass})\)</span> decreases by 0.25 units when the reference category changes from <em>Castanopsis eyrei</em> to <em>Schima superba</em> (statistically indiscernible).</p></li>
+<li><p><span class="math inline">\(\beta_3 = 2.20\)</span>: when the reference category is <em>Castanopsis eyrei</em>, the expected log root biomass increases by 2.20 units with every unit increase in <span class="math inline">\(log(\text{dbh})\)</span></p></li>
+<li><p><span class="math inline">\(\beta_4 = 0.50\)</span>: the change in the slope of <span class="math inline">\(log(\text{dbh})\)</span> when the when the reference category changes from <em>Castanopsis eyrei</em> to <em>Pinus massoniana</em></p></li>
+<li><p><span class="math inline">\(\beta_5 = 0.17\)</span>: the change in the slope of <span class="math inline">\(log(\text{dbh})\)</span> when the when the reference category changes from <em>Castanopsis eyrei</em> to <em>Schima superba</em>.</p></li>
+</ul>
+<p>In <a href="#tbl-q2-emt" class="quarto-xref">Table&nbsp;4</a>, no confidence intervals contain 0, suggesting that the slope of <span class="math inline">\(log(\text{dbh})\)</span> is statistically discernible for all three species of tree. <a href="#fig-emt" class="quarto-xref">Figure&nbsp;8</a> demonstrates that, as <span class="math inline">\(log(\text{dbh})\)</span> increases, <span class="math inline">\(log(\text{root biomass})\)</span> increases. The interaction effects, <span class="math inline">\(F_{2, 153}=20.01, p&lt;0.001\)</span>, suggest that the change in <span class="math inline">\(log(\text{root biomass})\)</span> corresponding to 1-unit increase in <span class="math inline">\(log(\text{dbh})\)</span> is different depending on tree species. For example, although <em>Pinus massoniana</em> has lower expected log root biomass compared to other species when the trees are small (i.e., when tree diameter at breast height is 1 cm), its slope is the steepest. When <span class="math inline">\(log(\text{dbh})=4\)</span>, the predicted root biomass of <em>Pinus massoniana</em> is lower than <em>Schima superba</em> and higher than <em>Castanopsis eyrei</em>.</p>
+<section id="exploratory-data-analyses" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="exploratory-data-analyses"><span class="header-section-number">2.1</span> Exploratory Data Analyses</h2>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-label="1"></a><span class="fu">ggpairs</span>(dat.trees,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-label="2"></a>        <span class="at">columns =</span> <span class="fu">c</span>(<span class="st">"rootbiomass"</span>, <span class="st">"sp"</span>, <span class="st">"dbh"</span>),</span>
+<span id="cb19-3"><a href="#cb19-3" aria-label="3"></a>        <span class="at">lower =</span> <span class="fu">list</span>(<span class="at">combo =</span> <span class="st">"box_no_facet"</span>, <span class="at">discrete =</span> <span class="st">"count"</span>),</span>
+<span id="cb19-4"><a href="#cb19-4" aria-label="4"></a>        <span class="at">upper =</span> <span class="fu">list</span>(<span class="at">combo =</span> <span class="st">"box_no_facet"</span>, <span class="at">discrete =</span> <span class="st">"count"</span>),</span>
+<span id="cb19-5"><a href="#cb19-5" aria-label="5"></a>        <span class="at">diag  =</span> <span class="fu">list</span>(<span class="at">discrete =</span> <span class="st">"barDiag"</span>)) <span class="sc">+</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-label="6"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-label="7"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-trees" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-trees-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Pairwise Plots
+</figcaption>
+<div aria-describedby="fig-trees-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW5_files/figure-html/fig-trees-1.png" class="img-fluid figure-img" width="768">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+</section>
+<section id="fit-the-model" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="fit-the-model"><span class="header-section-number">2.2</span> Fit the model</h2>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-label="1"></a>mod.q2 <span class="ot">=</span> <span class="fu">lm</span>(rootbiomass <span class="sc">~</span> sp <span class="sc">*</span> dbh, </span>
+<span id="cb20-2"><a href="#cb20-2" aria-label="2"></a>                    <span class="at">data =</span> dat.trees)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+</section>
+<section id="residual-analysis" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="residual-analysis"><span class="header-section-number">2.3</span> Residual analysis</h2>
+<p></p>
+<div class="cell" data-layout-align="center" data-scale="80%">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-label="1"></a><span class="fu">plotResiduals</span>(mod.q2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-residuals-q2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-residuals-q2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Residual Analysis
+</figcaption>
+<div aria-describedby="fig-residuals-q2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW5_files/figure-html/fig-residuals-q2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+</section>
+<section id="log-transformation" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="log-transformation"><span class="header-section-number">2.4</span> Log transformation</h2>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-label="1"></a>mod.q2.log.y <span class="ot">=</span> <span class="fu">lm</span>(logrootbiomass <span class="sc">~</span> sp <span class="sc">*</span> dbh, </span>
+<span id="cb22-2"><a href="#cb22-2" aria-label="2"></a>                    <span class="at">data =</span> dat.trees)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p></p>
+<div class="cell" data-layout-align="center" data-scale="80%">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-label="1"></a><span class="fu">plotResiduals</span>(mod.q2.log.y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-residuals-q2-log-y" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-residuals-q2-log-y-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Residual Analysis
+</figcaption>
+<div aria-describedby="fig-residuals-q2-log-y-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW5_files/figure-html/fig-residuals-q2-log-y-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-label="1"></a>mod.q2.log <span class="ot">=</span> <span class="fu">lm</span>(logrootbiomass <span class="sc">~</span> sp <span class="sc">*</span> logdbh, </span>
+<span id="cb24-2"><a href="#cb24-2" aria-label="2"></a>                    <span class="at">data =</span> dat.trees)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p></p>
+<div class="cell" data-layout-align="center" data-scale="80%">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-label="1"></a><span class="fu">plotResiduals</span>(mod.q2.log)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-residuals-q2-log" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-residuals-q2-log-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Residual Analysis
+</figcaption>
+<div aria-describedby="fig-residuals-q2-log-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW5_files/figure-html/fig-residuals-q2-log-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell" data-layout-align="center" data-scale="80%">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-label="1"></a><span class="fu">plotInfluence</span>(mod.q2.log)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-outlier-q2-log" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-outlier-q2-log-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Outlier Analysis
+</figcaption>
+<div aria-describedby="fig-outlier-q2-log-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW5_files/figure-html/fig-outlier-q2-log-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+</section>
+<section id="irwls" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="irwls"><span class="header-section-number">2.5</span> IRWLS</h2>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-label="1"></a>mod.q2.irwls <span class="ot">=</span> MASS<span class="sc">::</span><span class="fu">rlm</span>(logrootbiomass <span class="sc">~</span> sp <span class="sc">*</span> logdbh,</span>
+<span id="cb27-2"><a href="#cb27-2" aria-label="2"></a>                         <span class="at">data  =</span> dat.trees,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-label="3"></a>                         <span class="at">psi   =</span> MASS<span class="sc">::</span>psi.huber)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<section id="residual-analysis-1" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="residual-analysis-1"><span class="header-section-number">2.5.1</span> Residual analysis</h3>
+<p></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-label="1"></a><span class="fu">plotResiduals</span>(mod.q2.irwls)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-residuals-q2-irwls" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-residuals-q2-irwls-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Residual Analysis (IRWLS)
+</figcaption>
+<div aria-describedby="fig-residuals-q2-irwls-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW5_files/figure-html/fig-residuals-q2-irwls-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+</section>
+<section id="outlier-analysis" class="level3" data-number="2.5.2">
+<h3 data-number="2.5.2" class="anchored" data-anchor-id="outlier-analysis"><span class="header-section-number">2.5.2</span> Outlier analysis</h3>
+<p></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-label="1"></a><span class="fu">plotInfluence</span>(mod.q2.irwls)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-outlier-q2-irwls" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-outlier-q2-irwls-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Outlier Analysis (IRWLS)
+</figcaption>
+<div aria-describedby="fig-outlier-q2-irwls-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW5_files/figure-html/fig-outlier-q2-irwls-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+</section>
+<section id="multicollinearity-check" class="level3" data-number="2.5.3">
+<h3 data-number="2.5.3" class="anchored" data-anchor-id="multicollinearity-check"><span class="header-section-number">2.5.3</span> Multicollinearity check</h3>
+<p></p>
+<div class="cell" data-tbl-align="center">
+<div id="tbl-q2-vif" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-q2-vif-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: VIF
+</figcaption>
+<div aria-describedby="tbl-q2-vif-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">GVIF</th>
+<th style="text-align: right;">Df</th>
+<th style="text-align: right;">GVIF^(1/(2*Df))</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">sp</td>
+<td style="text-align: right;">97.5799</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3.1430</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">logdbh</td>
+<td style="text-align: right;">3.7793</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.9440</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sp:logdbh</td>
+<td style="text-align: right;">119.6549</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3.3074</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p></p>
+</section>
+</section>
+<section id="anova" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="anova"><span class="header-section-number">2.6</span> ANOVA</h2>
+<p></p>
+<div class="cell" data-tbl-align="center">
+<div id="tbl-2-ANOVA" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-2-ANOVA-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: ANOVA
+</figcaption>
+<div aria-describedby="tbl-2-ANOVA-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">df</th>
+<th style="text-align: right;">F</th>
+<th style="text-align: left;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">sp</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">53.852</td>
+<td style="text-align: left;">&lt;0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">logdbh</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5714.374</td>
+<td style="text-align: left;">&lt;0.001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sp:logdbh</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">20.005</td>
+<td style="text-align: left;">&lt;0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residuals</td>
+<td style="text-align: right;">153</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p></p>
+</section>
+<section id="effect-size" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="effect-size"><span class="header-section-number">2.7</span> Effect size</h2>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-label="1"></a>predictors <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">coef</span>(mod.q2.irwls))[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb30-2"><a href="#cb30-2" aria-label="2"></a>overall_f <span class="ot">&lt;-</span> car<span class="sc">::</span><span class="fu">linearHypothesis</span>(mod.q2.irwls, <span class="at">hypothesis.matrix =</span> predictors)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-label="3"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-label="4"></a>effectsize<span class="sc">::</span><span class="fu">F_to_omega2</span>(<span class="at">f =</span> overall_f<span class="sc">$</span>F[<span class="dv">2</span>],</span>
+<span id="cb30-5"><a href="#cb30-5" aria-label="5"></a>                        <span class="at">df =</span> overall_f<span class="sc">$</span>Df[<span class="dv">2</span>],         </span>
+<span id="cb30-6"><a href="#cb30-6" aria-label="6"></a>                        <span class="at">df_error =</span> overall_f<span class="sc">$</span>Res.Df[<span class="dv">2</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Omega2 (partial) |       95% CI
+-------------------------------
+0.97             | [0.97, 1.00]
+
+- One-sided CIs: upper bound fixed at [1.00].</code></pre>
+</div>
+</div>
+<p></p>
+</section>
+<section id="inference-about-coefficients" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="inference-about-coefficients"><span class="header-section-number">2.8</span> Inference about coefficients</h2>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-label="1"></a>df <span class="ot">=</span> <span class="fu">summary</span>(mod.q2.irwls)<span class="sc">$</span>df[<span class="dv">2</span>]</span>
+<span id="cb32-2"><a href="#cb32-2" aria-label="2"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-label="3"></a>coefs.q2.irwls <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">summary</span>(mod.q2.irwls)<span class="sc">$</span>coefficients) <span class="sc">|&gt;</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-label="4"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="st">"term"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-label="5"></a>  <span class="fu">rename</span>(<span class="st">"SE"</span> <span class="ot">=</span> <span class="st">"Std..Error"</span>,</span>
+<span id="cb32-6"><a href="#cb32-6" aria-label="6"></a>         <span class="st">"t"</span>  <span class="ot">=</span> <span class="st">"t.value"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-label="7"></a>  <span class="fu">mutate</span>(<span class="at">p =</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">pt</span>(<span class="sc">-</span><span class="fu">abs</span>(t), <span class="at">df =</span> df))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p></p>
+<div class="cell" data-tbl-align="center">
+<div id="tbl-q2-coeffs-irwls" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-q2-coeffs-irwls-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Inferences about Coefficients
+</figcaption>
+<div aria-describedby="tbl-q2-coeffs-irwls-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">Value</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">t</th>
+<th style="text-align: right;">p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">-2.8978</td>
+<td style="text-align: right;">0.1793</td>
+<td style="text-align: right;">-16.1601</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">spPinus massoniana</td>
+<td style="text-align: right;">-1.8167</td>
+<td style="text-align: right;">0.2355</td>
+<td style="text-align: right;">-7.7143</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">spSchima superba</td>
+<td style="text-align: right;">-0.2523</td>
+<td style="text-align: right;">0.2292</td>
+<td style="text-align: right;">-1.1009</td>
+<td style="text-align: right;">0.2727</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">logdbh</td>
+<td style="text-align: right;">2.1986</td>
+<td style="text-align: right;">0.0626</td>
+<td style="text-align: right;">35.1304</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">spPinus massoniana:logdbh</td>
+<td style="text-align: right;">0.5013</td>
+<td style="text-align: right;">0.0825</td>
+<td style="text-align: right;">6.0779</td>
+<td style="text-align: right;">0.0000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">spSchima superba:logdbh</td>
+<td style="text-align: right;">0.1714</td>
+<td style="text-align: right;">0.0821</td>
+<td style="text-align: right;">2.0889</td>
+<td style="text-align: right;">0.0384</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p></p>
+</section>
+<section id="post-hoc-testing" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="post-hoc-testing"><span class="header-section-number">2.9</span> Post-hoc testing</h2>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-label="1"></a>emt.q2.irwls <span class="ot">=</span> <span class="fu">emtrends</span>(mod.q2.irwls, <span class="sc">~</span> sp, <span class="at">var =</span> <span class="st">"logdbh"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p></p>
+<div class="cell" data-tbl-align="center">
+<div id="tbl-q2-emt" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-q2-emt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Estimated Marginal Trends
+</figcaption>
+<div aria-describedby="tbl-q2-emt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">sp</th>
+<th style="text-align: right;">logdbh.trend</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">df</th>
+<th style="text-align: right;">asymp.LCL</th>
+<th style="text-align: right;">asymp.UCL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Castanopsis eyrei</td>
+<td style="text-align: right;">2.1986</td>
+<td style="text-align: right;">0.0626</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">2.0760</td>
+<td style="text-align: right;">2.3213</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pinus massoniana</td>
+<td style="text-align: right;">2.6999</td>
+<td style="text-align: right;">0.0537</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">2.5946</td>
+<td style="text-align: right;">2.8051</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Schima superba</td>
+<td style="text-align: right;">2.3700</td>
+<td style="text-align: right;">0.0531</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">2.2660</td>
+<td style="text-align: right;">2.4741</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-label="1"></a>emm.q2.irwls <span class="ot">=</span> <span class="fu">emmeans</span>(mod.q2.irwls, <span class="sc">~</span> sp <span class="sc">|</span> logdbh,</span>
+<span id="cb34-2"><a href="#cb34-2" aria-label="2"></a>                       <span class="at">at =</span> <span class="fu">list</span>(<span class="at">logdbh =</span> <span class="fu">seq</span>(<span class="fu">min</span>(dat.trees<span class="sc">$</span>logdbh),</span>
+<span id="cb34-3"><a href="#cb34-3" aria-label="3"></a>                                              <span class="fu">max</span>(dat.trees<span class="sc">$</span>logdbh),</span>
+<span id="cb34-4"><a href="#cb34-4" aria-label="4"></a>                                              <span class="at">length.out =</span> <span class="dv">5</span>)),</span>
+<span id="cb34-5"><a href="#cb34-5" aria-label="5"></a>                       <span class="at">weights =</span> <span class="st">"proportional"</span>)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-label="6"></a></span>
+<span id="cb34-7"><a href="#cb34-7" aria-label="7"></a>plot.q2.irwls <span class="ot">=</span> <span class="fu">as.data.frame</span>(emm.q2.irwls)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-label="1"></a><span class="fu">ggplot</span>(plot.q2.irwls,</span>
+<span id="cb35-2"><a href="#cb35-2" aria-label="2"></a>       <span class="fu">aes</span>(<span class="at">x =</span> logdbh, <span class="at">y =</span> emmean, <span class="at">color =</span> sp, <span class="at">fill =</span> sp)) <span class="sc">+</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-label="3"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> asymp.LCL, <span class="at">ymax =</span> asymp.UCL),</span>
+<span id="cb35-4"><a href="#cb35-4" aria-label="4"></a>              <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-label="5"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-label="6"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Log tree diameter at breast height"</span>,</span>
+<span id="cb35-7"><a href="#cb35-7" aria-label="7"></a>       <span class="at">y =</span> <span class="st">"Log root biomass"</span>, <span class="at">color =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-label="8"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-emt" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-emt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Root Biomass Predicted by Diameter at Breast Height
+</figcaption>
+<div aria-describedby="fig-emt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW5_files/figure-html/fig-emt-1.png" class="img-fluid figure-img" width="768">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+</section>
+</section>
+<section id="question-3" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Question 3</h1>
+<p>Diclaimer: This is probably scary to skim. I would expect that – in fact, I think it’s a bit scary to skim. Take it step by step. Come ask questions. I promise it isn’t as awful as it looks, but you’ll see why we didn’t do too much power analysis for regression.</p>
+<p>In a linear model <span class="math display">\[Y = \beta_0 + \beta_1 X_1 + \dots + \beta_{p-1} X_{p-1} + \epsilon\]</span> where <span class="math inline">\(\epsilon \sim \mathcal{N}(0, \sigma^2)\)</span> and <span class="math inline">\(p\)</span> is the number of coefficients, we are often interested in evaluating whether <span class="math inline">\(\beta_j = 0.\)</span></p>
+<p>That is, we aim to evaluate <span class="math display">\[\begin{align*}
+  H_0&amp;: \beta_j = 0\\
+  H_a&amp;: \beta_j \neq 0.
+\end{align*}\]</span> The test statistic for this hypothesis test is <span class="math display">\[T = \frac{\hat{\beta}_j-0}{\text{SE}(\hat{\beta}_j)},\]</span> and, under the null, we expect this to follow a <span class="math inline">\(t(v=n-p)\)</span> distribution. However, when the actual value of <span class="math inline">\(\beta_j\)</span> is not 0, this quantity follows a different distribution: <span class="math display">\[T = \frac{\hat{\beta}_j-0}{\text{SE}(\hat{\beta}_j)} \sim t(\beta_\Delta, n - \underbrace{p}_{\beta{s}}).\]</span> We take the non-centrality parameter <span class="math display">\[\beta_\Delta = \frac{\beta_j \, \sigma_{X_j} \sqrt{1 - R_j^2}}{\sigma} \sqrt{n} = \pm f \sqrt{n}\]</span> where</p>
+<ul>
+<li><span class="math inline">\(\beta_j\)</span>: the target slope (effect size in raw units)</li>
+<li><span class="math inline">\(\sigma\)</span>: residual standard deviation of the regression model</li>
+<li><span class="math inline">\(\sigma_{X_j}\)</span>: standard deviation of predictor <span class="math inline">\(X_j\)</span></li>
+<li><span class="math inline">\(R_j^2\)</span>: <span class="math inline">\(R^2\)</span> from regressing <span class="math inline">\(X_j\)</span> on all other predictors
+<ul>
+<li>This is <span class="math inline">\(0\)</span> in simple regression. Otherwise, it accounts for variance inflation <span class="math inline">\(\text{VIF}_j = \frac{1}{1 - R_j^2}\)</span></li>
+</ul></li>
+</ul>
+<p>Acknowledging this would be quite a challenge to define <em>a priori</em>, we work with the effect size <span class="math inline">\(f = \sqrt{f^2}\)</span>, which is square root of Cohen’s <span class="math inline">\(f^2\)</span>, defined via the variance explained by adding <span class="math inline">\(X_j\)</span> to the model: <span class="math display">\[f^2 = \frac{R^2_{\text{full}} - R^2_{\text{reduced}}}{1 - R^2_{\text{full}}} = \frac{\beta_j^2 \, \sigma_{X_j}^2 (1 - R_j^2)}{\sigma^2}.\]</span> During power analysis we select this value: small (<span class="math inline">\(f^2=0.02\)</span>), moderate (<span class="math inline">\(f^2=0.15\)</span>), large(<span class="math inline">\(f^2=0.35\)</span>).</p>
+<p>Now, based on our selected <span class="math inline">\(f\)</span>, we can compute the power for a two-sided test simply using: <span class="math display">\[\begin{align*}
+\textrm{Power}(n) &amp;= P(\textrm{reject } H_0 ~\vert{}~ H_a\textrm{ is true}) \\
+                  &amp;= P\left(T \leq t_{\alpha/2,\, n-p} ~\middle\vert{}~ v = n-p,\, \beta_{\Delta} = f\sqrt{n}\right) \\
+                  &amp;\quad + P\left(T \geq t_{1-\alpha/2,\, n-p} ~\middle\vert{}~ v = n-p,\, \beta_{\Delta} = f\sqrt{n}\right).
+\end{align*}\]</span></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-label="1"></a><span class="fu">library</span>(pwr)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-label="2"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-label="3"></a>p <span class="ot">&lt;-</span> <span class="dv">3</span>   <span class="co"># Total number of coefficients in the model (p-1 predictors)</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-label="4"></a>f2.small <span class="ot">&lt;-</span> <span class="fl">0.02</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-label="5"></a></span>
+<span id="cb36-6"><a href="#cb36-6" aria-label="6"></a>res.small <span class="ot">&lt;-</span> <span class="fu">pwr.f2.test</span>(<span class="at">u =</span> <span class="dv">1</span>,              <span class="co"># Suppose our research was interested in 1 coefficient</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-label="7"></a>                         <span class="at">f2 =</span> f2.small,      <span class="co"># Cohen's f^2</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-label="8"></a>                         <span class="at">sig.level =</span> <span class="fl">0.05</span>,   <span class="co"># alpha = 0.05 (two-sided via F = T^2)</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-label="9"></a>                         <span class="at">power =</span> <span class="fl">0.80</span>)       <span class="co"># Desired power</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-label="10"></a></span>
+<span id="cb36-11"><a href="#cb36-11" aria-label="11"></a>(n.small <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(res.small<span class="sc">$</span>v <span class="sc">+</span> p)) <span class="co"># we add p for prediction "debt" (p betas)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 396</code></pre>
+</div>
+</div>
+<p></p>
+<section id="part-a" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="part-a"><span class="header-section-number">3.1</span> Part a</h2>
+<p>Plot the power analysis I conducted above. Ensure to highlight Type I error, Type II error region, and Power. Note this should be similar to the one sample <span class="math inline">\(t\)</span>-test.</p>
+<p><strong>Solution</strong></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-label="1"></a>alpha  <span class="ot">=</span> <span class="fl">0.05</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-label="2"></a>df_t <span class="ot">=</span> n.small <span class="sc">-</span> p                     </span>
+<span id="cb38-3"><a href="#cb38-3" aria-label="3"></a>ncp <span class="ot">=</span> <span class="fu">sqrt</span>(f2.small) <span class="sc">*</span> <span class="fu">sqrt</span>(n.small)  </span>
+<span id="cb38-4"><a href="#cb38-4" aria-label="4"></a>t_crit <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> alpha <span class="sc">/</span> <span class="dv">2</span>, <span class="at">df =</span> df_t)</span>
+<span id="cb38-5"><a href="#cb38-5" aria-label="5"></a></span>
+<span id="cb38-6"><a href="#cb38-6" aria-label="6"></a>ggdat <span class="ot">=</span> <span class="fu">tibble</span>(<span class="at">t =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">8</span>, <span class="at">length.out =</span> <span class="dv">1000</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-label="7"></a>  <span class="fu">mutate</span>(<span class="at">pdf.h0 =</span> <span class="fu">dt</span>(<span class="at">x =</span> t, <span class="at">df =</span> df_t),</span>
+<span id="cb38-8"><a href="#cb38-8" aria-label="8"></a>         <span class="at">pdf.ha =</span> <span class="fu">dt</span>(<span class="at">x =</span> t, <span class="at">df =</span> df_t, <span class="at">ncp =</span> ncp),</span>
+<span id="cb38-9"><a href="#cb38-9" aria-label="9"></a>         <span class="at">tail   =</span> t <span class="sc">&lt;</span> <span class="dv">0</span>)               </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-label="1"></a><span class="fu">ggplot</span>(ggdat) <span class="sc">+</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-label="2"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">y =</span> pdf.h0, <span class="at">color =</span> <span class="st">"Null"</span>)) <span class="sc">+</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-label="3"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">y =</span> pdf.ha, <span class="at">color =</span> <span class="st">"Alternative"</span>)) <span class="sc">+</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-label="4"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-label="5"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> ggdat <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">abs</span>(t) <span class="sc">&gt;=</span> t_crit),</span>
+<span id="cb39-6"><a href="#cb39-6" aria-label="6"></a>              <span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> pdf.h0, <span class="at">fill =</span> <span class="st">"Type I Error"</span>, <span class="at">group =</span> tail),</span>
+<span id="cb39-7"><a href="#cb39-7" aria-label="7"></a>              <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-label="8"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> ggdat <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">abs</span>(t) <span class="sc">&lt;</span> t_crit),</span>
+<span id="cb39-9"><a href="#cb39-9" aria-label="9"></a>              <span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> pdf.ha, <span class="at">fill =</span> <span class="st">"Type II Error"</span>),</span>
+<span id="cb39-10"><a href="#cb39-10" aria-label="10"></a>              <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb39-11"><a href="#cb39-11" aria-label="11"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data =</span> ggdat <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">abs</span>(t) <span class="sc">&gt;=</span> t_crit),</span>
+<span id="cb39-12"><a href="#cb39-12" aria-label="12"></a>              <span class="fu">aes</span>(<span class="at">x =</span> t, <span class="at">ymin =</span> <span class="dv">0</span>, <span class="at">ymax =</span> pdf.ha, <span class="at">fill =</span> <span class="st">"Power"</span>, <span class="at">group =</span> tail),</span>
+<span id="cb39-13"><a href="#cb39-13" aria-label="13"></a>              <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb39-14"><a href="#cb39-14" aria-label="14"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb39-15"><a href="#cb39-15" aria-label="15"></a>  <span class="fu">scale_x_continuous</span>(<span class="st">"T"</span>, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fu">round</span>(t_crit, <span class="dv">2</span>), <span class="dv">0</span>, <span class="fu">round</span>(t_crit, <span class="dv">2</span>), <span class="fu">round</span>(ncp, <span class="dv">2</span>))) <span class="sc">+</span></span>
+<span id="cb39-16"><a href="#cb39-16" aria-label="16"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Density"</span>, <span class="at">color =</span> <span class="st">""</span>, <span class="at">fill =</span> <span class="st">""</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-3a" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-3a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Power Analysis
+</figcaption>
+<div aria-describedby="fig-3a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="HW5_files/figure-html/fig-3a-1.png" class="img-fluid figure-img" width="768">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p></p>
+</section>
+<section id="part-b" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="part-b"><span class="header-section-number">3.2</span> Part b</h2>
+<p>To see the multicollinearity penalty directly, hold every parameter of a multiple regression model constant except the correlation between predictors.</p>
+<p>Suppose we aim to model <span class="math display">\[Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon\]</span> where <span class="math inline">\(\epsilon \sim \mathcal{N}(0, 1)\)</span>, <span class="math inline">\(\beta_1 = 0.25\)</span> is the target effect, <span class="math inline">\(\beta_2 = 0.30\)</span>, and <span class="math inline">\(X_1, X_2 \sim \mathcal{N}(0, 1)\)</span> with <span class="math inline">\(\text{Cor}(X_1, X_2) = \rho\)</span>. In this setting, <span class="math inline">\(R_1^2 = \rho^2\)</span> and <span class="math inline">\(\text{VIF}_1 = \frac{1}{1 - \rho^2}\)</span>.</p>
+<p>Write <span class="math inline">\(f^2\)</span> out in terms of <span class="math inline">\(VIF\)</span>. What happens to <span class="math inline">\(f^2\)</span> as we alter the <span class="math inline">\(VIF\)</span> through <span class="math inline">\(\rho\)</span>? Conduct a power analysis to determine the required sample size <span class="math inline">\(n\)</span> to achieve <span class="math inline">\(80\%\)</span> power for inference on <span class="math inline">\(\beta_1\)</span> for <span class="math inline">\(\text{VIF}\)</span> values of 1.0, 1.5, 2.0, 5.0, and 10. What happens as <span class="math inline">\(\text{VIF}\)</span> increases?</p>
+<p><strong>Solution</strong></p>
+<p>With <span class="math inline">\(\sigma = 1\)</span> and <span class="math inline">\(\sigma_{X_1} = 1\)</span>,</p>
+<p><span class="math display">\[
+\begin{aligned}
+f^2 &amp;= \frac{\beta_1^2\,\sigma_{X_1}^2\,(1-R_1^2)}{\sigma^2} \\[4pt]
+    &amp;= \frac{\beta_1^2\,\sigma_{X_1}^2}{\sigma^2\,\text{VIF}_1} \\[4pt]
+    &amp;= \frac{0.25^2}{\text{VIF}_1} \\[4pt]
+    &amp;= \frac{0.0625}{\text{VIF}_1}
+\end{aligned}
+\]</span></p>
+<p>As VIF increases, <span class="math inline">\(f^2\)</span> decreases. That is, the stronger the colinearity between <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span>, the smaller the effect size is, and the more observations we need to detect the difference of the coefficient from 0. Indeed, as seen in <a href="#tbl-q3-vif" class="quarto-xref">Table&nbsp;5</a>, as VIF increases, we need more observations in order to achieve 80% power for inference on <span class="math inline">\(\beta_1\)</span>.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-label="1"></a>vif <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">1.5</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-label="2"></a></span>
+<span id="cb40-3"><a href="#cb40-3" aria-label="3"></a>results <span class="ot">=</span> <span class="fu">tibble</span>(<span class="at">VIF =</span> vif,</span>
+<span id="cb40-4"><a href="#cb40-4" aria-label="4"></a>                 <span class="at">f2  =</span> <span class="fl">0.25</span><span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> VIF) <span class="sc">|&gt;</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-label="5"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-label="6"></a>  <span class="fu">mutate</span>(<span class="at">n =</span> <span class="fu">ceiling</span>(<span class="fu">pwr.f2.test</span>(<span class="at">u =</span> <span class="dv">1</span>, </span>
+<span id="cb40-7"><a href="#cb40-7" aria-label="7"></a>                                 <span class="at">f2 =</span> f2,</span>
+<span id="cb40-8"><a href="#cb40-8" aria-label="8"></a>                                 <span class="at">sig.level =</span> <span class="fl">0.05</span>, </span>
+<span id="cb40-9"><a href="#cb40-9" aria-label="9"></a>                                 <span class="at">power =</span> <span class="fl">0.80</span>)<span class="sc">$</span>v <span class="sc">+</span> p)) <span class="sc">|&gt;</span></span>
+<span id="cb40-10"><a href="#cb40-10" aria-label="10"></a>  <span class="fu">ungroup</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p></p>
+<div class="cell" data-tbl-align="center">
+<div id="tbl-q3-vif" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-q3-vif-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: VIF and Power
+</figcaption>
+<div aria-describedby="tbl-q3-vif-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">VIF</th>
+<th style="text-align: right;">f2</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">0.0625</td>
+<td style="text-align: right;">129</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">0.0417</td>
+<td style="text-align: right;">192</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">0.0312</td>
+<td style="text-align: right;">255</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">0.0125</td>
+<td style="text-align: right;">631</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10.0</td>
+<td style="text-align: right;">0.0063</td>
+<td style="text-align: right;">1259</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p></p>
+</section>
+<section id="part-c" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="part-c"><span class="header-section-number">3.3</span> Part c</h2>
+<p>Now, suppose we’re doing something fun like an interaction model. <span class="math display">\[Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 (X_1 X_2) + \epsilon\]</span> where <span class="math inline">\(\epsilon \sim \mathcal{N}(0, \sigma^2).\)</span> The <span class="math inline">\(T\)</span> statistic for the test still follows a non-central <span class="math inline">\(t\)</span>-distribution <span class="math display">\[T = \frac{\hat{\beta}_3-0}{\text{SE}(\hat{\beta}_3)} \sim t(\beta_\Delta, v=n - \underbrace{p}_{\beta{s}})\]</span> where <span class="math display">\[\beta_\Delta = \frac{\beta_3 \, \sigma_{X_1 X_2} \sqrt{1 - R_{X_1 X_2}^2}}{\sigma} \sqrt{n} = \pm f \sqrt{n}\]</span> where <span class="math inline">\(\sigma^2_{X_1 X_2} = \text{Var}(X_1 X_2)\)</span> and <span class="math inline">\(R_{X_1 X_2}^2 = R^2\)</span> from the regression: <span class="math display">\[(X_1 X_2) = \gamma_0 + \gamma_1 X_1 + \gamma_2 X_2 + \epsilon.\]</span> This makes <span class="math display">\[f^2 = \frac{\beta_3^2 \, \sigma_{X_1 X_2}^2 (1 - R_{X_1 X_2}^2)}{\sigma^2}.\]</span></p>
+<p>Suppose both predictors are binary: <span class="math display">\[\begin{align*}
+X_{1i} \sim&amp; \text{Bernoulli}(0.50)\\
+X_{2i} \sim&amp; \text{Bernoulli}(0.50)\\
+\end{align*}\]</span> and <span class="math inline">\(\beta_0=\beta_1=\beta_2=0\)</span>, <span class="math inline">\(\beta_3=0.50\)</span>, and <span class="math inline">\(\sigma=1\)</span>.</p>
+<p>As a basis for comparison, conduct a simple power analysis that ignores the interaction (e.g., <span class="math inline">\(Y = \beta_0 + \beta_1 X_1\)</span>), where <span class="math inline">\(\beta_1=0.50\)</span>.</p>
+<p><strong>Solution</strong></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-label="1"></a>f2_func <span class="ot">=</span> <span class="cf">function</span>(beta, sigma_x) {</span>
+<span id="cb41-2"><a href="#cb41-2" aria-label="2"></a>  beta<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> sigma_x<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> (<span class="dv">1-0</span>) <span class="sc">/</span> <span class="dv">1</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-label="3"></a>}</span>
+<span id="cb41-4"><a href="#cb41-4" aria-label="4"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-label="5"></a>f2a <span class="ot">=</span> <span class="fu">f2_func</span>(<span class="fl">0.5</span>, <span class="fu">sqrt</span>(<span class="fl">0.5</span><span class="sc">*</span>(<span class="dv">1</span><span class="fl">-0.5</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-label="1"></a>p <span class="ot">=</span> <span class="dv">2</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-label="2"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-label="3"></a>(<span class="at">n =</span> <span class="fu">ceiling</span>(<span class="fu">pwr.f2.test</span>(<span class="at">u =</span> <span class="dv">1</span>, </span>
+<span id="cb42-4"><a href="#cb42-4" aria-label="4"></a>                        <span class="at">f2 =</span> f2a,</span>
+<span id="cb42-5"><a href="#cb42-5" aria-label="5"></a>                        <span class="at">sig.level =</span> <span class="fl">0.05</span>, </span>
+<span id="cb42-6"><a href="#cb42-6" aria-label="6"></a>                        <span class="at">power =</span> <span class="fl">0.80</span>)<span class="sc">$</span>v <span class="sc">+</span> p))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 128</code></pre>
+</div>
+</div>
+<p></p>
+<p>Next, conduct a power analysis that ignores the third term is an interaction (e.g., <span class="math inline">\(Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3\)</span>), where <span class="math inline">\(\beta_3=0.50\)</span>.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-label="1"></a>p <span class="ot">=</span> <span class="dv">4</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-label="2"></a></span>
+<span id="cb44-3"><a href="#cb44-3" aria-label="3"></a>f2b <span class="ot">=</span> <span class="fu">f2_func</span>(<span class="fl">0.5</span>, <span class="fu">sqrt</span>(<span class="fl">0.5</span><span class="sc">*</span>(<span class="dv">1</span><span class="fl">-0.5</span>)))</span>
+<span id="cb44-4"><a href="#cb44-4" aria-label="4"></a></span>
+<span id="cb44-5"><a href="#cb44-5" aria-label="5"></a>(<span class="at">nb3 =</span> <span class="fu">ceiling</span>(<span class="fu">pwr.f2.test</span>(<span class="at">u =</span> <span class="dv">1</span>, </span>
+<span id="cb44-6"><a href="#cb44-6" aria-label="6"></a>                        <span class="at">f2 =</span> f2b,</span>
+<span id="cb44-7"><a href="#cb44-7" aria-label="7"></a>                        <span class="at">sig.level =</span> <span class="fl">0.05</span>, </span>
+<span id="cb44-8"><a href="#cb44-8" aria-label="8"></a>                        <span class="at">power =</span> <span class="fl">0.80</span>)<span class="sc">$</span>v <span class="sc">+</span> p))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 130</code></pre>
+</div>
+</div>
+<p></p>
+<p>Assess whether what we did in the previous step worked. Conduct a simulation for the proposed interaction model where <span class="math inline">\(\beta_3=0.50\)</span>. At each iteration, generate data of the size recommended in part (c) and test the interaction coefficient. What is the empirical power?</p>
+<p><strong>Solution</strong></p>
+<p>In the previous step, when we ignore that the third term is an interaction, the effect size is similar as the simple regression on <span class="math inline">\(X_1\)</span>. Therefore, the recommended sample sizes to achieve 80% power are almost the same (128 vs.&nbsp;130).</p>
+<p>When the interaction effect is simulated with <span class="math inline">\(n = 130\)</span>, power to correctly detect the interaction effect is low, around 29%.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">0510</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-label="2"></a>nsim <span class="ot">=</span> <span class="dv">10000</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-label="3"></a></span>
+<span id="cb46-4"><a href="#cb46-4" aria-label="4"></a>pvalues <span class="ot">=</span> <span class="fu">tibble</span>(<span class="at">sim =</span> <span class="fu">integer</span>(),</span>
+<span id="cb46-5"><a href="#cb46-5" aria-label="5"></a>              <span class="at">intercept =</span> <span class="fu">numeric</span>(),</span>
+<span id="cb46-6"><a href="#cb46-6" aria-label="6"></a>              <span class="at">x1 =</span> <span class="fu">numeric</span>(),</span>
+<span id="cb46-7"><a href="#cb46-7" aria-label="7"></a>              <span class="at">x2 =</span> <span class="fu">numeric</span>(),</span>
+<span id="cb46-8"><a href="#cb46-8" aria-label="8"></a>              <span class="at">x1_x2 =</span> <span class="fu">numeric</span>())</span>
+<span id="cb46-9"><a href="#cb46-9" aria-label="9"></a></span>
+<span id="cb46-10"><a href="#cb46-10" aria-label="10"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nsim) {</span>
+<span id="cb46-11"><a href="#cb46-11" aria-label="11"></a>  x1 <span class="ot">=</span> <span class="fu">rbinom</span>(nb3, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> <span class="fl">0.50</span>)</span>
+<span id="cb46-12"><a href="#cb46-12" aria-label="12"></a>  x2 <span class="ot">=</span> <span class="fu">rbinom</span>(nb3, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> <span class="fl">0.50</span>)</span>
+<span id="cb46-13"><a href="#cb46-13" aria-label="13"></a>  y  <span class="ot">=</span> <span class="dv">0</span> <span class="sc">+</span> <span class="dv">0</span><span class="sc">*</span>x1 <span class="sc">+</span> <span class="dv">0</span><span class="sc">*</span>x2 <span class="sc">+</span> <span class="fl">0.5</span><span class="sc">*</span>(x1<span class="sc">*</span>x2) <span class="sc">+</span> <span class="fu">rnorm</span>(nb3, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb46-14"><a href="#cb46-14" aria-label="14"></a></span>
+<span id="cb46-15"><a href="#cb46-15" aria-label="15"></a>  fit <span class="ot">=</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">*</span> x2)</span>
+<span id="cb46-16"><a href="#cb46-16" aria-label="16"></a>  p   <span class="ot">=</span> <span class="fu">summary</span>(fit)<span class="sc">$</span>coefficients[, <span class="st">"Pr(&gt;|t|)"</span>]</span>
+<span id="cb46-17"><a href="#cb46-17" aria-label="17"></a></span>
+<span id="cb46-18"><a href="#cb46-18" aria-label="18"></a>  pvalues <span class="ot">=</span> pvalues <span class="sc">|&gt;</span></span>
+<span id="cb46-19"><a href="#cb46-19" aria-label="19"></a>    <span class="fu">add_row</span>(<span class="at">sim =</span> i,</span>
+<span id="cb46-20"><a href="#cb46-20" aria-label="20"></a>            <span class="at">intercept =</span> p[<span class="dv">1</span>],</span>
+<span id="cb46-21"><a href="#cb46-21" aria-label="21"></a>            <span class="at">x1 =</span> p[<span class="dv">2</span>],</span>
+<span id="cb46-22"><a href="#cb46-22" aria-label="22"></a>            <span class="at">x2 =</span> p[<span class="dv">3</span>],</span>
+<span id="cb46-23"><a href="#cb46-23" aria-label="23"></a>            <span class="at">x1_x2 =</span> p[<span class="dv">4</span>])</span>
+<span id="cb46-24"><a href="#cb46-24" aria-label="24"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-label="1"></a><span class="co"># power</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-label="2"></a>(<span class="fu">mean</span>(pvalues<span class="sc">$</span>x1_x2 <span class="sc">&lt;</span> <span class="fl">0.05</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.288</code></pre>
+</div>
+</div>
+<p></p>
+</section>
+<section id="part-d" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="part-d"><span class="header-section-number">3.4</span> Part d</h2>
+<p>Compute the variance of the product, noting here that <span class="math inline">\((X_1 X_2) \sim \text{Bernoulli}(0.25)\)</span>.</p>
+<p><strong>Solution</strong></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-label="1"></a>var_x1x2 <span class="ot">=</span> <span class="fl">0.25</span><span class="sc">*</span>(<span class="dv">1</span><span class="fl">-0.25</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p></p>
+<p>Create a dataset of <span class="math inline">\(n=4\)</span> containing all possible combinations of <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> with <span class="math inline">\((X_1X_2)\)</span>, then fit the regression model predicting the interaction with the unique terms. Report the <span class="math inline">\(R^2\)</span>.</p>
+<p><strong>Solution</strong></p>
+<p><span class="math inline">\(R^2 = 0.67\)</span></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-label="1"></a>dat<span class="fl">.3</span>d <span class="ot">=</span> <span class="fu">tibble</span>(<span class="at">x1 =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb50-2"><a href="#cb50-2" aria-label="2"></a>              <span class="at">x2 =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb50-3"><a href="#cb50-3" aria-label="3"></a>              <span class="at">x1x2 =</span> x1<span class="sc">*</span>x2)</span>
+<span id="cb50-4"><a href="#cb50-4" aria-label="4"></a></span>
+<span id="cb50-5"><a href="#cb50-5" aria-label="5"></a>mod <span class="ot">=</span> <span class="fu">lm</span>(x1x2 <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data =</span> dat<span class="fl">.3</span>d)</span>
+<span id="cb50-6"><a href="#cb50-6" aria-label="6"></a>(<span class="at">r2_x1x2 =</span> <span class="fu">summary</span>(mod)<span class="sc">$</span>r.squared)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.6666667</code></pre>
+</div>
+</div>
+<p></p>
+<p>Next, conduct a power analysis that does not ignore that the third term is an interaction (e.g., <span class="math inline">\(Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3\)</span>), where <span class="math inline">\(\beta_3=0.50\)</span>. You can do this using <code>pwr.f2.test()</code> and specifying the effect size using the anticipated coefficient and the values we just calculated: <span class="math display">\[\beta_3^2 \sigma^2_{X_1 X_2}(1 - R^2_{X_1 X_2})\]</span></p>
+<p><strong>Solution</strong></p>
+<p>Detecting the interaction effect needs about 4 times as many observations (507 vs.&nbsp;130)compared to when we treat the interaction term just like another single predictor in part b.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-label="1"></a>f2<span class="fl">.3</span>d <span class="ot">=</span> ((<span class="fl">0.5</span><span class="sc">^</span><span class="dv">2</span>)<span class="sc">*</span>(var_x1x2)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>r2_x1x2))<span class="sc">/</span><span class="dv">1</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-label="2"></a></span>
+<span id="cb52-3"><a href="#cb52-3" aria-label="3"></a>p <span class="ot">=</span> <span class="dv">4</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-label="4"></a></span>
+<span id="cb52-5"><a href="#cb52-5" aria-label="5"></a>(<span class="at">n =</span> <span class="fu">ceiling</span>(<span class="fu">pwr.f2.test</span>(<span class="at">u =</span> <span class="dv">1</span>, </span>
+<span id="cb52-6"><a href="#cb52-6" aria-label="6"></a>                         <span class="at">f2 =</span> f2<span class="fl">.3</span>d,</span>
+<span id="cb52-7"><a href="#cb52-7" aria-label="7"></a>                         <span class="at">sig.level =</span> <span class="fl">0.05</span>, </span>
+<span id="cb52-8"><a href="#cb52-8" aria-label="8"></a>                         <span class="at">power =</span> <span class="fl">0.80</span>)<span class="sc">$</span>v <span class="sc">+</span> p))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 507</code></pre>
+</div>
+</div>
+<p></p>
+<p>How would this change if we specified <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> as being independently drawn from a Bernoulli(<span class="math inline">\(0.2\)</span>) distribution? A Normal(0,1)?</p>
+<p><strong>Solution</strong></p>
+<p>When <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> are drawn independently from a Bernoulli(<span class="math inline">\(0.2\)</span>) distribution we need around <span class="math inline">\(1234/507 = 2.43\)</span> times more observations to achieve 80% power (to detect that the interaction coefficient is statistically discernible from 0), compared to when <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> are drawn independently from a Bernoulli(<span class="math inline">\(0.5\)</span>) distribution. When <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> are drawn independently from a Gaussian(0,1) distribution, we only need 37 observations to achieve 80% power.</p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">6767</span>)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-label="2"></a></span>
+<span id="cb54-3"><a href="#cb54-3" aria-label="3"></a>n <span class="ot">=</span> <span class="dv">10000</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-label="4"></a>p <span class="ot">=</span> <span class="dv">4</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-label="5"></a></span>
+<span id="cb54-6"><a href="#cb54-6" aria-label="6"></a><span class="co"># bernoulli(0.2)</span></span>
+<span id="cb54-7"><a href="#cb54-7" aria-label="7"></a>dat.b <span class="ot">=</span> <span class="fu">tibble</span>(<span class="at">x1 =</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.2</span>),</span>
+<span id="cb54-8"><a href="#cb54-8" aria-label="8"></a>               <span class="at">x2 =</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.2</span>),</span>
+<span id="cb54-9"><a href="#cb54-9" aria-label="9"></a>               <span class="at">x1x2 =</span> x1 <span class="sc">*</span> x2)</span>
+<span id="cb54-10"><a href="#cb54-10" aria-label="10"></a>var_b <span class="ot">=</span> <span class="fu">var</span>(dat.b<span class="sc">$</span>x1x2)</span>
+<span id="cb54-11"><a href="#cb54-11" aria-label="11"></a>r2_b <span class="ot">=</span> <span class="fu">summary</span>(<span class="fu">lm</span>(x1x2 <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data =</span> dat.b))<span class="sc">$</span>r.squared</span>
+<span id="cb54-12"><a href="#cb54-12" aria-label="12"></a></span>
+<span id="cb54-13"><a href="#cb54-13" aria-label="13"></a><span class="co"># power </span></span>
+<span id="cb54-14"><a href="#cb54-14" aria-label="14"></a></span>
+<span id="cb54-15"><a href="#cb54-15" aria-label="15"></a>f2_b <span class="ot">=</span> ((<span class="fl">0.5</span><span class="sc">^</span><span class="dv">2</span>)<span class="sc">*</span>(var_b)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>r2_b))<span class="sc">/</span><span class="dv">1</span></span>
+<span id="cb54-16"><a href="#cb54-16" aria-label="16"></a></span>
+<span id="cb54-17"><a href="#cb54-17" aria-label="17"></a>(<span class="at">n_b =</span> <span class="fu">ceiling</span>(<span class="fu">pwr.f2.test</span>(<span class="at">u =</span> <span class="dv">1</span>, </span>
+<span id="cb54-18"><a href="#cb54-18" aria-label="18"></a>                         <span class="at">f2 =</span> f2_b,</span>
+<span id="cb54-19"><a href="#cb54-19" aria-label="19"></a>                         <span class="at">sig.level =</span> <span class="fl">0.05</span>, </span>
+<span id="cb54-20"><a href="#cb54-20" aria-label="20"></a>                         <span class="at">power =</span> <span class="fl">0.80</span>)<span class="sc">$</span>v <span class="sc">+</span> p))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1234</code></pre>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">6767</span>)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-label="2"></a></span>
+<span id="cb56-3"><a href="#cb56-3" aria-label="3"></a><span class="co"># normal(0, 1)</span></span>
+<span id="cb56-4"><a href="#cb56-4" aria-label="4"></a>dat.n <span class="ot">=</span> <span class="fu">tibble</span>(<span class="at">x1 =</span> <span class="fu">rnorm</span>(n),</span>
+<span id="cb56-5"><a href="#cb56-5" aria-label="5"></a>               <span class="at">x2 =</span> <span class="fu">rnorm</span>(n),</span>
+<span id="cb56-6"><a href="#cb56-6" aria-label="6"></a>               <span class="at">x1x2 =</span> x1 <span class="sc">*</span> x2)</span>
+<span id="cb56-7"><a href="#cb56-7" aria-label="7"></a>var_n <span class="ot">=</span> <span class="fu">var</span>(dat.n<span class="sc">$</span>x1x2)</span>
+<span id="cb56-8"><a href="#cb56-8" aria-label="8"></a>r2_n <span class="ot">=</span> <span class="fu">summary</span>(<span class="fu">lm</span>(x1x2 <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data =</span> dat.n))<span class="sc">$</span>r.squared</span>
+<span id="cb56-9"><a href="#cb56-9" aria-label="9"></a></span>
+<span id="cb56-10"><a href="#cb56-10" aria-label="10"></a><span class="co"># power</span></span>
+<span id="cb56-11"><a href="#cb56-11" aria-label="11"></a>f2_n <span class="ot">=</span> ((<span class="fl">0.5</span><span class="sc">^</span><span class="dv">2</span>)<span class="sc">*</span>(var_n)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>r2_n))<span class="sc">/</span><span class="dv">1</span></span>
+<span id="cb56-12"><a href="#cb56-12" aria-label="12"></a></span>
+<span id="cb56-13"><a href="#cb56-13" aria-label="13"></a>(<span class="at">n_n =</span> <span class="fu">ceiling</span>(<span class="fu">pwr.f2.test</span>(<span class="at">u =</span> <span class="dv">1</span>, </span>
+<span id="cb56-14"><a href="#cb56-14" aria-label="14"></a>                         <span class="at">f2 =</span> f2_n,</span>
+<span id="cb56-15"><a href="#cb56-15" aria-label="15"></a>                         <span class="at">sig.level =</span> <span class="fl">0.05</span>, </span>
+<span id="cb56-16"><a href="#cb56-16" aria-label="16"></a>                         <span class="at">power =</span> <span class="fl">0.80</span>)<span class="sc">$</span>v <span class="sc">+</span> p))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 37</code></pre>
+</div>
+</div>
+<p></p>
+</section>
+</section>
+<section id="extra-practice" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Extra Practice</h1>
+<ul>
+<li>I initially had an IRWLS/Quantile regression question that I replaced with Question 1 (which is better practice for y’all).</li>
+<li>See <a href="https://www.nature.com/articles/s41598-026-38847-3">https://www.nature.com/articles/s41598-026-38847-3</a> if you want another practice dataset.</li>
+</ul>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-Lai13" class="csl-entry" role="listitem">
+Lai, Jiangshan, Bo Yang, Dunmei Lin, Andrew J Kerkhoff, and Keping Ma. 2013. <span>“The Allometry of Coarse Root Biomass: Log-Transformed Linear Regression or Nonlinear Regression?”</span> <em>PloS One</em> 8 (10): e77007.
+</div>
+<div id="ref-Xu24" class="csl-entry" role="listitem">
+Xu, Lance. 2024. <span>“Advanced Age Predicts Increased Susceptibility to Attribute, Goal, and Risky-Choice Framing in Negative Frame Valences.”</span> <em>Humanities and Social Sciences Communications</em> 11 (1): 217.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Colgate University Student Portfolio</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p><a href="https://github.com/lpdinh-lpd">GitHub Source</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

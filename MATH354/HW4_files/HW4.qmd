@@ -561,7 +561,7 @@ emm.q3 = emmeans(mod.q3, ~ treatment3 | age_c,
                  at = list(age_c = seq(min(dat$age_c), max(dat$age_c), length.out = 5)),
                  weights = "proportional")
 
-plot.q3 = as.data.frame(emm.q3)  |>
+plot.q3 = as.data.frame(emm.q3) |>
   mutate(treatment3 = case_when(treatment3 == "pos3" ~ "Positive",
                                 treatment3 == "neg3" ~ "Negative")) |>
   mutate(age = age_c + mean(dat$age)) 
