@@ -180,7 +180,7 @@ bind_rows(
 
 **Solution**
 
-\textcolor{red}{From the ANOVA test in Table 1, we know that in Scenario 1 and 2, the interaction terms were not statistically discernible, so it was unnessary to calculate Estimated Marginal Trends.}
+\textcolor{red}{From the inference about coefficients in Table 1, we know that in Scenario 1 and 2, the interaction terms were not statistically discernible, so it was unnessary to calculate Estimated Marginal Trends.}
 
 To test whether age-related shifts are driven by reactions to the positive or negative frame, we estimate the linear age trend ($\partial Y / \partial \text{Age}$) separately within each framing condition.
 
@@ -320,7 +320,7 @@ Exploratory data analysis (@fig-trees) shows that there's a strong positive, non
 
 A residual analysis, as shown in @fig-residuals-q2, reveals heteroskedasticity. Since root biomass cannot be negative, we have a cluster of positive residuals for fitted values that are negative. For example, if the fitted value is -40, the residual has to be at least +40. Beyond $\hat{y}=0$, the residual follows a megaphone shape. We can also see a few outliers.
 
-I performed a log transformation of the root biomass to attempt to resolve this problem. As shown in @fig-residuals-q2-log-y, the residuals are left-skewed and follow a quadratic-function shape. I log-transformed the predictor, tree diameters at breast height. Finally, as seen in @fig-residuals-q2-log, our residuals meet the condition for use for residual: the residuals are approximately normally distributed, centered around 0, and have common variance.
+I performed a log transformation of the root biomass to attempt to resolve this problem. As shown in @fig-residuals-q2-log-y, the residuals are left-skewed and follow a quadratic-function shape. I log-transformed the predictor, tree diameters at breast height. Finally, as seen in @fig-residuals-q2-log, our residuals meet the condition for use for regression: the residuals are approximately normally distributed, centered around 0, and have common variance.
 
 However, looking at Cook's $D$ plot in @fig-outlier-q2-log, there is at least one highly influential point. A few observations have high DFFITs. I used Iteratively Reweighted Least Squares (IRWLS), iteratively reweighting observations based on how “well-behaved” their residuals are, to mitigate the effect of influential points on our model. We fit the regression model. Looking at @fig-outlier-q2-irwls, Cook's $D$ for all observations are much better than not fitting the IRWLS model. 
 
@@ -840,7 +840,7 @@ $$\beta_3^2 \sigma^2_{X_1 X_2}(1 - R^2_{X_1 X_2})$$
 
 **Solution**
 
-Detecting the interaction effect needs about 4 times as many observations (507 vs. 130)compared to when we treat the interaction term just like another single predictor in part b.
+Detecting the interaction effect needs about 4 times as many observations (507 vs. 130)compared to when we treat the interaction term just like another single predictor in part c.
 
 ```{r}
 f2.3d = ((0.5^2)*(var_x1x2)*(1-r2_x1x2))/1
