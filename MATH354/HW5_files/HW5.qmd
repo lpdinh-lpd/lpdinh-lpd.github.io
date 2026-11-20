@@ -143,7 +143,7 @@ cat("Age range:", min(df_clean$age, na.rm = TRUE), "to", max(df_clean$age, na.rm
 
 ## Covariate-Adjusted Regression Models
 
-\textcolor{red}{The conditions for use for regression were not checked, including residual analysis and multicollinearity analysis. No outlier analysis was conducted to examine whether there are observations that have undue effect on our model.}
+\textcolor{red}{No exploratory data analysis was performed. The conditions for use for regression were not checked, including residual analysis and multicollinearity analysis. No outlier analysis was conducted to examine whether there are observations that have undue effect on our model.}
 
 **Solution**
 
