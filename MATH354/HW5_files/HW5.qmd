@@ -352,7 +352,9 @@ $$
 
 * $\beta_5 = 0.17$: the change in the slope of $log(\text{dbh})$ when the when the reference category changes from *Castanopsis eyrei* to *Schima superba*.
 
-In @tbl-q2-emt, no confidence intervals contain 0, suggesting that the slope of $log(\text{dbh})$ is statistically discernible for all three species of tree. @fig-emt demonstrates that, as $log(\text{dbh})$ increases, $log(\text{root biomass})$ increases. The interaction effects, $F_{2, 153}=20.01, p<0.001$, suggest that the change in $log(\text{root biomass})$ corresponding to 1-unit increase in $log(\text{dbh})$ is different depending on tree species. For example, although *Pinus massoniana* has lower expected log root biomass compared to other species when the trees are small (i.e., when tree diameter at breast height is 1 cm), its slope is the steepest. When $log(\text{dbh})=4$, the predicted root biomass of *Pinus massoniana* is lower than *Schima superba* and higher than *Castanopsis eyrei*. 
+In @tbl-q2-emt, no confidence intervals contain 0, suggesting that the slope of $log(\text{dbh})$ is statistically discernible for all three species of tree. @fig-emt demonstrates that, as $log(\text{dbh})$ increases, $log(\text{root biomass})$ increases. The interaction effects, $F_{2, 153}=20.01, p<0.001$, suggest that the change in $log(\text{root biomass})$ corresponding to 1-unit increase in $log(\text{dbh})$ is different depending on tree species. For example, although *Pinus massoniana* has lower expected log root biomass compared to other species when the trees are small (i.e., when tree diameter at breast height is 1 cm), its slope is the steepest. When $log(\text{dbh})=4$, the predicted root biomass of *Pinus massoniana* is lower than *Schima superba* and higher than *Castanopsis eyrei*.
+
+@tbl-q2-pairs-slopes confirms that the slope for *Pinus massoniana* is discernibly steeper than the slope for Castanopsis eyrei and the slope for *Schima superba* and *Castanopsis eyrei*. The difference between the slopes for *Castanopsis eyrei* and *Schima superba* are not statistically discernible. This supports the interaction effect: a 1-unit increase in $log(\text{dbh})$ is associated with a larger increase in log root biomass for *Pinus massoniana* than for the other 2 species.
 
 ## Exploratory Data Analyses
 
@@ -571,6 +573,20 @@ ggplot(plot.q2.irwls,
   labs(x = "Log tree diameter at breast height",
        y = "Log root biomass", color = NULL, fill = NULL) +
   theme_bw()
+```
+
+```{r}
+#| label: tbl-q2-pairs-slopes
+#| tbl-cap: "Pairwise Comparisons of Slopes of log(dbh) by Species"
+#| tbl-align: "center"
+#| echo: false
+pairs.slopes.q2 = pairs(emt.q2.irwls, adjust = "tukey")
+
+pairs.slopes.q2 |>
+  confint() |>
+  data.frame() |>
+  rename("Comparison" = "contrast") |>
+  knitr::kable(digits = 3)
 ```
 
 # Question 3

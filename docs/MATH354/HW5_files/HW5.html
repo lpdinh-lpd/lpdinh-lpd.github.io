@@ -992,7 +992,7 @@ Note: The range of observed values of frame3 is [0.00, 1.00]</code></pre>
 <p><strong>Solution</strong></p>
 <p>Exploratory data analysis (<a href="#fig-trees" class="quarto-xref">Figure&nbsp;1</a>) shows that there’s a strong positive, non-linear relationship between root biomass and tree diameters at breast height. We have less observations for <em>Castanopsis eyrei</em> than two other species of tree.</p>
 <p>A residual analysis, as shown in <a href="#fig-residuals-q2" class="quarto-xref">Figure&nbsp;2</a>, reveals heteroskedasticity. Since root biomass cannot be negative, we have a cluster of positive residuals for fitted values that are negative. For example, if the fitted value is -40, the residual has to be at least +40. Beyond <span class="math inline">\(\hat{y}=0\)</span>, the residual follows a megaphone shape. We can also see a few outliers.</p>
-<p>I performed a log transformation of the root biomass to attempt to resolve this problem. As shown in <a href="#fig-residuals-q2-log-y" class="quarto-xref">Figure&nbsp;3</a>, the residuals are left-skewed and follow a quadratic-function shape. I log-transformed the predictor, tree diameters at breast height. Finally, as seen in <a href="#fig-residuals-q2-log" class="quarto-xref">Figure&nbsp;4</a>, our residuals meet the condition for use for residual: the residuals are approximately normally distributed, centered around 0, and have common variance.</p>
+<p>I performed a log transformation of the root biomass to attempt to resolve this problem. As shown in <a href="#fig-residuals-q2-log-y" class="quarto-xref">Figure&nbsp;3</a>, the residuals are left-skewed and follow a quadratic-function shape. I log-transformed the predictor, tree diameters at breast height. Finally, as seen in <a href="#fig-residuals-q2-log" class="quarto-xref">Figure&nbsp;4</a>, our residuals meet the condition for use for regression: the residuals are approximately normally distributed, centered around 0, and have common variance.</p>
 <p>However, looking at Cook’s <span class="math inline">\(D\)</span> plot in <a href="#fig-outlier-q2-log" class="quarto-xref">Figure&nbsp;5</a>, there is at least one highly influential point. A few observations have high DFFITs. I used Iteratively Reweighted Least Squares (IRWLS), iteratively reweighting observations based on how “well-behaved” their residuals are, to mitigate the effect of influential points on our model. We fit the regression model. Looking at <a href="#fig-outlier-q2-irwls" class="quarto-xref">Figure&nbsp;7</a>, Cook’s <span class="math inline">\(D\)</span> for all observations are much better than not fitting the IRWLS model.</p>
 <p>A multicollinearity analysis, particularly the adjusted GVIFs, confirms that there was no strong colinearity between the two predictors. Conditions for use of regression are met.</p>
 <p>An ANOVA test, <a href="#tbl-2-ANOVA" class="quarto-xref">Table&nbsp;2</a>, shows that both predictors and their interaction term explain a statistically discernible proportion of variability in the outcome. The effect size is large, <span class="math inline">\(\omega^2=0.97\)</span>, indicating that our regression model explains a large proportion of the total variability in our dataset.</p>
@@ -1015,6 +1015,7 @@ Note: The range of observed values of frame3 is [0.00, 1.00]</code></pre>
 <li><p><span class="math inline">\(\beta_5 = 0.17\)</span>: the change in the slope of <span class="math inline">\(log(\text{dbh})\)</span> when the when the reference category changes from <em>Castanopsis eyrei</em> to <em>Schima superba</em>.</p></li>
 </ul>
 <p>In <a href="#tbl-q2-emt" class="quarto-xref">Table&nbsp;4</a>, no confidence intervals contain 0, suggesting that the slope of <span class="math inline">\(log(\text{dbh})\)</span> is statistically discernible for all three species of tree. <a href="#fig-emt" class="quarto-xref">Figure&nbsp;8</a> demonstrates that, as <span class="math inline">\(log(\text{dbh})\)</span> increases, <span class="math inline">\(log(\text{root biomass})\)</span> increases. The interaction effects, <span class="math inline">\(F_{2, 153}=20.01, p&lt;0.001\)</span>, suggest that the change in <span class="math inline">\(log(\text{root biomass})\)</span> corresponding to 1-unit increase in <span class="math inline">\(log(\text{dbh})\)</span> is different depending on tree species. For example, although <em>Pinus massoniana</em> has lower expected log root biomass compared to other species when the trees are small (i.e., when tree diameter at breast height is 1 cm), its slope is the steepest. When <span class="math inline">\(log(\text{dbh})=4\)</span>, the predicted root biomass of <em>Pinus massoniana</em> is lower than <em>Schima superba</em> and higher than <em>Castanopsis eyrei</em>.</p>
+<p><a href="#tbl-q2-pairs-slopes" class="quarto-xref">Table&nbsp;5</a> confirms that the slope for <em>Pinus massoniana</em> is discernibly steeper than the slope for Castanopsis eyrei and the slope for <em>Schima superba</em> and <em>Castanopsis eyrei</em>. The difference between the slopes for <em>Castanopsis eyrei</em> and <em>Schima superba</em> are not statistically discernible. This supports the interaction effect: a 1-unit increase in <span class="math inline">\(log(\text{dbh})\)</span> is associated with a larger increase in log root biomass for <em>Pinus massoniana</em> than for the other 2 species.</p>
 <section id="exploratory-data-analyses" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="exploratory-data-analyses"><span class="header-section-number">2.1</span> Exploratory Data Analyses</h2>
 <p></p>
@@ -1535,6 +1536,67 @@ Figure&nbsp;8: Root Biomass Predicted by Diameter at Breast Height
 </div>
 </div>
 <p></p>
+<p></p>
+<div class="cell" data-tbl-align="center">
+<div id="tbl-q2-pairs-slopes" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-q2-pairs-slopes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Pairwise Comparisons of Slopes of log(dbh) by Species
+</figcaption>
+<div aria-describedby="tbl-q2-pairs-slopes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 49%">
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 4%">
+<col style="width: 13%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Comparison</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">SE</th>
+<th style="text-align: right;">df</th>
+<th style="text-align: right;">asymp.LCL</th>
+<th style="text-align: right;">asymp.UCL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Castanopsis eyrei - Pinus massoniana</td>
+<td style="text-align: right;">-0.501</td>
+<td style="text-align: right;">0.082</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-0.695</td>
+<td style="text-align: right;">-0.308</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Castanopsis eyrei - Schima superba</td>
+<td style="text-align: right;">-0.171</td>
+<td style="text-align: right;">0.082</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">-0.364</td>
+<td style="text-align: right;">0.021</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Pinus massoniana - Schima superba</td>
+<td style="text-align: right;">0.330</td>
+<td style="text-align: right;">0.076</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.153</td>
+<td style="text-align: right;">0.507</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p></p>
 </section>
 </section>
 <section id="question-3" class="level1" data-number="3">
@@ -1652,7 +1714,7 @@ f^2 &amp;= \frac{\beta_1^2\,\sigma_{X_1}^2\,(1-R_1^2)}{\sigma^2} \\[4pt]
     &amp;= \frac{0.0625}{\text{VIF}_1}
 \end{aligned}
 \]</span></p>
-<p>As VIF increases, <span class="math inline">\(f^2\)</span> decreases. That is, the stronger the colinearity between <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span>, the smaller the effect size is, and the more observations we need to detect the difference of the coefficient from 0. Indeed, as seen in <a href="#tbl-q3-vif" class="quarto-xref">Table&nbsp;5</a>, as VIF increases, we need more observations in order to achieve 80% power for inference on <span class="math inline">\(\beta_1\)</span>.</p>
+<p>As VIF increases, <span class="math inline">\(f^2\)</span> decreases. That is, the stronger the colinearity between <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span>, the smaller the effect size is, and the more observations we need to detect the difference of the coefficient from 0. Indeed, as seen in <a href="#tbl-q3-vif" class="quarto-xref">Table&nbsp;6</a>, as VIF increases, we need more observations in order to achieve 80% power for inference on <span class="math inline">\(\beta_1\)</span>.</p>
 <p></p>
 <div class="cell">
 <details class="code-fold">
@@ -1675,7 +1737,7 @@ f^2 &amp;= \frac{\beta_1^2\,\sigma_{X_1}^2\,(1-R_1^2)}{\sigma^2} \\[4pt]
 <div id="tbl-q3-vif" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-align="center">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-q3-vif-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;5: VIF and Power
+Table&nbsp;6: VIF and Power
 </figcaption>
 <div aria-describedby="tbl-q3-vif-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
